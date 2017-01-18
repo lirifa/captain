@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>量化运维管理系统</title>
+    <meta charset="UTF-8"> 
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript" charset="utf-8">
+        $(function(){ 
+            var editRow = '';
+            var permission = [{ "value": "管理员", "text": "管理员" }, { "value": "IT业务", "text": "IT业务" }];
+            $('#server_table').datagrid({    
+                title:'>>>服务器信息列表',
+                url:'/serverinfo_json/',
+                width:'100%',
+                border:true,
+                fitColumns:true,
+                singleSelect:false,
+                pagination:false,
+                idField:'id',
+                pageSize:10,
+                pageList:[10,15,20,25,100],
+                columns:[[
+                    {field:'id',title:'序号',width:35},
+                    {field:'id_db',title:'数据库id',width:80,hidden:true},
+                    {field:'srvnum',title:'服务器编号',width:120,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'ip',title:'IP地址',width:200,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'user',title:'用户名',width:150,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'desc',title:'业务描述',width:200,editor:{type:'validatebox',options:{required:true,validType:'strChinese'}}}
+                ]],
+                onLoadSuccess:function(data){    
+                    $("#server_table").datagrid("hideColumn", "passwd"); // 设置隐藏列    
+                    $("#passwd_hide").hide();
+            }  
+            });    
+            /*************************点击添加用户******************************/
+            $('#server_add').bind('click', function(){
+                $('#server').dialog({closed:false,title:'>>>新增服务器',cache:false});
+                $('#fm').form('clear');
+            });
+        
+            /*************************点击修改用户******************************/
+            $('#user_edit').bind('click', function(){
+                var row_select = $('#server_table').datagrid('getSelected');//返回的是被选中行的对象
+                if(row_select){
+                    if(row_select.length == 1){
+                        $.messager.alert('警告',row_select.length,'warning');
+                    }else{
+                        $('#server').dialog({closed:false,title:'>>>编辑服务器',cache:false});
+                        $('#fm').form("load",row_select);
+                    }
+                }else{
+                    $.messager.alert('警告','请先选中需要修改行！','warning'); 
+                }
+            });
+            /*************************点击删除用户******************************/
+            $('#user_delete').bind('click', function(){
+                var ids = "";
+                var ips = "";
+                var row_select = $('#server_table').datagrid('getSelections');//返回的是被选中行的对象
+                for (var i = 0; i < row_select.length; i++) {             
+                    ids += '#' + row_select[i].id_db;
+                    ips += ' [' + row_select[i].ip + '] ';
+                    }
+                if(ids == ""){
+                    $.messager.alert('警告','请先选中需要删除的行！','warning'); 
+                    return false;
+                }else{
+                    $.messager.confirm('确认','您确认想要删除 ' + ips + ' 记录吗？',function(r){    
+                        if (r){                         
+                            $.ajax({
+                                type: "GET",
+                                cache: false,
+                                url: "/serverinfo_del/",
+                                data: {"delinfo":ids},
+                                dataType:'json',
+                                success: function(msg){
+                                    if(msg.accmsg){
+                                        $.messager.alert('恭喜你','成功删除' + msg.accmsg,'info');
+                                        $('#server_table').datagrid('reload',{});
+                                    }else{
+                                        $.messager.alert('错误',msg.errmsg);
+                                        $('#server_table').datagrid('reload',{});
+                                    }
+                                }   
+                            });
+                        }    
+                    });  
+                }
+            });
+            /*************************passwd  hide  show************/
+            $('#passwd_show').bind('click', function(){
+                $("#server_table").datagrid("showColumn", "passwd");
+                $("#passwd_show").hide();
+                $("#passwd_hide").show();
+            });
+            $('#passwd_hide').bind('click', function(){
+                $("#server_table").datagrid("hideColumn", "passwd");
+                $("#passwd_show").show();
+                $("#passwd_hide").hide();
+            });
+            /**************对validatebox控件正则表达式验证数据有效性扩展**************/
+            $.extend($.fn.validatebox.defaults.rules, {    
+                strip: {    
+                    validator: function(value){            
+                        var re = /^[\d+\.\d+\.\d+\.\d+]/;  
+                        if(re.test(value))
+                            return false;  
+                        else
+                            if(RegExp.$1 <256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)
+                                return true;
+                            else
+                                return false;
+                    },    
+                    message: '只能输入IP格式！'
+                },
+                strChinese: {    
+                    validator: function(value){            
+                        var re = /[^\u4e00-\u9fa5]/;  
+                        if(re.test(value))
+                            return false;  
+                        else
+                            return true;   
+                    },    
+                    message: '只能输入中文！'
+                },
+                strEngNum: {    
+                    validator: function(value){            
+                        var re = /[^\w+$]/;  
+                        if(re.test(value))
+                            return false;  
+                        else
+                            return true;   
+                    },    
+                    message: '只能输入英文、数字或下划线！'
+                }
+            });  
+        });
+    </script>
+
+    <script type="text/javascript">
+        document.onkeydown = function (e) {
+            var event = e || window.event;
+            var code = event.keyCode || event.which || event.charCode;
+            if (code == 13) {
+                serverinfoadd();
+            }
+        }
+        $(function () {
+            $("input[name='ip']").focus();
+        });
+        function cleardata() {
+            $('#fm').form('clear');
+        }
+        function serverinfoadd() {
+            if ($("input[name='ip']").val() == "") {
+                $.messager.alert('警告','输入内容不可为空!','warning'); 
+                $("input[name='ip']").focus();
+            } else {
+                $.ajax({
+                    type: "GET", 
+                    url: "/serverinfo_add/",
+                    data: $("#fm").serialize(), 
+                    success: function(msg){
+                        if(msg.accmsg){
+                            $.messager.alert('恭喜',msg.accmsg,'info');
+                            location.href = "/serverinfo/";
+                        }else{
+                            $.messager.alert('警告',msg.errmsg,'error'); 
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script>
+        function doSearch(value){
+            if(value){
+                alert('You input: ' + value);
+            }else{
+                alert('Please input ...');
+            }
+        }
+    </script>
+
+</head>
+<body class="easyui-layout">
+
+    <div data-options="region:'center',title:'主机管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="server_table"  data-options="toolbar:'#tb'"></table>
+        </div>
+    </div>
+
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:1px">
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="server_add">新增</a>
+            <a id="user_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+            <a id="user_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+            <a id="passwd_show" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-light-bulb-on'" plain="true">显示密码</a>
+            <a id="passwd_hide" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-light-bulb-off'" plain="true">隐藏密码</a>
+            <div style="float:right;margin-right:20px">
+                <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+            </div>
+        </div>
+    </div>
+    <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+        <form id="fm" method="get">
+            <div style="margin-bottom:20px">
+                <div>服务器编号</div>
+                <input name="srvnum" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>IP地址</div>
+                <input name="ip" class="easyui-textbox easyui-validatebox" validType="strip" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>用户名</div>
+                <input name="user" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>密码</div>
+                <input name="passwd" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>SSH端口</div>
+                <input name="port" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>业务描述</div>
+                <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px">
+            </div>
+            <div>
+                <a type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#server').dialog('close')">取消</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
