@@ -12,10 +12,10 @@ Class-based views
 Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import patterns, include, url 
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from operation.views import *                                                                                                    
-admin.autodiscover()      
+from operation import views
+admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -27,7 +27,7 @@ urlpatterns = [
 
     url(r'^serverinfo/$', 'operation.views.serverinfo', name='serverinfo'),
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
-    
+
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
     url(r'^serverinfo_add/$', 'operation.views.serverinfo_add', name='serverinfo_add'),
     url(r'^serverinfo_del/$', 'operation.views.serverinfo_del', name='serverinfo_del'),
