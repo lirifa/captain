@@ -46,67 +46,60 @@ def productinfo(request):
 
 def productinfo_json(request):
     try:
-        server_info = Serverinfo.objects.all()
+        product_info = productinfo.objects.all()
     except Exception,e:
-        server_info = []
+        product_info = []
         errmsg = "%s"%e
-    if len(server_info) != 0:
-        msg_dict = {"total":len(server_info)}
+    if len(product_info) != 0:
+        msg_dict = {"total":len(product_info)}
         msg_dict["rows"] = []
         num = 1
-        for key in server_info:
+        for key in product_info:
             id = num
-            id_db = key.id
-            srvnum = key.srvnum
-            ip = key.ip
-            user = key.user
-            passwd = key.passwd
-            port = key.port
-            desc = key.desc
+            product_num = key.product_num
+            product_name = key.product_name
+            product_admin = key.product_admin
+            product_desc = key.product_desc
             num += 1
-            msg_dict["rows"].append({"id":id,"id_db":id_db,"srvnum":srvnum,"ip":ip,"user":user,"passwd":passwd,"port":port,"desc":desc})
+            msg_dict["rows"].append({"id":id,"product_num":product_num,"product_name":product_name,"product_admin":product_admin,"product_desc":product_desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-def serverinfo_add(request):
-    srvnum = request.GET.get('srvnum')
-    ip = request.GET.get('ip')
-    user = request.GET.get('user')
-    passwd = request.GET.get('passwd')
-    port = request.GET.get('port')
-    desc = request.GET.get('desc')
+def productinfo_add(request):
+    product_num = request.GET.get('product_num')
+    product_name = request.GET.get('product_name')
+    product_admin = request.GET.get('product_admin')
+    product_desc = request.GET.get('product_desc')
     msg_dict = {}
-    if ip:
+    if product_num:
         try:
-            server_info = Serverinfo.objects.filter(ip=ip)
+            product_info = productinfo.objects.filter(product_num=product_num)
         except Exception,e:
-            server_info = []
+            product_info = []
             errmsg = "%s"%e 
             msg_dict['errmsg'] = errmsg
-        if len(server_info) == 0:
+        if len(product_info) == 0:
             try:
-                server_info = Serverinfo.objects.get(ip=ip)
+                product_info = productinfo.objects.get(productinfo=product_num)
             except:
-                server_info = Serverinfo()
-            server_info.srvnum = srvnum
-            server_info.ip = ip
-            server_info.user = user
-            server_info.passwd = passwd
-            server_info.port = port
-            server_info.desc = desc
-            server_info.save()
-            accmsg = u"服务器 [ %s ] 添加成功!"%ip
+                product_info = productinfo()
+            product_info.product_num = product_num
+            product_info.product_name = product_name
+            product_info.product_admin = product_admin
+            product_info.desc = product_desc
+            product_info.save()
+            accmsg = u"新产品 [ %s ] 添加成功!"%ip
             msg_dict['accmsg'] = accmsg
         else:
-            errmsg = u"服务器 [ %s ] 已存在，不可重复添加!"%ip
+            errmsg = u"产品 [ %s ] 已存在，不可重复添加!"%ip
             msg_dict['errmsg'] = errmsg
     else:
-        errmsg = u"输入IP为空!"
+        errmsg = u"输入产品编号为空!"
         msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')    
 
-def serverinfo_del(request):
+def productinfo_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
     del idlist[0]

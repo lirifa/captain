@@ -14,7 +14,7 @@ Including another URLconf
 """
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from operation import views
+from operation.views import *
 admin.autodiscover()
 
 urlpatterns = [
@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
 
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
+    url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),
     url(r'^serverinfo_add/$', 'operation.views.serverinfo_add', name='serverinfo_add'),
+    url(r'^productinfo_add/$', 'operation.views.prodcutinfo_add', name='productinfo_add'),
     url(r'^serverinfo_del/$', 'operation.views.serverinfo_del', name='serverinfo_del'),
 ]
