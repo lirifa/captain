@@ -19,9 +19,8 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from operation.models import *
 from operation.serverinfo_views import *
-from operation.products_views import *
 from operation.productinfo_views import *
-
+from operation.strategyinfo_views import *
 try:                                                                                                                         
     from django.http import JsonResponse                                                                                     
 except ImportError:                                                                                                          

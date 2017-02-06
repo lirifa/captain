@@ -41,82 +41,30 @@ try:
 except ImportError:
     from .tool import JsonResponse
 
-def productinfo(request):
-    return render(request,'productinfo.html')
+def strategyinfo(request):
+    return render(request,'strategyinfo.html')
 
-def productinfo_json(request):
-    try:
-        product_info = Productinfo.objects.all()
-    except Exception,e:
-        product_info = []
-        errmsg = "%s"%e    
-    if len(product_info) != 0:
-        msg_dict = {"total":len(product_info)}
+def strategyinfo_json(request):
+	try:
+		strategy_info = Strategyinfo.objects.all()
+
+	except Exception as e:
+		strategy_info = []
+		errmsg = "%s"%e
+	if len(strategy_info) != 0:
+        msg_dict = {"total":len(strategy_info)}
         msg_dict["rows"] = []
         num = 1
         for key in product_info:
             id = num
-            id_db = key.id
-            product_num = key.product_num
-            product_name = key.product_name
-            product_admin = key.product_admin
-            product_desc = key.product_desc
+            strategy_id = key.strategy_id
+            strategy_name = key.product_name
+            strategy_product = key.to_product
+            strategy_desc = key.product_desc
+            total_account = key.total_account
+            sub_account = key.sub_account
             num += 1
-            msg_dict["rows"].append({"id":id,"id_db":id_db,"product_num":product_num,"product_name":product_name,"product_admin":product_admin,"product_desc":product_desc})
-    else:
-        msg_dict = {"total":0,"rows":[]}
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
-
-#--------------------------增加产品-------------------#
-def productinfo_add(request):
-    product_num = request.GET.get('product_num')
-    product_name = request.GET.get('product_name')
-    product_admin = request.GET.get('product_admin')
-    product_desc = request.GET.get('product_desc')
-    msg_dict = {}
-    if product_num:
-        try:
-            product_info = Productinfo.objects.filter(product_num=product_num)
-        except Exception,e:
-            product_info = []
-            errmsg = "%s"%e 
-            msg_dict['errmsg'] = errmsg
-        if len(product_info) == 0:
-            try:
-                product_info = Productinfo.objects.get(product_num=product_num)
-            except:
-                product_info = Productinfo()
-            product_info.product_num = product_num
-            product_info.product_name = product_name
-            product_info.product_admin = product_admin
-            product_info.product_desc = product_desc
-            product_info.save()
-            accmsg = u"新产品 [ %s ] 添加成功!"%product_num
-            msg_dict['accmsg'] = accmsg
-        else:
-            errmsg = u"产品 [ %s ] 已存在，不可重复添加!"%product_num
-            msg_dict['errmsg'] = errmsg
-    else:
-        errmsg = u"输入产品编号为空!"
-        msg_dict['errmsg'] = errmsg
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')    
-
-#-------------------修改产品信息--------------------#
-def productinfo_modify(request):
-    pass
-
-#-------------------删除产品------------------------#
-def productinfo_del(request):
-    delinfo = request.GET.get('delinfo')
-    idlist = delinfo.split("#")
-    del idlist[0]
-    msg_dict = {"accmsg":"","errmsg":""}
-    for dbid in idlist:
-        try:
-            product_num = Productinfo.objects.filter(id=dbid)[0].product_num
-            Productinfo.objects.filter(id=dbid).delete()
-            msg_dict["accmsg"] += "<p>%d</p>"%product_num 
-        except Exception,e:
-            errmsg = "%s"%e
-            msg_dict["errmsg"] = errmsg
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+            msg_dict["rows"].append({"id":id,"strategy_id":strategy_id,"strategy_name":strategy_name,"strategy_product":strategy_product,"strategy_desc":strategy_desc,"total_account":total_account,"sub_account":sub_account})	
+	else:
+		msg_dict = {"total":0,"rows":[]}
+	return HttpResponse(json.dumps(msg_dict), content_type='application/json')

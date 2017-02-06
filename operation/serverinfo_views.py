@@ -46,6 +46,9 @@ def serverinfo(request):
 
 def serverinfo_json(request):
     try:
+        print "******"
+        print Serverinfo.objects.all()
+        print "******"
         server_info = Serverinfo.objects.all()
     except Exception,e:
         server_info = []

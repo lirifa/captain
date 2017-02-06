@@ -27,10 +27,12 @@ urlpatterns = [
 
     url(r'^serverinfo/$', 'operation.views.serverinfo', name='serverinfo'),
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
+    url(r'^strategyinfo/$','operation.views.strategyinfo',name='strategyinfo'),
 
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),
     url(r'^serverinfo_add/$', 'operation.views.serverinfo_add', name='serverinfo_add'),
-    url(r'^productinfo_add/$', 'operation.views.prodcutinfo_add', name='productinfo_add'),
+    url(r'^productinfo_add/$', 'operation.views.productinfo_add', name='productinfo_add'),
     url(r'^serverinfo_del/$', 'operation.views.serverinfo_del', name='serverinfo_del'),
+    url(r'^productinfo_del/$', 'operation.views.productinfo_del', name='productinfo_del'),
 ]

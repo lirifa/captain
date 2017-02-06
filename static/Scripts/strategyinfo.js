@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>量化运维管理系统</title>
-    <meta charset="UTF-8">
-    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
-    <script type="text/javascript" charset="utf-8">
     $(function() {
         var editRow = '';
         var permission = [{
@@ -36,14 +23,9 @@
                         field: 'id',
                         title: '序号',
                         width: 35
-                    }, {
-                        field: 'id_db',
-                        title: '数据库id',
-                        width: 80,
-                        hidden: true
-                    }, {
-                        field: 'product_num',
-                        title: '产品编号',
+                    },{
+                        field: 'strategy_id',
+                        title: '策略编号',
                         width: 120,
                         editor: {
                             type: 'validatebox',
@@ -52,8 +34,8 @@
                             }
                         }
                     }, {
-                        field: 'product_name',
-                        title: '产品名称',
+                        field: 'strategy_name',
+                        title: '策略名称',
                         width: 200,
                         editor: {
                             type: 'validatebox',
@@ -62,8 +44,8 @@
                             }
                         }
                     }, {
-                        field: 'product_admin',
-                        title: '产品管理人',
+                        field: 'strategy_product',
+                        title: '所属产品',
                         width: 150,
                         editor: {
                             type: 'validatebox',
@@ -75,8 +57,8 @@
                     //   {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
                     //   {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
                     {
-                        field: 'product_desc',
-                        title: '产品介绍',
+                        field: 'strategy_desc',
+                        title: '策略介绍',
                         width: 200,
                         editor: {
                             type: 'validatebox',
@@ -88,10 +70,7 @@
                     }
                 ]
             ],
-            onLoadSuccess: function(data) {
-                $("#product_table").datagrid("hideColumn", "passwd"); // 设置隐藏列    
-                $("#passwd_hide").hide();
-            }
+
         });
         /*************************点击添加用户******************************/
         $('#product_add').bind('click', function() {
@@ -210,9 +189,7 @@
             }
         });
     });
-    </script>
 
-    <script type="text/javascript">
     function doSearch(value) {
         if (value) {
             alert('You input: ' + value);
@@ -220,90 +197,4 @@
             alert('Please input ...');
         }
     }
-    </script>
 
-</head>
-<body class="easyui-layout">
-    <div data-options="region:'center',title:'产品管理',iconCls:'icon-large-smartart'">
-        <div title="DataGrid" style="padding:2px">
-            <table id="product_table" data-options="toolbar:'#tb'">
-            </table>
-        </div>
-    </div>
-    <div id="tb" style="padding:3px;height:auto">
-        <div style="margin-bottom:1px">
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="product_add">新增</a>
-            <a id="product_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
-            <a id="product_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
-            <div style="float:right;margin-right:20px">
-                <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
-            </div>
-        </div>
-    </div>
-
-    <div id="product" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
-        <form id="fm" method="get">
-            <div style="margin-bottom:20px">
-                <div>产品编号</div>
-                <input name="product_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:20px">
-                <div>产品名称</div>
-                <input name="product_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:20px">
-                <div>产品管理人</div>
-                <input name="product_admin" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:20px">
-                <div>产品介绍</div>
-                <input name="product_desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <a type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#product').dialog('close')">取消</a>
-            
-            <!-- 提交产品信息到后台 -->
-            <script type="text/javascript">
-            document.onkeydown = function(e) {
-                var event = e || window.event;
-                var code = event.keyCode || event.which || event.charCode;
-                if (code == 13) {
-                    productinfoadd();
-                }
-            }
-            $(function() {
-                $("input[name='product_num']").focus();
-            });
-
-            function cleardata() {
-                $('#fm').form('clear');
-            }
-
-            function productinfoadd() {
-                if ($("input[name='product_num']").val() == "") {
-                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
-                    $("input[name='product_num']").focus();
-                } else {
-                    console.log($("#fm").serialize())
-                    $.ajax({
-                        type: "GET",
-                        url: "/productinfo_add/",
-                        data: $("#fm").serialize(),
-                        success: function(msg) {
-                            if (msg.accmsg) {
-                                $.messager.alert('恭喜', msg.accmsg, 'info');
-                                location.href = "/productinfo/";
-                            } else {
-                                $.messager.alert('警告', msg.errmsg, 'error');
-                            }
-                        }
-                    });
-                }
-            }
-            </script>
-    </div>
-    </form>
-    </div>
-</body>
-
-</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>量化运维系统</title>
+	<meta charset="UTF-8">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript" src="/static/Scripts/productinfo.js"></script>
+</head>
+<body>
+	<body class="easyui-layout">
+    <div data-options="region:'center',title:'产品管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="server_table" data-options="toolbar:'#tb'">
+            </table>
+        </div>
+    </div>
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:1px">
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="server_add">新增</a>
+            <a id="user_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+            <a id="user_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+            <div style="float:right;margin-right:20px">
+                <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+            </div>
+        </div>
+    </div>
+    <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+        <form id="fm" method="get">
+            <div style="margin-bottom:20px">
+                <div>产品编号</div>
+                <input name="product_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>产品名称</div>
+                <input name="product_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>产品管理人</div>
+                <input name="product_admin" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>产品介绍</div>
+                <input name="product_desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <script type="text/javascript">
+                document.onkeydown = function(e) {
+                    var event = e || window.event;
+                    var code = event.keyCode || event.which || event.charCode;
+                    if (code == 13) {
+                        productinfoadd();
+                    }
+                }
+                $(function() {
+                    $("input[name='product_num']").focus();
+                });
+
+                function cleardata() {
+                    $('#fm').form('clear');
+                }
+
+                function productinfoadd() {
+                    if ($("input[name='product_num']").val() == "") {
+                        $.messager.alert('警告', '输入内容不可为空!', 'warning');
+                        $("input[name='product_num']").focus();
+                    } else {
+                        console.log($("#fm").serialize())
+                        $.ajax({
+                            type: "GET",
+                            url: "/productinfo_add/",
+                            data: $("#fm").serialize(),
+                            success: function(msg) {
+                                if (msg.accmsg) {
+                                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                                    location.href = "/productinfo/";
+                                } else {
+                                    $.messager.alert('警告', msg.errmsg, 'error');
+                                }
+                            }
+                        });
+                    }
+                }
+            
+            </script>
+</body>
+</html>
