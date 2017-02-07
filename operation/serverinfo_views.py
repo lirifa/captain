@@ -34,7 +34,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response                                                                              
 from django.contrib import auth                                                                                              
 from django.contrib.auth.models import User                                                                                  
-from operation.models import *                                                                                               
+from operation.models import *
 
 try:
     from django.http import JsonResponse
@@ -59,7 +59,6 @@ def serverinfo_json(request):
         num = 1
         for key in server_info:
             id = num
-            id_db = key.id
             srvnum = key.srvnum
             ip = key.ip
             user = key.user
@@ -67,7 +66,7 @@ def serverinfo_json(request):
             port = key.port
             desc = key.desc
             num += 1
-            msg_dict["rows"].append({"id":id,"id_db":id_db,"srvnum":srvnum,"ip":ip,"user":user,"passwd":passwd,"port":port,"desc":desc})
+            msg_dict["rows"].append({"id":id,"srvnum":srvnum,"ip":ip,"user":user,"passwd":passwd,"port":port,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')

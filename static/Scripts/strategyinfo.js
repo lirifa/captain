@@ -7,9 +7,9 @@
             "value": "IT业务",
             "text": "IT业务"
         }];
-        $('#product_table').datagrid({
-            title: '>>>产品列表',
-            url: '/productinfo_json/',
+        $('#strategy_table').datagrid({
+            title: '>>>策略列表列表',
+            url: '/strategyinfo_json/',
             width: '100%',
             border: true,
             fitColumns: true,
@@ -20,58 +20,55 @@
             pageList: [10, 15, 20, 25, 100],
             columns: [
                 [{
-                        field: 'id',
-                        title: '序号',
-                        width: 35
-                    },{
-                        field: 'strategy_id',
-                        title: '策略编号',
-                        width: 120,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    }, {
-                        field: 'strategy_name',
-                        title: '策略名称',
-                        width: 200,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    }, {
-                        field: 'strategy_product',
-                        title: '所属产品',
-                        width: 150,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    },
-                    //   {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
-                    //   {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
-                    {
-                        field: 'strategy_desc',
-                        title: '策略介绍',
-                        width: 200,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true,
-                                validType: 'strChinese'
-                            }
+                    field: 'id',
+                    title: '序号',
+                    width: 35
+                }, {
+                    field: 'strategy_id',
+                    title: '策略编号',
+                    width: 120,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
                         }
                     }
-                ]
+                }, {
+                    field: 'strategy_name',
+                    title: '策略名称',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'strategy_product',
+                    title: '所属产品',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'strategy_desc',
+                    title: '策略介绍',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true,
+                            validType: 'strChinese'
+                        }
+                    }
+                }]
             ],
 
         });
+
         /*************************点击添加用户******************************/
         $('#product_add').bind('click', function() {
             $('#product').dialog({
@@ -197,4 +194,3 @@
             alert('Please input ...');
         }
     }
-

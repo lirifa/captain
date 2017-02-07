@@ -33,66 +33,54 @@
             pageList: [10, 15, 20, 25, 100],
             columns: [
                 [{
-                        field: 'id',
-                        title: '序号',
-                        width: 35
-                    }, {
-                        field: 'id_db',
-                        title: '数据库id',
-                        width: 80,
-                        hidden: true
-                    }, {
-                        field: 'product_num',
-                        title: '产品编号',
-                        width: 120,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    }, {
-                        field: 'product_name',
-                        title: '产品名称',
-                        width: 200,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    }, {
-                        field: 'product_admin',
-                        title: '产品管理人',
-                        width: 150,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true
-                            }
-                        }
-                    },
-                    //   {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
-                    //   {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
-                    {
-                        field: 'product_desc',
-                        title: '产品介绍',
-                        width: 200,
-                        editor: {
-                            type: 'validatebox',
-                            options: {
-                                required: true,
-                                validType: 'strChinese'
-                            }
+                    field: 'id',
+                    title: '序号',
+                    width: 35
+                }, {
+                    field: 'pid',
+                    title: '产品编号',
+                    width: 120,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
                         }
                     }
-                ]
+                }, {
+                    field: 'pname',
+                    title: '产品名称',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'admin',
+                    title: '产品管理人',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'desc',
+                    title: '产品介绍',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true,
+                            validType: 'strChinese'
+                        }
+                    }
+                }]
             ],
-            onLoadSuccess: function(data) {
-                $("#product_table").datagrid("hideColumn", "passwd"); // 设置隐藏列    
-                $("#passwd_hide").hide();
-            }
         });
+        
         /*************************点击添加用户******************************/
         $('#product_add').bind('click', function() {
             $('#product').dialog({
@@ -125,12 +113,12 @@
         /*************************点击删除产品******************************/
         $('#product_delete').bind('click', function() {
             var ids = "";
-            var product_nums = "";
+            var pids = "";
             var row_select = $('#product_table').datagrid('getSelections'); //返回的是被选中行的对象
             console.log(row_select)
             for (var i = 0; i < row_select.length; i++) {
-                ids += '#' + row_select[i].id_db;
-                product_nums += ' [' + row_select[i].product_num + '] ';
+                ids += '#' + row_select[i].pid;
+                pids += ' [' + row_select[i].pid + '] ';
             }
             if (ids == "") {
                 $.messager.alert('警告', '请先选中需要删除的产品！', 'warning');
@@ -159,18 +147,6 @@
                     }
                 });
             }
-        });
-
-        /*************************passwd  hide  show************/
-        $('#passwd_show').bind('click', function() {
-            $("#product_table").datagrid("showColumn", "passwd");
-            $("#passwd_show").hide();
-            $("#passwd_hide").show();
-        });
-        $('#passwd_hide').bind('click', function() {
-            $("#product_table").datagrid("hideColumn", "passwd");
-            $("#passwd_show").show();
-            $("#passwd_hide").hide();
         });
 
         /**************对validatebox控件正则表达式验证数据有效性扩展**************/
@@ -211,7 +187,6 @@
         });
     });
     </script>
-
     <script type="text/javascript">
     function doSearch(value) {
         if (value) {
@@ -221,8 +196,8 @@
         }
     }
     </script>
-
 </head>
+
 <body class="easyui-layout">
     <div data-options="region:'center',title:'产品管理',iconCls:'icon-large-smartart'">
         <div title="DataGrid" style="padding:2px">
@@ -240,28 +215,26 @@
             </div>
         </div>
     </div>
-
     <div id="product" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
         <form id="fm" method="get">
             <div style="margin-bottom:20px">
                 <div>产品编号</div>
-                <input name="product_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+                <input name="pid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
             </div>
             <div style="margin-bottom:20px">
                 <div>产品名称</div>
-                <input name="product_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
+                <input name="pname" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
             </div>
             <div style="margin-bottom:20px">
                 <div>产品管理人</div>
-                <input name="product_admin" class="easyui-textbox" style="width:100%;height:32px" required="true">
+                <input name="admin" class="easyui-textbox" style="width:100%;height:32px" required="true">
             </div>
             <div style="margin-bottom:20px">
                 <div>产品介绍</div>
-                <input name="product_desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
+                <input name="desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>
             <a type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#product').dialog('close')">取消</a>
-            
             <!-- 提交产品信息到后台 -->
             <script type="text/javascript">
             document.onkeydown = function(e) {
@@ -272,7 +245,7 @@
                 }
             }
             $(function() {
-                $("input[name='product_num']").focus();
+                $("input[name='pid']").focus();
             });
 
             function cleardata() {
@@ -282,7 +255,7 @@
             function productinfoadd() {
                 if ($("input[name='product_num']").val() == "") {
                     $.messager.alert('警告', '输入内容不可为空!', 'warning');
-                    $("input[name='product_num']").focus();
+                    $("input[name='pid']").focus();
                 } else {
                     console.log($("#fm").serialize())
                     $.ajax({

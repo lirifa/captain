@@ -56,45 +56,44 @@ def productinfo_json(request):
         num = 1
         for key in product_info:
             id = num
-            id_db = key.id
-            product_num = key.product_num
-            product_name = key.product_name
-            product_admin = key.product_admin
-            product_desc = key.product_desc
+            pid = key.pid
+            pname = key.pname
+            admin = key.admin
+            desc = key.desc
             num += 1
-            msg_dict["rows"].append({"id":id,"id_db":id_db,"product_num":product_num,"product_name":product_name,"product_admin":product_admin,"product_desc":product_desc})
+            msg_dict["rows"].append({"id":id,"pid":pid,"pname":pname,"admin":admin,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 #--------------------------增加产品-------------------#
 def productinfo_add(request):
-    product_num = request.GET.get('product_num')
-    product_name = request.GET.get('product_name')
-    product_admin = request.GET.get('product_admin')
-    product_desc = request.GET.get('product_desc')
+    pid = request.GET.get('pid')
+    pname = request.GET.get('pname')
+    admin = request.GET.get('admin')
+    desc = request.GET.get('desc')
     msg_dict = {}
-    if product_num:
+    if pid:
         try:
-            product_info = Productinfo.objects.filter(product_num=product_num)
+            product_info = Productinfo.objects.filter(pid=pid)
         except Exception,e:
             product_info = []
-            errmsg = "%s"%e 
+            errmsg = "%s"%e
             msg_dict['errmsg'] = errmsg
         if len(product_info) == 0:
             try:
-                product_info = Productinfo.objects.get(product_num=product_num)
+                product_info = Productinfo.objects.get(pid=pid)
             except:
                 product_info = Productinfo()
-            product_info.product_num = product_num
-            product_info.product_name = product_name
-            product_info.product_admin = product_admin
-            product_info.product_desc = product_desc
+            product_info.pid= pid
+            product_info.pname = pname
+            product_info.admin = admin
+            product_info.desc = desc
             product_info.save()
-            accmsg = u"新产品 [ %s ] 添加成功!"%product_num
+            accmsg = u"新产品 [ %s ] 添加成功!"%pid
             msg_dict['accmsg'] = accmsg
         else:
-            errmsg = u"产品 [ %s ] 已存在，不可重复添加!"%product_num
+            errmsg = u"产品 [ %s ] 已存在，不可重复添加!"%pid
             msg_dict['errmsg'] = errmsg
     else:
         errmsg = u"输入产品编号为空!"
@@ -111,11 +110,11 @@ def productinfo_del(request):
     idlist = delinfo.split("#")
     del idlist[0]
     msg_dict = {"accmsg":"","errmsg":""}
-    for dbid in idlist:
+    for pid in idlist:
         try:
-            product_num = Productinfo.objects.filter(id=dbid)[0].product_num
-            Productinfo.objects.filter(id=dbid).delete()
-            msg_dict["accmsg"] += "<p>%d</p>"%product_num 
+            pid = Productinfo.objects.filter(pid=pid)[0].pid
+            Productinfo.objects.filter(pid=pid).delete()
+            msg_dict["accmsg"] += "<p>%d</p>"%pid 
         except Exception,e:
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
