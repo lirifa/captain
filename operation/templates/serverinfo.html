@@ -31,6 +31,7 @@
                     {field:'user',title:'用户名',width:150,editor:{type:'validatebox',options:{required:true}}},
                     {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
                     {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'productadmin',title:'产品管理人',width:100,editor:{type:'validatebox',options:{required:true}}},
                     {field:'desc',title:'业务描述',width:200,editor:{type:'validatebox',options:{required:true,validType:'strChinese'}}}
                 ]],
                 onLoadSuccess:function(data){    
@@ -42,6 +43,8 @@
             $('#server_add').bind('click', function(){
                 $('#server').dialog({closed:false,title:'>>>新增服务器',cache:false});
                 $('#fm').form('clear');
+                $('#modify').hide()
+                $('#add').show()
             });
         
             /*************************点击修改用户******************************/
@@ -53,6 +56,8 @@
                     }else{
                         $('#server').dialog({closed:false,title:'>>>编辑服务器',cache:false});
                         $('#fm').form("load",row_select);
+                        $('#add').hide()
+                        $('#modify').show()
                     }
                 }else{
                     $.messager.alert('警告','请先选中需要修改行！','warning'); 
@@ -63,7 +68,7 @@
                 var ids = "";
                 var ips = "";
                 var row_select = $('#server_table').datagrid('getSelections');//返回的是被选中行的对象
-                for (var i = 0; i < row_select.length; i++) {             
+                for (var i = 0; i < row_select.length; i++) {
                     ids += '#' + row_select[i].id_db;
                     ips += ' [' + row_select[i].ip + '] ';
                     }
@@ -157,6 +162,7 @@
         function cleardata() {
             $('#fm').form('clear');
         }
+
         function serverinfoadd() {
             if ($("input[name='ip']").val() == "") {
                 $.messager.alert('警告','输入内容不可为空!','warning'); 
@@ -177,6 +183,28 @@
                 });
             }
         }
+
+        function serverinfomod() {
+            if ($("input[name='srvnum']").val() == "") {
+                $.messager.alert('警告','输入内容不可为空!','warning'); 
+                $("input[name='srvnum']").focus();
+            } else {
+                $.ajax({
+                    type: "GET", 
+                    url: "/serverinfo_mod/",
+                    data: $("#fm").serialize(), 
+                    success: function(msg){
+                        if(msg.accmsg){
+                            $.messager.alert('恭喜',msg.accmsg,'info');
+                            location.href = "/serverinfo/";
+                        }else{
+                            $.messager.alert('警告',msg.errmsg,'error'); 
+                        }
+                    }
+                });
+            }
+        }
+
     </script>
 
     <script>
@@ -234,11 +262,16 @@
                 <input name="port" class="easyui-textbox" style="width:100%;height:32px" required="true">
             </div>
             <div style="margin-bottom:20px">
+                <div>产品管理人</div>
+                <input name="productadmin" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
                 <div>业务描述</div>
                 <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px">
             </div>
             <div>
-                <a type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>
+                <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>
+                <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfomod()">修改</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#server').dialog('close')">取消</a>
             </div>
         </form>

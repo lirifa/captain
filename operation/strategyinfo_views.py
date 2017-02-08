@@ -58,12 +58,100 @@ def strategyinfo_json(request):
             id = num
             sid = key.sid
             sname = key.sname
+            scfg = key.scfg
+            port = key.port
             product = key.product
-            desc = key.product_desc
+            desc = key.desc
             master_acc = key.master_acc
             sub_acc = key.sub_acc
             num += 1
-            msg_dict["rows"].append({"id":id,"sid":sid,"sname":sname,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
+            msg_dict["rows"].append({"id":id,"sid":sid,"sname":sname,"scfg":scfg,"port":port,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#新增策略
+def strategyinfo_add(request):
+    sid = request.GET.get('sid')
+    sname = request.GET.get('sname')
+    scfg = request.GET.get('scfg')
+    port = request.GET.get('port')
+    product = request.GET.get('product')
+    master_acc = request.GET.get('master_acc')
+    sub_acc = request.GET.get('sub_acc')
+    desc = request.GET.get('desc')
+    msg_dict={}
+    if sid:
+        try:
+            strategy_info = Strategyinfo.objects.filter(sid=sid)
+        except Exception,e:
+            strategy_info = []
+            errmsg = "%s"%e 
+            msg_dict['errmsg'] = errmsg
+        if len(strategy_info) == 0:
+            try:
+                strategy_info = Strategyinfo.objects.get(sid=sid)
+            except:
+                strategy_info = Strategyinfo()
+            strategy_info.sid = sid
+            strategy_info.sname = sname
+            strategy_info.scfg = scfg
+            strategy_info.port = port
+            strategy_info.product = product
+            strategy_info.master_acc = master_acc
+            strategy_info.sub_acc = sub_acc
+            strategy_info.desc = desc
+            strategy_info.save()
+            accmsg = u"策略 [ %s ] 添加成功!"%sname
+            msg_dict['accmsg'] = accmsg
+        else:
+            errmsg = u"策略 [ %s ] 已存在，不可重复添加!"%sname
+            msg_dict['accmsg'] = errmsg
+    else:
+        errmsg = u"输入策略编号为空"
+        msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#修改策略信息
+def strategyinfo_mod(request):
+    sid = request.GET.get('sid')
+    sname = request.GET.get('sname')
+    scfg = request.GET.get('scfg')
+    port = request.GET.get('port')
+    product = request.GET.get('product')
+    master_acc = request.GET.get('master_acc')
+    sub_acc = request.GET.get('sub_acc')
+    desc = request.GET.get('desc')
+    msg_dict={}
+    if sid:
+        try:
+            strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
+            accmsg = u"策略 [ %s ] 修改成功!"%sname
+            msg_dict['accmsg'] = accmsg
+        except Exception,e:
+            strategy_info = []
+            errmsg = "%s"%e 
+            msg_dict['errmsg'] = errmsg
+    else:
+        errmsg = u"输入策略编号为空"
+        msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
+#删除策略
+def strategyinfo_del(request):
+    delinfo = request.GET.get('delinfo')
+    sidlist = delinfo.split("#")
+    del sidlist[0]
+    msg_dict = {"accmsg":"","errmsg":""}
+    for sid in sidlist:
+        try:
+            sname = Strategyinfo.objects.filter(sid=sid)[0].sname
+            sid = Strategyinfo.objects.filter(sid=sid)[0].sid
+            Strategyinfo.objects.filter(sid=sid).delete()
+            msg_dict["accmsg"] += "<p>%s</p>"%sname 
+        except Exception,e:
+            errmsg = "%s"%e
+            msg_dict["errmsg"] = errmsg
+    print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')

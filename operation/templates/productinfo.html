@@ -85,10 +85,12 @@
         $('#product_add').bind('click', function() {
             $('#product').dialog({
                 closed: false,
-                title: '>>>新增产品',
+                title: '新增产品',
                 cache: false
             });
             $('#fm').form('clear');
+            $('#modify').hide()
+            $('#add').show()
         });
 
         /*************************点击修改用户******************************/
@@ -100,10 +102,12 @@
                 } else {
                     $('#product').dialog({
                         closed: false,
-                        title: '>>>编辑服务器',
+                        title: '编辑服务器',
                         cache: false
                     });
                     $('#fm').form("load", row_select);
+                    $('#add').hide()
+                    $('#modify').show()
                 }
             } else {
                 $.messager.alert('警告', '请先选中需要修改行！', 'warning');
@@ -136,7 +140,7 @@
                             dataType: 'json',
                             success: function(msg) {
                                 if (msg.accmsg) {
-                                    $.messager.alert('产品删除成功');
+                                    $.messager.alert('message'+msg.accmsg,'info');
                                     $('#product_table').datagrid('reload', {});
                                 } else {
                                     $.messager.alert('错误', msg.errmsg);
@@ -233,7 +237,8 @@
                 <div>产品介绍</div>
                 <input name="desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>
-            <a type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
+            <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
+            <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfomod()">修改</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#product').dialog('close')">取消</a>
             <!-- 提交产品信息到后台 -->
             <script type="text/javascript">
@@ -253,14 +258,34 @@
             }
 
             function productinfoadd() {
-                if ($("input[name='product_num']").val() == "") {
+                if ($("input[name='pid']").val() == "") {
                     $.messager.alert('警告', '输入内容不可为空!', 'warning');
                     $("input[name='pid']").focus();
                 } else {
-                    console.log($("#fm").serialize())
                     $.ajax({
                         type: "GET",
                         url: "/productinfo_add/",
+                        data: $("#fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/productinfo/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+            }
+            
+            function productinfomod() {
+                if ($("input[name='pid']").val() == "") {
+                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
+                    $("input[name='pid']").focus();
+                } else{
+                    $.ajax({
+                        type: "GET",
+                        url: "/productinfo_mod/",
                         data: $("#fm").serialize(),
                         success: function(msg) {
                             if (msg.accmsg) {

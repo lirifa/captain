@@ -30,11 +30,17 @@ urlpatterns = [
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
     url(r'^serverinfo_add/$', 'operation.views.serverinfo_add', name='serverinfo_add'),
     url(r'^serverinfo_del/$', 'operation.views.serverinfo_del', name='serverinfo_del'),
+    url(r'^serverinfo_mod/$', 'operation.views.serverinfo_mod', name='serverinfo_mod'),
 
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),
     url(r'^productinfo_add/$', 'operation.views.productinfo_add', name='productinfo_add'), 
     url(r'^productinfo_del/$', 'operation.views.productinfo_del', name='productinfo_del'),
+    url(r'^productinfo_mod/$', 'operation.views.productinfo_mod', name='productinfo_mod'),
 
     url(r'^strategyinfo/$','operation.views.strategyinfo',name='strategyinfo'),
+    url(r'^strategyinfo_json/$', 'operation.views.strategyinfo_json', name='strategyinfo_json'),
+    url(r'^strategyinfo_add/$', 'operation.views.strategyinfo_add', name='strategyinfo_add'),
+    url(r'^strategyinfo_del/$', 'operation.views.strategyinfo_del', name='strategyinfo_del'),
+    url(r'^strategyinfo_mod/$', 'operation.views.strategyinfo_mod', name='strategyinfo_mod'),
 ]
