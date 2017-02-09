@@ -43,4 +43,21 @@ urlpatterns = [
     url(r'^strategyinfo_add/$', 'operation.views.strategyinfo_add', name='strategyinfo_add'),
     url(r'^strategyinfo_del/$', 'operation.views.strategyinfo_del', name='strategyinfo_del'),
     url(r'^strategyinfo_mod/$', 'operation.views.strategyinfo_mod', name='strategyinfo_mod'),
+
+    url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
+
+    url(r'^configure/$','operation.views.configure',name='configure'),
+
+    url(r'^acct/$','operation.views.acct',name='acct'),
+    url(r'^acct_json/$','operation.views.acct_json',name='acct_json'),
+    url(r'^acct_add/$', 'operation.views.acct_add', name='acct_add'),
+    url(r'^acct_mod/$', 'operation.views.acct_mod', name='acct_mod'),
+    url(r'^acct_del/$', 'operation.views.acct_del', name='acct_del'),
+
+    url(r'^master_acct/$','operation.views.master_acct',name='master_acct'),
+    url(r'^master_acct_json/$','operation.views.master_acct_json',name='master_acct_json'),
+
+    url(r'^sub_acct/$','operation.views.sub_acct',name='sub_acct'),
+    url(r'^sub_acct_json/$','operation.views.sub_acct_json',name='sub_acct_json'),
+
 ]

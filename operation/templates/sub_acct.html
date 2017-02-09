@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript">
+    $(function() {
+                var editRow = '';
+                var permission = [{
+                    "value": "管理员",
+                    "text": "管理员"
+                }, {
+                    "value": "IT业务",
+                    "text": "IT业务"
+                }];
+                $('#sub_acct_table').datagrid({
+                    title: '>>>子账号列表',
+                    url: '/sub_acct_json/',
+                    width: '100%',
+                    border: true,
+                    fitColumns: true,
+                    singleSelect: false,
+                    pagination: false,
+                    idField: 'id',
+                    pageSize: 10,
+                    pageList: [10, 15, 20, 25, 100],
+                    columns: [
+                        [{
+                            field: 'id',
+                            title: '序号',
+                            width: 35
+                        },  {
+                            field: 'acc_num',
+                            title: '账户号',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        },{
+                            field: 'acc_name',
+                            title: '账户名',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        },{
+                            field: 'master_acct',
+                            title: '关联总账号',
+                            width: 120,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'equity',
+                            title: '客户权益',
+                            width: 150,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'margin_locked',
+                            title: '保证金占用',
+                            width: 150,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'fund_avaril',
+                            title: '可用资金',
+                            width: 150,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'buy_margin',
+                            title: '多仓保证金',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true,
+                                }
+                            }
+                        },{
+                            field: 'sell_margin',
+                            title: '空仓保证金',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true,
+                                }
+                            }
+                        }]
+                    ],
+                });
+            });
+    </script>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'子账号管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="sub_acct_table" data-options="toolbar:'#tb'"></table>
+        </div>
+        <div id="tb" style="padding:3px;height:auto">
+            <div style="margin-bottom:1px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="sub_acct_add">新增</a>
+                <a id="sub_acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="sub_acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <!-- <div style="float:right;margin-right:20px">
+                    <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

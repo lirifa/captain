@@ -46,9 +46,6 @@ def serverinfo(request):
 
 def serverinfo_json(request):
     try:
-        print "******"
-        print Serverinfo.objects.all()
-        print "******"
         server_info = Serverinfo.objects.all()
     except Exception,e:
         server_info = []
@@ -72,6 +69,7 @@ def serverinfo_json(request):
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+#---------------------添加主机---------------
 def serverinfo_add(request):
     srvnum = request.GET.get('srvnum')
     ip = request.GET.get('ip')
@@ -81,16 +79,16 @@ def serverinfo_add(request):
     productadmin = request.GET.get('productadmin')
     desc = request.GET.get('desc')
     msg_dict = {}
-    if ip:
+    if srvnum:
         try:
-            server_info = Serverinfo.objects.filter(ip=ip)
+            server_info = Serverinfo.objects.filter(srvnum=srvnum)
         except Exception,e:
             server_info = []
             errmsg = "%s"%e 
             msg_dict['errmsg'] = errmsg
         if len(server_info) == 0:
             try:
-                server_info = Serverinfo.objects.get(ip=ip)
+                server_info = Serverinfo.objects.get(srvnum=srvnum)
             except:
                 server_info = Serverinfo()
             server_info.srvnum = srvnum
@@ -132,16 +130,17 @@ def serverinfo_mod(request):
             msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+#-----------------删除主机-------------------------#
 def serverinfo_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
     del idlist[0]
     msg_dict = {"accmsg":"","errmsg":""}
-    for dbid in idlist:
+    for srvnum in idlist:
         try:
-            ip = Serverinfo.objects.filter(id=dbid)[0].ip
-            Serverinfo.objects.filter(id=dbid).delete()
-            msg_dict["accmsg"] += "<p>%s</p>"%ip 
+            srvnum = Serverinfo.objects.filter(srvnum=srvnum)[0].srvnum
+            Serverinfo.objects.filter(srvnum=srvnum).delete()
+            msg_dict["accmsg"] += "<p>%s</p>"%srvnum 
         except Exception,e:
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg

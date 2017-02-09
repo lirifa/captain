@@ -33,8 +33,8 @@ class Strategyinfo(models.Model):
     sname = models.CharField(verbose_name='策略名称',max_length=32)
     scfg = models.CharField(verbose_name='对应配置名',max_length=32)
     product = models.CharField(verbose_name='所属产品',max_length=32)
-    master_acc = models.IntegerField(verbose_name='总账号')
-    sub_acc = models.IntegerField(verbose_name='子账号')
+    master_acc = models.CharField(verbose_name='总账号',max_length=32)
+    sub_acc = models.CharField(verbose_name='子账号',max_length=32)
     port = models.IntegerField(verbose_name='策略端口')
     desc = models.CharField(verbose_name='策略介绍',max_length=32)
     def __unicode__(self):
@@ -43,18 +43,49 @@ class Strategyinfo(models.Model):
         db_table = 'strategyinfo'
 
 #资金账户信息表
-#class Accout:
-#    pass
-
+class Acct:
+    trdacct = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
+    acc_name = models.CharField(verbose_name='账户名',max_length=32)
+    bid = models.IntegerField(verbose_name='经纪商id')
+    pid = models.IntegerField(verbose_name='产品id')
+    equity = models.DecimalField(verbose_name='客户权益',max_length=128)
+    margin_locked = models.DecimalField(verbose_name='保证金占用',max_digits=17,decimal_places=2)
+    fund_avaril = models.DecimalField(verbose_name='可以资金',max_digits=17,decimal_places=2)
+    risk_degree = models.CharField(verbose_name='风险度',max_length=11)
+    def __unicode__(self):
+        return self.trdacct
+    class Meta:
+        db_table = 'acct'
 
 #总账号信息表
-#class Master_acc(object):
-#    acc_num = models.IntegerField(verbose_name='账户号',primary_key=True)
-#    acc_name = models.CharField(verbose_name='账户名',max_length=32)
-#    b_acc = models.IntegerField(verbose_name='关联资金账户')
-#    acc_fund = models.IntegerField(verbose_name='初始资金')
-#    interests = models.IntegerField(verbose_name='客户权益')
-#    fund_bln = models.
-#
+class Master_acct:
+    acc_num = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
+    acc_name = models.CharField(verbose_name='账户名',max_length=32)
+    trdacct = models.CharField(verbose_name='关联资金账户',max_length=32)
+    equity = models.DecimalField(verbose_name='客户权益',max_digits=17,decimal_places=2)
+    fund_avaril = models.DecimalField(verbose_name='可用资金',max_digits=17,decimal_places=2)
+    margin_locked = models.DecimalField(verbose_name='已用总保证金',max_digits=17,decimal_places=2)
+    buy_margin = models.DecimalField(verbose_name='买保证金占用',max_digits=17,decimal_places=2)
+    sell_margin = models.DecimalField(verbose_name='卖保证金占用',max_digits=17,decimal_places=2)
+    def __unicode__(self):
+        return self.acc_num
+    class Meta:
+        db_table = 'master_acct'
+
 #子账号信息表
+class Sub_acct:
+    acc_num = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
+    acc_name = models.CharField(verbose_name='账户名',max_length=32)
+    master_acct = models.CharField(verbose_name='关联总账号',max_length=32)
+    equity = models.DecimalField(verbose_name='客户权益',max_digits=17,decimal_places=2)
+    fund_avaril = models.DecimalField(verbose_name='可用资金',max_digits=17,decimal_places=2)
+    margin_locked = models.DecimalField(verbose_name='已用总保证金',max_digits=17,decimal_places=2)
+    buy_margin = models.DecimalField(verbose_name='买保证金占用',max_digits=17,decimal_places=2)
+    sell_margin = models.DecimalField(verbose_name='卖保证金占用',max_digits=17,decimal_places=2)
+    def __unicode__(self):
+        return self.acc_num
+    class Meta:
+        db_table = 'sub_acct'
+
+
 

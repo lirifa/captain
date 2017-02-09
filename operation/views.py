@@ -21,9 +21,13 @@ from operation.models import *
 from operation.serverinfo_views import *
 from operation.productinfo_views import *
 from operation.strategyinfo_views import *
-try:                                                                                                                         
-    from django.http import JsonResponse                                                                                     
-except ImportError:                                                                                                          
+from operation.acct_views import *
+from operation.master_acct_views import *
+from operation.sub_acct_views import *
+
+try:
+    from django.http import JsonResponse
+except ImportError:
     from .tool import JsonResponse
 
 def login(request):
@@ -33,8 +37,8 @@ def index(request):
     return render(request,"index.html")
 
 def checklogin(request):
-    username = request.POST.get("username")                                                                                  
-    password = request.POST.get("password")  
+    username = request.POST.get("username")
+    password = request.POST.get("password")
     msg_dict = {}
     if username == "hiki" and password == "redhat":
         accmsg = "Hello hiki,welcome to captain!"
@@ -46,3 +50,10 @@ def checklogin(request):
 
 def dashboard(request):
     return render(request,"dashboard.html")
+
+def supervisor(request):
+    return render(request,"supervisor.html")
+
+def configure(request):
+    return render(request,"configure.html")
+

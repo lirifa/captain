@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript">
+    $(function() {
+        var editRow = '';
+        var permission = [{
+            "value": "管理员",
+            "text": "管理员"
+        }, {
+            "value": "IT业务",
+            "text": "IT业务"
+        }];
+        $('#acct_table').datagrid({
+            title: '>>>资金账户列表',
+            url: '/acct_json/',
+            width: '100%',
+            border: true,
+            fitColumns: true,
+            singleSelect: false,
+            pagination: false,
+            idField: 'id',
+            pageSize: 10,
+            pageList: [10, 15, 20, 25, 100],
+            columns: [
+                [{
+                    field: 'id',
+                    title: '序号',
+                    width: 35
+                }, {
+                    field: 'trdacct',
+                    title: '资金账户号',
+                    width: 120,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'acc_name',
+                    title: '账户名称',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'bid',
+                    title: '经纪商',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'pid',
+                    title: '所属产品',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'equity',
+                    title: '客户权益',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'margin_locked',
+                    title: '保证金占用',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'fund_avaril',
+                    title: '可用资金',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'risk_degree',
+                    title: '风险度',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true,
+                        }
+                    }
+                }]
+            ],
+        });
+        /*************************点击添加资金账户******************************/
+        $('#acct_add').bind('click', function() {
+            $('#acct').dialog({
+                closed: false,
+                title: '新增资金账户',
+                cache: false
+            });
+            $('#fm').form('clear');
+            $('#modify').hide()
+            $('#add').show()
+        });
+        /*************************点击修改资产账户信息******************************/
+        $('#acct_edit').bind('click', function() {
+            var row_select = $('#acct_table').datagrid('getSelected'); //返回的是被选中行的对象
+            if (row_select) {
+                if (row_select.length == 1) {
+                    $.messager.alert('警告', row_select.length, 'warning');
+                } else {
+                    $('#acct').dialog({
+                        closed: false,
+                        title: '编辑资产账户信息',
+                        cache: false
+                    });
+                    $('#fm').form("load", row_select);
+                    $('#add').hide()
+                    $('#modify').show()
+                }
+            } else {
+                $.messager.alert('警告', '请先选中需要修改行！', 'warning');
+            }
+        });
+/*************************点击删除产品******************************/
+        $('#product_delete').bind('click', function() {
+            var ids = "";
+            var pids = "";
+            var row_select = $('#product_table').datagrid('getSelections'); //返回的是被选中行的对象
+            console.log(row_select)
+            for (var i = 0; i < row_select.length; i++) {
+                ids += '#' + row_select[i].pid;
+                pids += ' [' + row_select[i].pid + '] ';
+            }
+            if (ids == "") {
+                $.messager.alert('警告', '请先选中需要删除的产品！', 'warning');
+                return false;
+            } else {
+                $.messager.confirm('确认', '您确认想要删除此产品吗？', function(r) {
+                    if (r) {
+                        $.ajax({
+                            type: "GET",
+                            cache: false,
+                            url: "/productinfo_del/",
+                            data: {
+                                "delinfo": ids
+                            },
+                            dataType: 'json',
+                            success: function(msg) {
+                                if (msg.accmsg) {
+                                    $.messager.alert('message'+msg.accmsg,'info');
+                                    $('#product_table').datagrid('reload', {});
+                                } else {
+                                    $.messager.alert('错误', msg.errmsg);
+                                    $('#product_table').datagrid('reload', {});
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    </script>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'资金账户管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="acct_table" data-options="toolbar:'#tb'"></table>
+        </div>
+        <div id="tb" style="padding:3px;height:auto">
+            <div style="margin-bottom:1px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="acct_add">新增</a>
+                <a id="acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <!-- <div style="float:right;margin-right:20px">
+                    <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

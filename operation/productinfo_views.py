@@ -75,13 +75,23 @@ def productinfo_add(request):
     msg_dict = {}
     if pid:
         try:
-            product_info = Productinfo.objects.filter(pid=pid).update(pname=pname,admin=admin,desc=desc)
-            accmsg = u"产品 [ %s ] 修改成功!"%pid
-            msg_dict['accmsg'] = accmsg
+            product_info = Productinfo.objects.filter(pid=pid)
         except Exception,e:
             product_info = []
             errmsg = "%s"%e
             msg_dict['errmsg'] = errmsg
+        if len(product_info) == 0:
+            try:
+                product_info = Productinfo.objects.get(pid=pid)
+            except:
+                product_info = Productinfo()
+            product_info.pid = pid
+            product_info.pname = pname
+            product_info.admin = admin
+            product_info.desc = desc
+            product_info.save()
+            accmsg = u"新产品 [ %s ] 添加成功!"%pid
+            msg_dict['accmsg'] = accmsg
     else:
         errmsg = u"输入产品编号为空!"
         msg_dict['errmsg'] = errmsg
@@ -96,7 +106,9 @@ def productinfo_mod(request):
     msg_dict = {}
     if pid:
         try:
-            product_info = Productinfo.objects.filter(pid=pid)
+            product_info = Productinfo.objects.filter(pid=pid).update(pname=pname,admin=admin,desc=desc)
+            accmsg = u"产品 [ %s ] 修改成功!"%pid
+            msg_dict['accmsg'] = accmsg
         except Exception,e:
             product_info = []
             errmsg = "%s"%e
