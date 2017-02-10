@@ -43,12 +43,12 @@ class Strategyinfo(models.Model):
         db_table = 'strategyinfo'
 
 #资金账户信息表
-class Acct:
+class Acct(models.Model):
     trdacct = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
     acc_name = models.CharField(verbose_name='账户名',max_length=32)
     bid = models.IntegerField(verbose_name='经纪商id')
     pid = models.IntegerField(verbose_name='产品id')
-    equity = models.DecimalField(verbose_name='客户权益',max_length=128)
+    equity = models.DecimalField(verbose_name='客户权益',max_length=128,max_digits=17,decimal_places=2)
     margin_locked = models.DecimalField(verbose_name='保证金占用',max_digits=17,decimal_places=2)
     fund_avaril = models.DecimalField(verbose_name='可以资金',max_digits=17,decimal_places=2)
     risk_degree = models.CharField(verbose_name='风险度',max_length=11)
@@ -58,28 +58,28 @@ class Acct:
         db_table = 'acct'
 
 #总账号信息表
-class Master_acct:
+class Master_acct(models.Model):
     acc_num = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
     acc_name = models.CharField(verbose_name='账户名',max_length=32)
     trdacct = models.CharField(verbose_name='关联资金账户',max_length=32)
     equity = models.DecimalField(verbose_name='客户权益',max_digits=17,decimal_places=2)
-    fund_avaril = models.DecimalField(verbose_name='可用资金',max_digits=17,decimal_places=2)
-    margin_locked = models.DecimalField(verbose_name='已用总保证金',max_digits=17,decimal_places=2)
     buy_margin = models.DecimalField(verbose_name='买保证金占用',max_digits=17,decimal_places=2)
     sell_margin = models.DecimalField(verbose_name='卖保证金占用',max_digits=17,decimal_places=2)
+    margin_locked = models.DecimalField(verbose_name='保证金占用',max_digits=17,decimal_places=2)
+    fund_avaril = models.DecimalField(verbose_name='可用资金',max_digits=17,decimal_places=2)
     def __unicode__(self):
         return self.acc_num
     class Meta:
         db_table = 'master_acct'
 
 #子账号信息表
-class Sub_acct:
+class Sub_acct(models.Model):
     acc_num = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)
     acc_name = models.CharField(verbose_name='账户名',max_length=32)
     master_acct = models.CharField(verbose_name='关联总账号',max_length=32)
     equity = models.DecimalField(verbose_name='客户权益',max_digits=17,decimal_places=2)
     fund_avaril = models.DecimalField(verbose_name='可用资金',max_digits=17,decimal_places=2)
-    margin_locked = models.DecimalField(verbose_name='已用总保证金',max_digits=17,decimal_places=2)
+    margin_locked = models.DecimalField(verbose_name='总保证金占用',max_digits=17,decimal_places=2)
     buy_margin = models.DecimalField(verbose_name='买保证金占用',max_digits=17,decimal_places=2)
     sell_margin = models.DecimalField(verbose_name='卖保证金占用',max_digits=17,decimal_places=2)
     def __unicode__(self):

@@ -46,7 +46,7 @@ def sub_acct(request):
 def sub_acct_json(request):
     try:
         sub_acct_info = Sub_acct.objects.all()
-    except Exception as e:
+    except Exception, e:
         sub_acct_info = []
         errmsg = "%s"%e
     if len(sub_acct_info) !=0:
@@ -58,13 +58,97 @@ def sub_acct_json(request):
             acc_num = key.acc_num
             acc_name = key.acc_name
             master_acct = key.master_acct
-            equity = key.equity
-            fund_avaril = key.fund_avaril
-            margin_locked = key.margin_locked
-            buy_margin = key.buy_margin
-            sell_margin = key.sell_margin
+            equity = str(key.equity)
+            fund_avaril = str(key.fund_avaril)
+            margin_locked = str(key.margin_locked)
+            buy_margin = str(key.buy_margin)
+            sell_margin = str(key.sell_margin)
             num += 1
             msg_dict["rows"].append({"id":id,"acc_num":acc_num,"acc_name":acc_name,"master_acct":master_acct,"equity":equity,"fund_avaril":fund_avaril,"margin_locked":margin_locked,"buy_margin":buy_margin,"sell_margin":sell_margin})
+    else:
+        msg_dict = {"total":0,"rows":[]}
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#--------------新增子账号------------------
+def sub_acct_add(request):
+    acc_num = request.GET.get('acc_num')
+    acc_name = request.GET.get('acc_name')
+    master_acct = request.GET.get('master_acct')
+    equity = request.GET.get('equity')
+    buy_margin = request.GET.get('buy_margin')
+    sell_margin = request.GET.get('sell_margin')
+    margin_locked = request.GET.get('margin_locked')
+    fund_avaril = request.GET.get('fund_avaril')
+    msg_dict = {}
+    if acc_num:
+        try:
+            sub_acct_info = Sub_acct.objects.filter(acc_num=acc_num)
+        except Exception, e:
+            sub_acct_info = []
+            errmsg = "%s"%e 
+            msg_dict['errmsg'] = errmsg
+        if len(sub_acct_info) == 0 :
+            try:
+                sub_acct_info = Sub_acct.objects.get(acc_num=acc_num)
+            except:
+                sub_acct_info = Sub_acct()
+            sub_acct_info.acc_num = acc_num
+            sub_acct_info.acc_name = acc_name
+            sub_acct_info.master_acct = master_acct
+            sub_acct_info.equity = equity
+            sub_acct_info.fund_avaril= fund_avaril
+            sub_acct_info.margin_locked = margin_locked
+            sub_acct_info.buy_margin = buy_margin
+            sub_acct_info.sell_margin = sell_margin
+            sub_acct_info.save()
+            accmsg = u"子账号 [ %s ] 添加成功!"%acc_name
+            msg_dict['accmsg'] = accmsg
         else:
-            msg_dict = {"total":0,"rows":[]}
+            errmsg = u"子账号 [ %s ] 已存在，不可重复添加!"%acc_num
+            msg_dict['errmsg'] = errmsg
+    else:
+        errmsg = u"输入子账号为空!"
+        msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#----------------修改子账号信息---------------------------
+def sub_acct_mod(request):
+    acc_num = request.GET.get('acc_num')
+    acc_name = request.GET.get('acc_name')
+    master_acct = request.GET.get('master_acct')
+    equity = request.GET.get('equity')
+    fund_avaril = request.GET.get('fund_avaril')
+    margin_locked = request.GET.get('margin_locked')
+    buy_margin = request.GET.get('buy_margin')
+    sell_margin = request.GET.get('sell_margin')
+    msg_dict = {}
+    if acc_num:
+        try:
+            Sub_acct.objects.filter(acc_num=acc_num).update(acc_name=acc_name,master_acct=master_acct,equity=equity,fund_avaril=fund_avaril,margin_locked=margin_locked,buy_margin=buy_margin,sell_margin=sell_margin)
+            accmsg = u"子账号 [ %s ] 信息修改成功!"%acc_num
+            msg_dict['accmsg'] = accmsg
+        except Exception, e:
+            sub_acct_info = []
+            errmsg = "%s"%e
+            msg_dict['errmsg'] = errmsg
+    else:
+        errmsg = u"输入子账号为空!"
+        msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#-----------------------删除子账号---------------------------------
+def sub_acct_del(request):
+    delinfo = request.GET.get('delinfo')
+    idlist = delinfo.split("#")
+    del idlist[0]
+    msg_dict = {"accmsg":"","errmsg":""}
+    for acc_num in idlist:
+        try:
+            acc_num = Sub_acct.objects.filter(acc_num=acc_num)[0].acc_num
+            Sub_acct.objects.filter(acc_num=acc_num).delete()
+            msg_dict["accmsg"] += "<p>%s</p>"%acc_num
+        except Exception,e:
+            errmsg = "%s"%e
+            msg_dict["errmsg"] = errmsg
+    print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')

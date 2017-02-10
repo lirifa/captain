@@ -119,6 +119,7 @@
                 }]
             ],
         });
+        
         /*************************点击添加资金账户******************************/
         $('#acct_add').bind('click', function() {
             $('#acct').dialog({
@@ -150,37 +151,35 @@
                 $.messager.alert('警告', '请先选中需要修改行！', 'warning');
             }
         });
-/*************************点击删除产品******************************/
-        $('#product_delete').bind('click', function() {
-            var ids = "";
-            var pids = "";
-            var row_select = $('#product_table').datagrid('getSelections'); //返回的是被选中行的对象
+        /*************************点击删除产品******************************/
+        $('#acct_delete').bind('click', function() {
+            var trdaccts = "";
+            var row_select = $('#acct_table').datagrid('getSelections'); //返回的是被选中行的对象
             console.log(row_select)
             for (var i = 0; i < row_select.length; i++) {
-                ids += '#' + row_select[i].pid;
-                pids += ' [' + row_select[i].pid + '] ';
+                trdaccts += '#' + row_select[i].trdacct;
             }
-            if (ids == "") {
-                $.messager.alert('警告', '请先选中需要删除的产品！', 'warning');
+            if (trdaccts == "") {
+                $.messager.alert('警告', '请先选中需要删除的资金账户！', 'warning');
                 return false;
             } else {
-                $.messager.confirm('确认', '您确认想要删除此产品吗？', function(r) {
+                $.messager.confirm('确认', '您确认想要删除此资金账户吗？', function(r) {
                     if (r) {
                         $.ajax({
                             type: "GET",
                             cache: false,
-                            url: "/productinfo_del/",
+                            url: "/acct_del/",
                             data: {
-                                "delinfo": ids
+                                "delinfo": trdaccts
                             },
                             dataType: 'json',
                             success: function(msg) {
                                 if (msg.accmsg) {
-                                    $.messager.alert('message'+msg.accmsg,'info');
-                                    $('#product_table').datagrid('reload', {});
+                                    $.messager.alert('message' + msg.accmsg, 'info');
+                                    $('#acct_table').datagrid('reload', {});
                                 } else {
                                     $.messager.alert('错误', msg.errmsg);
-                                    $('#product_table').datagrid('reload', {});
+                                    $('#acct_table').datagrid('reload', {});
                                 }
                             }
                         });
@@ -202,11 +201,111 @@
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="acct_add">新增</a>
                 <a id="acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
-                <!-- <div style="float:right;margin-right:20px">
+                <a id="fund_log" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" plain="true">出入金</a>
+                <!--            <div style="float:right;margin-right:20px">
                     <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
                 </div> -->
             </div>
         </div>
+    </div>
+    <div id="acct" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+        <form id="fm" method="get">
+            <div style="margin-bottom:20px">
+                <div>资金账户号</div>
+                <input name="trdacct" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>账户名称</div>
+                <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>经纪商</div>
+                <input name="bid" class="easyui-textbox" style="width:100%;height:32px" required="true">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>所属产品</div>
+                <input name="pid" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>客户权益</div>
+                <input name="equity" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>保证金占用</div>
+                <input name="margin_locked" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>可用资金</div>
+                <input name="fund_avaril" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <div style="margin-bottom:20px">
+                <div>风险度</div>
+                <input name="risk_degree" class="easyui-textbox " style="width:100%;height:32px" required="false">
+            </div>
+            <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfoadd()">提交</a>
+            <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfomod()">修改</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#acct').dialog('close')">取消</a>
+            <!-- 提交产品信息到后台 -->
+            <script type="text/javascript">
+            document.onkeydown = function(e) {
+                var event = e || window.event;
+                var code = event.keyCode || event.which || event.charCode;
+                if (code == 13) {
+                    acctinfoadd();
+                }
+            }
+            $(function() {
+                $("input[name='trdacct']").focus();
+            });
+
+            function cleardata() {
+                $('#fm').form('clear');
+            }
+
+            function acctinfoadd() {
+                if ($("input[name='trdacct']").val() == "") {
+                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
+                    $("input[name='trdacct']").focus();
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/acct_add/",
+                        data: $("#fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/acct/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+            }
+
+            function acctinfomod() {
+                if ($("input[name='trdacct']").val() == "") {
+                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
+                    $("input[name='trdacct']").focus();
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/acct_mod/",
+                        data: $("#fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/acct/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+            }
+            </script>
+    </div>
+    </form>
     </div>
 </body>
 

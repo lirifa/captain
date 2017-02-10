@@ -46,7 +46,7 @@ def acct(request):
 def acct_json(request):
     try:
         acct_info = Acct.objects.all()
-    except Exception as e:
+    except Exception,e:
         acct_info = []
         errmsg = "%s"%e
     if len(acct_info) !=0:
@@ -59,9 +59,9 @@ def acct_json(request):
             acc_name = key.acc_name
             bid = key.bid
             pid = key.pid
-            equity = key.equity
-            margin_locked = key.margin_locked
-            fund_avaril = key.fund_avaril
+            equity = str(key.equity)
+            margin_locked = str(key.margin_locked)
+            fund_avaril = str(key.fund_avaril)
             risk_degree = key.risk_degree
             num += 1
             msg_dict["rows"].append({"id":id,"trdacct":trdacct,"acc_name":acc_name,"bid":bid,"pid":pid,"equity":equity,"margin_locked":margin_locked,"fund_avaril":fund_avaril,"risk_degree":risk_degree})
@@ -92,8 +92,8 @@ def acct_add(request):
                 acct_info = Acct.objects.get(trdacct=trdacct)
             except:
                 acct_info = Acct()
+            print acct_info
             acct_info.trdacct = trdacct
-            acct_info.acc_name = acc_name
             acct_info.acc_name = acc_name
             acct_info.bid = bid
             acct_info.pid = pid
