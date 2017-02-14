@@ -66,6 +66,7 @@ def productinfo_json(request):
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+
 #--------------------------增加产品-------------------#
 def productinfo_add(request):
     pid = request.GET.get('pid')

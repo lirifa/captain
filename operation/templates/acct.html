@@ -26,7 +26,7 @@
             width: '100%',
             border: true,
             fitColumns: true,
-            singleSelect: false,
+            singleSelect: true,
             pagination: false,
             idField: 'id',
             pageSize: 10,
@@ -119,7 +119,7 @@
                 }]
             ],
         });
-        
+
         /*************************点击添加资金账户******************************/
         $('#acct_add').bind('click', function() {
             $('#acct').dialog({
@@ -144,6 +144,7 @@
                         cache: false
                     });
                     $('#fm').form("load", row_select);
+                    $('input[name="trdacct"]').prev().prop('disabled', true)
                     $('#add').hide()
                     $('#modify').show()
                 }
@@ -208,37 +209,37 @@
             </div>
         </div>
     </div>
-    <div id="acct" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+    <div id="acct" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>资金账户号</div>
                 <input name="trdacct" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>账户名称</div>
                 <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>经纪商</div>
-                <input name="bid" class="easyui-textbox" style="width:100%;height:32px" required="true">
+                <input name="bid" class="easyui-combobox" style="width:100%;height:32px" required="true" data-options="valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>所属产品</div>
-                <input name="pid" class="easyui-textbox " style="width:100%;height:32px" required="false">
+                <input name="pid" class="easyui-combobox " style="width:100%;height:32px" required="false" data-options="valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>客户权益</div>
                 <input name="equity" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>保证金占用</div>
                 <input name="margin_locked" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>可用资金</div>
                 <input name="fund_avaril" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>
-            <div style="margin-bottom:20px">
+            <div style="margin-bottom:10px">
                 <div>风险度</div>
                 <input name="risk_degree" class="easyui-textbox " style="width:100%;height:32px" required="false">
             </div>

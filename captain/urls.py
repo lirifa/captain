@@ -54,17 +54,23 @@ urlpatterns = [
     url(r'^acct_add/$', 'operation.views.acct_add', name='acct_add'),
     url(r'^acct_mod/$', 'operation.views.acct_mod', name='acct_mod'),
     url(r'^acct_del/$', 'operation.views.acct_del', name='acct_del'),
+    url(r'^acct_combobox_json/$','operation.views.acct_combobox_json',name='acct_combobox_json'),
+    url(r'^product_combobox_json/$','operation.views.product_combobox_json',name='product_combobox_json'),
+    url(r'^broker_combobox_json/$','operation.views.broker_combobox_json',name='broker_combobox_json'),
 
     url(r'^master_acct/$','operation.views.master_acct',name='master_acct'),
     url(r'^master_acct_json/$','operation.views.master_acct_json',name='master_acct_json'),
     url(r'^master_acct_add/$','operation.views.master_acct_add',name='master_acct_add'),
     url(r'^master_acct_mod/$','operation.views.master_acct_mod',name='master_acct_mod'),
     url(r'^master_acct_del/$','operation.views.master_acct_del',name='master_acct_del'),
+    url(r'^masteracc_combobox_json/$','operation.views.masteracc_combobox_json',name='masteracc_combobox_json'),
 
     url(r'^sub_acct/$','operation.views.sub_acct',name='sub_acct'),
     url(r'^sub_acct_json/$','operation.views.sub_acct_json',name='sub_acct_json'),
     url(r'^sub_acct_add/$','operation.views.sub_acct_add',name='sub_acct_add'),
     url(r'^sub_acct_mod/$','operation.views.sub_acct_mod',name='sub_acct_mod'),
     url(r'^sub_acct_del/$','operation.views.sub_acct_del',name='sub_acct_del'),
+    url(r'^strategyinfo/subacc_combobox_json/(.+)$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
+
 
 ]

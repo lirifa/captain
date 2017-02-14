@@ -87,5 +87,15 @@ class Sub_acct(models.Model):
     class Meta:
         db_table = 'sub_acct'
 
+#经纪商信息表
+class Broker(models.Model):
+    bid = models.IntegerField(verbose_name='经纪商ID',primary_key=True)
+    bname = models.CharField(verbose_name='经纪商简称',max_length=32)
+    blname = models.CharField(verbose_name='经纪商全称',max_length=32)
+    def __unicode__(self):
+        return self.bid
+    class Meta:
+        db_table = 'broker'
+
 
 

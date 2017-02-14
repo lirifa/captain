@@ -25,7 +25,7 @@
             width: '100%',
             border: true,
             fitColumns: true,
-            singleSelect: false,
+            singleSelect: true,
             pagination: false,
             idField: 'id',
             pageSize: 10,
@@ -145,6 +145,7 @@
                         cache: false
                     });
                     $('#fm').form("load", row_select);
+                    $("input[name='sid']").prev().prop('disabled', true)
                     $('#modify').show();
                     $('#add').hide();
                 }
@@ -253,37 +254,41 @@
                 </div>
             </div>
         </div>
-        <div id="strategy" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+        <div id="strategy" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
             <form id="fm" method="get">
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>策略编号</div>
                     <input name="sid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>策略名称</div>
                     <input name="sname" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>对应配置名</div>
                     <input name="scfg" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>策略端口</div>
                     <input name="port" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>所属产品</div>
-                    <input name="product" class="easyui-textbox" style="width:100%;height:32px" required="true">
+                    <input name="product" class="easyui-combobox" style="width:100%;height:32px" required="true" data-options="valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>总账号</div>
-                    <input name="master_acc" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+                    <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:100%;height:32px" required="true" data-options="valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',
+                    onSelect:function(rec){
+                      var url = 'subacc_combobox_json/'+rec.acc_num;
+                      $('#combo_sub_acc').combobox('reload',url);
+                    }">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>子账号</div>
-                    <input name="sub_acc" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+                    <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:100%;height:32px" required="true"  data-options="valueField:'acc_num',textField:'acc_num'">
                 </div>
-                <div style="margin-bottom:20px">
+                <div style="margin-bottom:10px">
                     <div>策略介绍</div>
                     <input name="desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
                 </div>

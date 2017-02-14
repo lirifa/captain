@@ -164,3 +164,17 @@ def master_acct_del(request):
             msg_dict["errmsg"] = errmsg
     print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+def masteracc_combobox_json(request):
+    try:
+        master_info = Master_acct.objects.all()
+    except Exception,e:
+        master_info = []
+        errmsg = "%s"%e
+    if len(master_info) !=0:
+        msg_dict = []
+        for key in master_info:
+            acc_num = key.acc_num
+            acc_name = key.acc_name
+            msg_dict.append({"acc_num":acc_num,"acc_name":acc_name})
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')

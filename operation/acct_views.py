@@ -43,6 +43,24 @@ except ImportError:
 def acct(request):
     return render(request,"acct.html")
 
+def comboxpid_json(request):
+    try:
+        product_info = Productinfo.bojects.all()
+    except Exception,e:
+        acct_info = []
+        errmsg = "%s"%e
+    if len(product_info) !=0:
+        msg_dict = {"total":len(acct_info)}
+        msg_dict["rows"] = []
+        for key in product_info:
+            pid = key.pid
+            pname = key.pname
+            msg_dict["rows"].append({"pid":pid,"pname":pname})
+    else:
+        msg_dict = {"total":0,"rows":0}
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
 def acct_json(request):
     try:
         acct_info = Acct.objects.all()
@@ -132,6 +150,7 @@ def acct_mod(request):
             acct_info = []
             errmsg = "%s"%e
             msg_dict['errmsg'] = errmsg
+            print errmsg
     else:
         errmsg = u"输入资金账户号为空!"
         msg_dict['errmsg'] = errmsg
@@ -153,3 +172,45 @@ def acct_del(request):
             msg_dict["errmsg"] = errmsg
     print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+def product_combobox_json(request):
+    try:
+        product_info = Productinfo.objects.all()
+    except Exception,e:
+        product_info = []
+        errmsg = "%s"%e 
+    if len(product_info) != 0:
+        msg_dict = []
+        for key in product_info:
+            pid = key.pid
+            pname = key.pname
+            msg_dict.append({"pid":pid,"pname":pname})
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+def broker_combobox_json(request):
+    try:
+        broker_info = Broker.objects.all()
+    except Exception,e:
+        broker_info = []
+        errmsg = "%s"%e
+    if len(broker_info) !=0:
+        msg_dict = []
+        for key in broker_info:
+            bid = key.bid
+            bname = key.bname
+            msg_dict.append({"bid":bid,"bname":bname})
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+
+def acct_combobox_json(request):
+    try:
+        acct_info = Acct.objects.all()
+    except Exception,e:
+        acct_info = []
+        errmsg = "%s"%e
+    if len(acct_info) !=0:
+        msg_dict = []
+        for key in acct_info:
+            trdacct = key.trdacct
+            acc_name = key.acc_name
+            msg_dict.append({"trdacct":trdacct,"acc_name":acc_name})
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')

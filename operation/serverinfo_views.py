@@ -135,6 +135,7 @@ def serverinfo_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
     del idlist[0]
+    print idlist
     msg_dict = {"accmsg":"","errmsg":""}
     for srvnum in idlist:
         try:
@@ -143,6 +144,7 @@ def serverinfo_del(request):
             msg_dict["accmsg"] += "<p>%s</p>"%srvnum 
         except Exception,e:
             errmsg = "%s"%e
+            print errmsg
             msg_dict["errmsg"] = errmsg
     print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
