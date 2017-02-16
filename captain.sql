@@ -34,7 +34,26 @@ CREATE TABLE `acct` (
 
 /*Data for the table `acct` */
 
-insert  into `acct`(`trdacct`,`acc_name`,`bid`,`pid`,`equity`,`margin_locked`,`fund_avaril`,`risk_degree`) values ('16039','恒邦黄金交易账户',5,4,'5617649.03','2581561.53','3026087.50','46.00%');
+insert  into `acct`(`trdacct`,`acc_name`,`bid`,`pid`,`equity`,`margin_locked`,`fund_avaril`,`risk_degree`) values ('10007177','南华期货交易资金账户',1,4,'4.02','2.00','6.02','4'),('16039','恒邦黄金交易账户',5,4,'5617652.03','2581561.53','3026090.50','46.00%');
+
+/*Table structure for table `acct_hold` */
+
+DROP TABLE IF EXISTS `acct_hold`;
+
+CREATE TABLE `acct_hold` (
+  `trd_date` char(8) NOT NULL COMMENT '交易日期',
+  `variety` varchar(32) NOT NULL COMMENT '品种名',
+  `instrument` varchar(32) NOT NULL COMMENT '合约名',
+  `long_pos` int(11) NOT NULL COMMENT '买持仓',
+  `avg_buy_price` decimal(17,3) NOT NULL COMMENT '买均价',
+  `short_pos` int(11) NOT NULL COMMENT '卖持仓',
+  `avg_sell_price` decimal(17,3) NOT NULL COMMENT '卖均价',
+  `pos_pl` decimal(17,2) NOT NULL COMMENT '持仓盯市盈亏',
+  `margin_occupied` decimal(17,2) NOT NULL COMMENT '保证金占用',
+  `sh_mark` char(1) NOT NULL COMMENT '投保标识'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `acct_hold` */
 
 /*Table structure for table `auth_group` */
 
@@ -157,6 +176,51 @@ CREATE TABLE `broker` (
 
 insert  into `broker`(`bid`,`bname`,`blname`) values (1,'南华','南华期货'),(2,'中信','中信期货'),(3,'信达','信达期货'),(4,'永安','永安期货'),(5,'恒邦','恒邦黄金');
 
+/*Table structure for table `cusfund` */
+
+DROP TABLE IF EXISTS `cusfund`;
+
+CREATE TABLE `cusfund` (
+  `trd_date` date NOT NULL,
+  `account_id` bigint(20) NOT NULL,
+  `fund_balance_total` decimal(20,6) NOT NULL,
+  `available_fund` decimal(20,6) NOT NULL,
+  `margin_call` decimal(20,6) NOT NULL,
+  `risk_degree` decimal(5,4) NOT NULL,
+  `pre_balance_zr` decimal(20,6) NOT NULL,
+  `pre_balance_zb` decimal(20,6) NOT NULL,
+  `balance_zr` decimal(20,6) NOT NULL,
+  `balance_zb` decimal(20,6) NOT NULL,
+  `total_profit_zr` decimal(20,6) NOT NULL,
+  `total_profit_zb` decimal(20,6) NOT NULL,
+  `float_profit_zb` decimal(20,6) NOT NULL,
+  `spec_charge_against` decimal(20,6) NOT NULL,
+  `is_trading_menber` char(1) NOT NULL,
+  `currency` char(3) NOT NULL,
+  `currency_fund` decimal(20,6) NOT NULL,
+  `currency_charge_against` decimal(20,6) NOT NULL,
+  `other_currency_mortgage_out` decimal(20,6) NOT NULL,
+  `currency_mortgage_margin` decimal(20,6) NOT NULL,
+  `total_fund` decimal(20,6) NOT NULL,
+  PRIMARY KEY (`trd_date`,`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `cusfund` */
+
+/*Table structure for table `delayfeeinfo` */
+
+DROP TABLE IF EXISTS `delayfeeinfo`;
+
+CREATE TABLE `delayfeeinfo` (
+  `bid` int(11) NOT NULL,
+  `contract_id` varchar(32) NOT NULL,
+  `delayfee_tatio` decimal(15,8) NOT NULL,
+  `bs_derect` char(1) NOT NULL,
+  PRIMARY KEY (`bid`,`contract_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `delayfeeinfo` */
+
 /*Table structure for table `django_admin_log` */
 
 DROP TABLE IF EXISTS `django_admin_log`;
@@ -227,20 +291,127 @@ CREATE TABLE `django_session` (
 
 insert  into `django_session`(`session_key`,`session_data`,`expire_date`) values ('piqorpgbun2dsl8l91ikw8hr92h5fxhj','MjZiODZkNzlmY2FiY2Y1ZDg4MDFjNTFkN2RiZWFjYzk1OTM5Y2M2Mjp7Il9hdXRoX3VzZXJfaGFzaCI6IjkyOWFkNTEzMzcyNjE2YjBkZTRiMWU2Njk5OGRlZjRhMzhkZmRiMjMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=','2017-02-17 03:00:15');
 
-/*Table structure for table `fund_log` */
+/*Table structure for table `feerate` */
 
-DROP TABLE IF EXISTS `fund_log`;
+DROP TABLE IF EXISTS `feerate`;
 
-CREATE TABLE `fund_log` (
+CREATE TABLE `feerate` (
+  `bid` int(11) NOT NULL,
+  `exchange_id` varchar(32) NOT NULL COMMENT '交易所',
+  `contract_id` varchar(32) NOT NULL COMMENT '合约标识',
+  `biz_type` char(1) NOT NULL,
+  `feerate_by_amt` decimal(15,8) NOT NULL,
+  `feerate_by_qty` decimal(15,8) NOT NULL,
+  PRIMARY KEY (`bid`,`exchange_id`,`contract_id`,`biz_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `feerate` */
+
+/*Table structure for table `fts_order` */
+
+DROP TABLE IF EXISTS `fts_order`;
+
+CREATE TABLE `fts_order` (
+  `trd_date` char(8) NOT NULL,
+  `order_date` char(8) NOT NULL,
+  `order_time` timestamp(2) NOT NULL DEFAULT CURRENT_TIMESTAMP(2) ON UPDATE CURRENT_TIMESTAMP(2),
+  `order_sn` int(11) NOT NULL,
+  `order_id` varchar(10) NOT NULL,
+  `order_type` char(1) NOT NULL,
+  `mp_ordertype` varchar(1) NOT NULL,
+  `cust_code` bigint(20) NOT NULL,
+  `cuacct_code` bigint(20) NOT NULL,
+  `int_org` smallint(6) NOT NULL,
+  `currency` char(1) NOT NULL,
+  `trdacct` varchar(10) NOT NULL,
+  `trdacct_exid` varchar(10) NOT NULL,
+  `stkex` char(1) NOT NULL,
+  `stkbd` char(2) NOT NULL,
+  `stk_name` varchar(16) NOT NULL,
+  `stk_code` varchar(32) NOT NULL,
+  `stk_biz` smallint(6) NOT NULL,
+  `bs_side` char(1) NOT NULL,
+  `order_price` decimal(17,3) NOT NULL,
+  `order_qty` int(11) NOT NULL,
+  `order_amt` decimal(17,3) NOT NULL,
+  `withdrawn_qty` int(11) NOT NULL,
+  `matched_qty` int(11) NOT NULL,
+  `matched_amt` decimal(17,3) NOT NULL,
+  `commision` decimal(17,3) NOT NULL,
+  `order_status` char(1) NOT NULL,
+  PRIMARY KEY (`trd_date`,`order_sn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `fts_order` */
+
+/*Table structure for table `fts_order_his` */
+
+DROP TABLE IF EXISTS `fts_order_his`;
+
+CREATE TABLE `fts_order_his` (
+  `trd_date` char(8) NOT NULL,
+  `order_date` char(8) NOT NULL,
+  `order_time` timestamp(2) NOT NULL DEFAULT CURRENT_TIMESTAMP(2) ON UPDATE CURRENT_TIMESTAMP(2),
+  `order_sn` int(11) NOT NULL,
+  `order_id` varchar(10) NOT NULL,
+  `order_type` char(1) NOT NULL,
+  `mp_ordertype` varchar(1) NOT NULL,
+  `cust_code` bigint(20) NOT NULL,
+  `cuacct_code` bigint(20) NOT NULL,
+  `int_org` smallint(6) NOT NULL,
+  `currency` char(1) NOT NULL,
+  `trdacct` varchar(10) NOT NULL,
+  `trdacct_exid` varchar(10) NOT NULL,
+  `stkex` char(1) NOT NULL,
+  `stkbd` char(2) NOT NULL,
+  `stk_name` varchar(16) NOT NULL,
+  `stk_code` varchar(32) NOT NULL,
+  `stk_biz` smallint(6) NOT NULL,
+  `bs_side` char(1) NOT NULL,
+  `order_price` decimal(17,3) NOT NULL,
+  `order_qty` int(11) NOT NULL,
+  `order_amt` decimal(17,3) NOT NULL,
+  `withdrawn_qty` int(11) NOT NULL,
+  `matched_qty` int(11) NOT NULL,
+  `matched_amt` decimal(17,3) NOT NULL,
+  `commision` decimal(17,3) NOT NULL,
+  `order_status` char(1) NOT NULL,
+  PRIMARY KEY (`trd_date`,`order_sn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `fts_order_his` */
+
+/*Table structure for table `fund_change_log` */
+
+DROP TABLE IF EXISTS `fund_change_log`;
+
+CREATE TABLE `fund_change_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '日志id',
   `acct_type` varchar(32) NOT NULL COMMENT '账户类型',
   `acct_id` varchar(32) NOT NULL COMMENT '账户id',
-  `fund` decimal(17,2) NOT NULL COMMENT '出入金金额',
+  `in_fund` decimal(17,2) NOT NULL COMMENT '出入金金额',
+  `out_fund` decimal(17,2) NOT NULL,
   `log_tm` datetime NOT NULL COMMENT '日志时间',
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `fund_log` */
+/*Data for the table `fund_change_log` */
+
+/*Table structure for table `marginrateinfo` */
+
+DROP TABLE IF EXISTS `marginrateinfo`;
+
+CREATE TABLE `marginrateinfo` (
+  `bid` int(11) NOT NULL,
+  `contract` varchar(32) NOT NULL,
+  `exchange_id` varchar(32) NOT NULL,
+  `volume_multiple` int(11) NOT NULL,
+  `long_marginratio` decimal(12,10) NOT NULL,
+  `short_marginratio` decimal(12,10) NOT NULL,
+  PRIMARY KEY (`bid`,`contract`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `marginrateinfo` */
 
 /*Table structure for table `marketinfo` */
 
@@ -275,7 +446,7 @@ CREATE TABLE `master_acct` (
 
 /*Data for the table `master_acct` */
 
-insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期限套利期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55');
+insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期现套利-期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55'),('66660000201','黄金白银期现套利-现货账号','16039','1.00','2.00','3.00','4.00','5.00');
 
 /*Table structure for table `productinfo` */
 
@@ -290,7 +461,7 @@ CREATE TABLE `productinfo` (
 
 /*Data for the table `productinfo` */
 
-insert  into `productinfo`(`pid`,`pname`,`admin`,`desc`) values (1,'洪荒世纪','世纪盛元','哈哈'),(2,'弘金世纪','丽海宏景','嘿嘿好'),(3,'弘金华银','世纪盛元','测试'),(4,'南华自营','世纪盛元','测试');
+insert  into `productinfo`(`pid`,`pname`,`admin`,`desc`) values (1,'洪荒世纪1号','丽海弘金','哈哈嘿嘿'),(2,'弘金世纪1号','丽海弘金','嘿嘿好'),(3,'博弈安盈1号','丽海弘金','测试'),(4,'南华自营','世纪盛元','测试'),(5,'信达自营','丽海弘金','嘿嘿好'),(6,'弘金华银','世纪盛元','测试');
 
 /*Table structure for table `serverinfo` */
 
@@ -310,7 +481,7 @@ CREATE TABLE `serverinfo` (
 
 /*Data for the table `serverinfo` */
 
-insert  into `serverinfo`(`srvnum`,`ip`,`user`,`passwd`,`port`,`productadmin`,`desc`) values ('01','172.24.13.2','ison','abcd1234',22,'世纪盛元','研发二部服务器'),('02','172.24.13.5','ss2ison','lhhj@#$',22,'丽海弘金','研发服务器'),('srvzx001','172.27.13.179','pmops','pmops@#$',22,'世纪盛元','中信服务器');
+insert  into `serverinfo`(`srvnum`,`ip`,`user`,`passwd`,`port`,`productadmin`,`desc`) values ('prod001','172.24.58.1','pmops','pmops@#$',22,'丽海弘金','弘金自营产品'),('prod002','172.24.10.34','pmops','pmops@#$',22,'丽海弘金','博弈安盈产品'),('srvnh001','172.24.54.1','pmops','pmops@#$',22018,'世纪盛元','南华服务器'),('srvxd001','172.18.12.128','pmops','pmops@#$',22,'丽海弘金','信达服务器'),('srvzx001','172.27.13.179','pmops','pmops@#$',22,'世纪盛元','中信服务器'),('trd004','172.24.53.4','pmops','pmops@#$',22,'---','交易服务器');
 
 /*Table structure for table `strategyinfo` */
 
@@ -322,15 +493,15 @@ CREATE TABLE `strategyinfo` (
   `scfg` varchar(32) NOT NULL,
   `port` int(11) NOT NULL,
   `product` int(8) NOT NULL,
-  `master_acc` int(30) NOT NULL,
-  `sub_acc` int(30) NOT NULL,
+  `master_acc` varchar(32) NOT NULL,
+  `sub_acc` varchar(32) NOT NULL,
   `desc` varchar(32) NOT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `strategyinfo` */
 
-insert  into `strategyinfo`(`sid`,`sname`,`scfg`,`port`,`product`,`master_acc`,`sub_acc`,`desc`) values (1,'多因子策略','hessx',1000,1,4,8,'嘿嘿');
+insert  into `strategyinfo`(`sid`,`sname`,`scfg`,`port`,`product`,`master_acc`,`sub_acc`,`desc`) values (101,'黄金期现套利','ss-PropAuArb',9019,4,'666600002','666600000001','黄金期现套利策略'),(104,'商品多因子策略','ss-PropComMulti',9069,4,'666600002','666600000004','商品多因子策略'),(105,'商品CTA策略','ss-PropComCta',9063,4,'666600002','666600000001','商品CTA策略'),(106,'黄金跨期套利策略','ss-PropAucal',9033,4,'666600002','666600000006','黄金跨期套利策略'),(107,'白银期现套利策略','ss-PropAgArb',9020,4,'666600002','666600000007','白银期现套利策略');
 
 /*Table structure for table `sub_acct` */
 
@@ -350,7 +521,7 @@ CREATE TABLE `sub_acct` (
 
 /*Data for the table `sub_acct` */
 
-insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`fund_avaril`,`margin_locked`,`buy_margin`,`sell_margin`) values ('666600000001','恒邦黄金交易账号','666600002','3304914.06','1464156.66','1840757.40','1840757.40','0.00');
+insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`fund_avaril`,`margin_locked`,`buy_margin`,`sell_margin`) values ('666600000001','恒邦黄金-期货交易账号','666600002','3304914.06','1464156.66','1840757.40','1840757.40','0.00'),('66660000000101','恒邦黄金-现货交易账号','66660000201','1.00','5.00','4.00','2.00','3.00'),('666600000004','南华商品多因子交易子账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000005','南华商品CTA策略交易子账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000006','恒邦黄金跨期交易账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000007','恒邦白银-期货交易账号','666600002','1.00','5.00','4.00','2.00','3.00'),('66660000000701','恒邦白银-现货交易账号','66660000201','1.00','5.00','4.00','2.00','3.00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
