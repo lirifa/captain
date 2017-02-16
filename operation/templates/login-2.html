@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>量化运维管理平台</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css"> 
+</head>
+
+<body>
+    <div id="w" class="easyui-window" title="登录" data-options="modal:true,closed:false,iconCls:'Lockgo',collapsible:false,closable:true,minimizable:false" style="width:450px;height: 300px; padding:20px 70px 20px 70px">
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" id="logname" style="width:100%;height:30px;padding:15px" data-options="prompt:'用户名',iconCls:'icon-man',iconWidth:38">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" id="logpass" type="password" style="width:100%;height:30px;padding:15px" data-options="prompt:'登录密码',iconCls:'icon-lock',iconWidth:38">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" type="text" id="logyzm" style="width:50%;height:30px;padding:15px" data-options="prompt:'验证码'">
+            <a href="javascript:;" class="showcode" onclick="changeVeryfy()"><img style=" margin:0 0 0 3px ; vertical-align:middle; height:26px;" src="/index.php?s=/Xjadmin/verifyCode"></a>
+        </div>
+        <div style="margin-bottom:20px">
+            <input type="checkbox" checked="checked" id="logrem">
+            <span>Remember me</span>
+        </div>
+        <div>
+            <a href="javascript:;" onclick="dologin()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:100%;">
+                <span style="font-size:14px;">登录</span>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -57,6 +57,8 @@ urlpatterns = [
     url(r'^acct_combobox_json/$','operation.views.acct_combobox_json',name='acct_combobox_json'),
     url(r'^product_combobox_json/$','operation.views.product_combobox_json',name='product_combobox_json'),
     url(r'^broker_combobox_json/$','operation.views.broker_combobox_json',name='broker_combobox_json'),
+    url(r'^acct_fund_change/$','operation.views.acct_fund_change',name='acct_fund_change'),
+
 
     url(r'^master_acct/$','operation.views.master_acct',name='master_acct'),
     url(r'^master_acct_json/$','operation.views.master_acct_json',name='master_acct_json'),

@@ -131,6 +131,15 @@
             $('#modify').hide()
             $('#add').show()
         });
+
+        /**************************弹出出入金界面*******************************************/
+        $('#fund_change_btn').bind('click', function() {
+            $('#fund_change').dialog({
+                closed: false,
+                title: '出入金',
+                cache: false
+            });
+        });
         /*************************点击修改资产账户信息******************************/
         $('#acct_edit').bind('click', function() {
             var row_select = $('#acct_table').datagrid('getSelected'); //返回的是被选中行的对象
@@ -199,10 +208,10 @@
         </div>
         <div id="tb" style="padding:3px;height:auto">
             <div style="margin-bottom:1px">
-                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="acct_add">新增</a>
+                <a id="acct_add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
                 <a id="acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
-                <a id="fund_log" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" plain="true">出入金</a>
+                <a id="fund_change_btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" plain="true">出入金</a>
                 <!--            <div style="float:right;margin-right:20px">
                     <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
                 </div> -->
@@ -307,6 +316,45 @@
             </script>
     </div>
     </form>
+    </div>
+    <div id="fund_change" class="easyui-dialog" closed="true" style="width: 300px">
+        <form id="fund_change_fm" method="post">
+            <p style="margin:10px 24px">出 入 金：
+                <input name="fund_change" class="easyui-textbox easyui-validatebox">
+            </p>
+            <p style="margin:10px 20px">资金账户：
+                <input name="change_acct" class="easyui-combobox" data-options="valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'">
+            </p>
+            <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin-left: 90px">提交</a>
+            <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#fund_change').dialog('close')">取消</a>
+            <script>
+            function fund_change() {
+                if ($("input[name='fund_change']").val() == "") {
+                    $.messager.alert('警告', '出入金不可为空!', 'warning');
+                    $("input[name='fund_change']").focus();
+                }
+                else if ($("input[name='change_acct']").val() == ""){
+                    $.messager.alert('警告', '请选取出入金资金账户！!', 'warning');
+                }
+                else{
+                    $.ajax({
+                        type: "POST",
+                        url: "/acct_fund_change/",
+                        data: $("#fund_change_fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/acct/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+
+            }
+            </script>
+        </form>
     </div>
 </body>
 

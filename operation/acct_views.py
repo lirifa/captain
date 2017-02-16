@@ -10,6 +10,7 @@ import hashlib
 import datetime
 import paramiko
 import threading
+import decimal
 
 def cur_file_dir():
     path = sys.path[0]
@@ -43,24 +44,24 @@ except ImportError:
 def acct(request):
     return render(request,"acct.html")
 
-def comboxpid_json(request):
-    try:
-        product_info = Productinfo.bojects.all()
-    except Exception,e:
-        acct_info = []
-        errmsg = "%s"%e
-    if len(product_info) !=0:
-        msg_dict = {"total":len(acct_info)}
-        msg_dict["rows"] = []
-        for key in product_info:
-            pid = key.pid
-            pname = key.pname
-            msg_dict["rows"].append({"pid":pid,"pname":pname})
-    else:
-        msg_dict = {"total":0,"rows":0}
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+# def comboxpid_json(request):
+#     try:
+#         product_info = Productinfo.bojects.all()
+#     except Exception,e:
+#         acct_info = []
+#         errmsg = "%s"%e
+#     if len(product_info) !=0:
+#         msg_dict = {"total":len(acct_info)}
+#         msg_dict["rows"] = []
+#         for key in product_info:
+#             pid = key.pid
+#             pname = key.pname
+#             msg_dict["rows"].append({"pid":pid,"pname":pname})
+#     else:
+#         msg_dict = {"total":0,"rows":0}
+#     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-
+###返回资金账户列表
 def acct_json(request):
     try:
         acct_info = Acct.objects.all()
@@ -87,7 +88,7 @@ def acct_json(request):
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-#新增资金账户
+###新增资金账户
 def acct_add(request):
     trdacct = request.GET.get('trdacct')
     acc_name = request.GET.get('acc_name')
@@ -110,7 +111,6 @@ def acct_add(request):
                 acct_info = Acct.objects.get(trdacct=trdacct)
             except:
                 acct_info = Acct()
-            print acct_info
             acct_info.trdacct = trdacct
             acct_info.acc_name = acc_name
             acct_info.bid = bid
@@ -130,7 +130,7 @@ def acct_add(request):
         msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-#修改资金账户信息
+###修改资金账户信息
 def acct_mod(request):
     trdacct = request.GET.get('trdacct')
     acc_name = request.GET.get('acc_name')
@@ -150,13 +150,12 @@ def acct_mod(request):
             acct_info = []
             errmsg = "%s"%e
             msg_dict['errmsg'] = errmsg
-            print errmsg
     else:
         errmsg = u"输入资金账户号为空!"
         msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-#删除资金账户
+###删除资金账户
 def acct_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
@@ -170,9 +169,9 @@ def acct_del(request):
         except Exception,e:
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
-    print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+###返回产品id和产品名
 def product_combobox_json(request):
     try:
         product_info = Productinfo.objects.all()
@@ -187,6 +186,7 @@ def product_combobox_json(request):
             msg_dict.append({"pid":pid,"pname":pname})
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+###返回经纪商id和经纪商名
 def broker_combobox_json(request):
     try:
         broker_info = Broker.objects.all()
@@ -201,6 +201,7 @@ def broker_combobox_json(request):
             msg_dict.append({"bid":bid,"bname":bname})
     return HttpResponse(json.dumps(msg_dict),content_type='application/json')
 
+###返回资金账户号和资金账户名
 def acct_combobox_json(request):
     try:
         acct_info = Acct.objects.all()
@@ -213,4 +214,30 @@ def acct_combobox_json(request):
             trdacct = key.trdacct
             acc_name = key.acc_name
             msg_dict.append({"trdacct":trdacct,"acc_name":acc_name})
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+
+#--------------出入金-------------
+def acct_fund_change(request):
+    change_fund = decimal.Decimal(request.POST.get('fund_change'))
+    change_acct = request.POST.get('change_acct')
+    msg_dict = {}
+    try:
+        #修改资金账户客户权益、可用资金
+        trdacct = Acct.objects.filter(trdacct=change_acct)[0].trdacct
+        equity_ex = Acct.objects.filter(trdacct=change_acct)[0].equity
+        equity_ed = equity_ex+ change_fund
+        fund_avaril_ex = Acct.objects.filter(trdacct=change_acct)[0].fund_avaril
+        fund_avaril_ed = fund_avaril_ex + change_fund
+        Acct.objects.filter(trdacct=change_acct).update(equity=equity_ed,fund_avaril=fund_avaril_ed)
+        accmsg = u"账户 [ %s ] 资金修改成功!"%trdacct
+        msg_dict['accmsg'] = accmsg
+        #修改关联总账号客户权益、可用资金
+        master_equity_ex = Master_acct.objects.filter(trdacct=change_acct)[0].equity
+        master_fund_avaril_ex = Master_acct.objects.filter(trdacct=change_acct)[0].fund_avaril
+        master_equity_ed = master_equity_ex + change_fund
+        master_fund_avaril_ed = master_fund_avaril_ex + change_fund
+        Master_acct.objects.filter(trdacct=change_acct).update(equity=master_equity_ed,fund_avaril=master_fund_avaril_ed)
+    except Exception,e:
+        errmsg = "%s"%e
+        msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict),content_type='application/json')
