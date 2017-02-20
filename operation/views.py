@@ -24,6 +24,7 @@ from operation.strategyinfo_views import *
 from operation.acct_views import *
 from operation.master_acct_views import *
 from operation.sub_acct_views import *
+from operation.clear_views import *
 
 try:
     from django.http import JsonResponse

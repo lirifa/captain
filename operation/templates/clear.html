@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <script type="text/javascript">
+    $(function() {
+        $('#clear_table').datagrid({
+            title: '>>>策略清算',
+            url: '/acct_json/',
+            width: '100%',
+            border: true,
+            fitColumns: true,
+            singleSelect: true,
+            pagination: false,
+            idField: 'id',
+            pageSize: 10,
+            pageList: [10, 15, 20, 25, 100],
+            columns: [
+                [{
+                    field: 'id',
+                    title: '清算ID',
+                    width: 100
+                }, {
+                    field: 'acc_name',
+                    title: '清算name',
+                    width: 100
+                }, {
+                    field: 'bid',
+                    title: '清算状态',
+                    width: 100,
+                }, {
+                    title: '操作',
+                    field: 'opt',
+                    width: 100,
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var str = '<a class="easyui-linkbutton" iconCls="icon-save" href="javascript:update();"  title="清算">清算</a>';
+                        return str;
+                    }
+                }]
+            ]
+        })
+    })
+    </script>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'策略清算',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="clear_table"></table>
+        </div>
+    </div>
+</body>
+
+</html>

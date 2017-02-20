@@ -26,6 +26,7 @@
             width: '100%',
             border: true,
             fitColumns: true,
+            striped:true,
             singleSelect: true,
             pagination: false,
             idField: 'id',
@@ -162,10 +163,10 @@
                     if (re.test(value))
                         return false;
                     else
-                    if (RegExp.$1 < 256 && RegExp.$2 < 256 && RegExp.$3 < 256 && RegExp.$4 < 256)
-                        return true;
-                    else
-                        return false;
+                        if (RegExp.$1 < 256 && RegExp.$2 < 256 && RegExp.$3 < 256 && RegExp.$4 < 256)
+                            return true;
+                        else
+                            return false;
                 },
                 message: '只能输入IP格式！'
             },
@@ -221,27 +222,29 @@
         </div>
     </div>
 
-    <div id="product" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+    <div id="product" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <div style="margin-bottom:10px">
-                <div>产品编号</div>
-                <input name="pid" class="easyui-textbox easyui-validatebox pid" validType="strEngNum" style="width:100%;height:32px" required="true" >
+            <p>
+                产 品 编 号:
+                <input name="pid" class="easyui-textbox easyui-validatebox pid" validType="strEngNum" style="width:200px;height:32px" required="true" >
+            </p>
+            <p>
+                产 品 名 称:
+                <input name="pname" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                产品管理人:
+                <input name="admin" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                产 品 介 绍:
+                <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <div style="text-align: center">
+            <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
+            <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfomod()">修改</a>
+            <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#product').dialog('close')">取消</a>
             </div>
-            <div style="margin-bottom:10px">
-                <div>产品名称</div>
-                <input name="pname" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>产品管理人</div>
-                <input name="admin" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>产品介绍</div>
-                <input name="desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
-            <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfomod()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#product').dialog('close')">取消</a>
             <!-- 提交产品信息到后台 -->
             <script type="text/javascript">
             document.onkeydown = function(e) {

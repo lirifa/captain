@@ -66,6 +66,7 @@ urlpatterns = [
     url(r'^master_acct_mod/$','operation.views.master_acct_mod',name='master_acct_mod'),
     url(r'^master_acct_del/$','operation.views.master_acct_del',name='master_acct_del'),
     url(r'^masteracc_combobox_json/$','operation.views.masteracc_combobox_json',name='masteracc_combobox_json'),
+    url(r'^master_acct_fund_change/$','operation.views.master_acct_fund_change',name='master_acct_fund_change'),
 
     url(r'^sub_acct/$','operation.views.sub_acct',name='sub_acct'),
     url(r'^sub_acct_json/$','operation.views.sub_acct_json',name='sub_acct_json'),
@@ -73,6 +74,9 @@ urlpatterns = [
     url(r'^sub_acct_mod/$','operation.views.sub_acct_mod',name='sub_acct_mod'),
     url(r'^sub_acct_del/$','operation.views.sub_acct_del',name='sub_acct_del'),
     url(r'^strategyinfo/subacc_combobox_json/(.+)$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
+    url(r'^subacc_combobox_json/$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
+    url(r'^sub_acct_fund_change/$','operation.views.sub_acct_fund_change',name='sub_acct_fund_change'),
 
+    url(r'^clear/$','operation.views.clear',name='clear'),
 
 ]

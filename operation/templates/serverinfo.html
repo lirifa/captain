@@ -19,6 +19,7 @@
                 width:'100%',
                 border:true,
                 fitColumns:true,
+                striped:true,
                 singleSelect:true,
                 pagination:false,
                 idField:'id',
@@ -76,8 +77,8 @@
                     $.messager.alert('警告','请先选中需要删除的行！','warning'); 
                     return false;
                 }else{
-                    $.messager.confirm('确认','您确认想要删除 ' + ips + ' 主机吗？',function(r){    
-                        if (r){                         
+                    $.messager.confirm('确认','您确认想要删除 ' + ips + ' 主机吗？',function(r){
+                        if (r){
                             $.ajax({
                                 type: "GET",
                                 cache: false,
@@ -110,41 +111,41 @@
                 $("#passwd_hide").hide();
             });
             /**************对validatebox控件正则表达式验证数据有效性扩展**************/
-            $.extend($.fn.validatebox.defaults.rules, {    
-                strip: {    
-                    validator: function(value){            
-                        var re = /^[\d+\.\d+\.\d+\.\d+]/;  
+            $.extend($.fn.validatebox.defaults.rules, {
+                strip: {
+                    validator: function(value){
+                        var re = /^[\d+\.\d+\.\d+\.\d+]/;
                         if(re.test(value))
-                            return false;  
+                            return false;
                         else
                             if(RegExp.$1 <256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)
                                 return true;
                             else
                                 return false;
-                    },    
+                    },
                     message: '只能输入IP格式！'
                 },
-                strChinese: {    
-                    validator: function(value){            
-                        var re = /[^\u4e00-\u9fa5]/;  
+                strChinese: {
+                    validator: function(value){
+                        var re = /[^\u4e00-\u9fa5]/;
                         if(re.test(value))
-                            return false;  
+                            return false;
                         else
-                            return true;   
-                    },    
+                            return true;
+                    },
                     message: '只能输入中文！'
                 },
-                strEngNum: {    
-                    validator: function(value){            
-                        var re = /[^\w+$]/;  
+                strEngNum: {
+                    validator: function(value){
+                        var re = /[^\w+$]/;
                         if(re.test(value))
-                            return false;  
+                            return false;
                         else
-                            return true;   
+                            return true;
                     },    
                     message: '只能输入英文、数字或下划线！'
                 }
-            });  
+            });
         });
     </script>
 
@@ -239,40 +240,40 @@
             </div>
         </div>
     </div>
-    <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:30px 60px">
+    <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <div style="margin-bottom:10px">
-                <div>服务器编号</div>
-                <input name="srvnum" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>IP地址</div>
-                <input name="ip" class="easyui-textbox easyui-validatebox" validType="strip" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>用户名</div>
-                <input name="user" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>密码</div>
-                <input name="passwd" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>SSH端口</div>
-                <input name="port" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>产品管理人</div>
-                <input name="productadmin" class="easyui-textbox" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>业务描述</div>
-                <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px">
-            </div>
-            <div>
-                <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>
-                <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfomod()">修改</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#server').dialog('close')">取消</a>
+            <p>
+                服务器编号:
+                <input name="srvnum" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                IP 地 址:&nbsp&nbsp&nbsp&nbsp
+                <input name="ip" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                用 户 名:&nbsp&nbsp&nbsp&nbsp
+                <input name="user" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                密 码:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <input name="passwd" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                SSH 端口:&nbsp&nbsp
+                <input name="port" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                产品管理人:
+                <input name="productadmin" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                业 务 描 述:
+                <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
+            </p>
+            <div style="text-align: center">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfomod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#server').dialog('close')">取消</a>
             </div>
         </form>
     </div>

@@ -9,6 +9,11 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <style type="text/css">
+        body{
+            font-family:verdana,helvetica,arial,sans-serif;
+        }
+    </style>
     <script type="text/javascript" charset="utf-8">
     $(function() {
         var editRow = '';
@@ -25,6 +30,7 @@
             width: '100%',
             border: true,
             fitColumns: true,
+            striped:true,
             singleSelect: true,
             pagination: false,
             idField: 'id',
@@ -256,45 +262,47 @@
         </div>
         <div id="strategy" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
             <form id="fm" method="get">
-                <div style="margin-bottom:10px">
-                    <div>策略编号</div>
-                    <input name="sid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>策略名称</div>
-                    <input name="sname" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>对应配置名</div>
-                    <input name="scfg" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>策略端口</div>
-                    <input name="port" class="easyui-textbox easyui-validatebox" style="width:100%;height:32px" required="true">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>所属产品</div>
-                    <input name="product" class="easyui-combobox" style="width:100%;height:32px" required="true" data-options="valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>总账号</div>
-                    <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:100%;height:32px" required="true" data-options="valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',
+                <p>
+                    策 略 编 号:
+                    <input name="sid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
+                </p>
+                <p>
+                    策 略 名 称:
+                    <input name="sname" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true">
+                </p>
+                <p>
+                    资金账户号:
+                    <input name="scfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true">
+                </p>
+                <p>
+                    策 略 端 口:
+                    <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true">
+                </p>
+                <p>
+                    所 属 产 品:
+                    <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
+                </p>
+                <p>
+                    总 账 号:&nbsp&nbsp&nbsp&nbsp
+                    <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',
                     onSelect:function(rec){
                       var url = 'subacc_combobox_json/'+rec.acc_num;
                       $('#combo_sub_acc').combobox('reload',url);
                     }">
+                </p>
+                <p>
+                    子 账 号:&nbsp&nbsp&nbsp&nbsp
+                    <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true"  data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num'">
+                </p>
+                <p>
+                    策 略 介 绍:
+                    <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false">
+                </p>
+                <div style="text-align: center;">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfoadd()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfomod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#strategy').dialog('close')">取消</a>
                 </div>
-                <div style="margin-bottom:10px">
-                    <div>子账号</div>
-                    <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:100%;height:32px" required="true"  data-options="valueField:'acc_num',textField:'acc_num'">
-                </div>
-                <div style="margin-bottom:10px">
-                    <div>策略介绍</div>
-                    <input name="desc" class="easyui-textbox " style="width:100%;height:32px" required="false">
-                </div>
-                <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfoadd()">提交</a>
-                <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfomod()">修改</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#strategy').dialog('close')">取消</a>
                 <!-- 提交产品信息到后台 -->
                 <script type="text/javascript">
                 document.onkeydown = function(e) {

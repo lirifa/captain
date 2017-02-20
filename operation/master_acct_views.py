@@ -10,6 +10,7 @@ import hashlib
 import datetime
 import paramiko
 import threading
+import decimal
 
 def cur_file_dir():
     path = sys.path[0]
@@ -151,7 +152,6 @@ def master_acct_mod(request):
 def master_acct_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
-    print idlist
     del idlist[0]
     msg_dict = {"accmsg":"","errmsg":""}
     for acc_num in idlist:
@@ -177,4 +177,30 @@ def masteracc_combobox_json(request):
             acc_num = key.acc_num
             acc_name = key.acc_name
             msg_dict.append({"acc_num":acc_num,"acc_name":acc_name})
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+
+def master_acct_fund_change(request):
+    change_fund = decimal.Decimal(request.POST.get('fund_change'))
+    change_acct = request.POST.get('change_acct')
+    change_desc = request.POST.get('change_desc')
+    msg_dict = {}
+    try:
+        #修改总账号客户权益、可用资金
+        acc_num = Master_acct.objects.filter(acc_num=change_acct)[0].acc_num
+        equity_ex = Master_acct.objects.filter(acc_num=change_acct)[0].equity
+        equity_ed = equity_ex+ change_fund
+        fund_avaril_ex = Master_acct.objects.filter(acc_num=change_acct)[0].fund_avaril
+        fund_avaril_ed = fund_avaril_ex + change_fund
+        Master_acct.objects.filter(acc_num=change_acct).update(equity=equity_ed,fund_avaril=fund_avaril_ed)
+        accmsg = u"账号 [ %s ] 资金修改成功!"%acc_num
+        msg_dict['accmsg'] = accmsg
+
+        #出入金记录日志
+        try:
+            Fund_change_log.objects.create(acct_type='master_acct',acct_id=change_acct,change_fund=change_fund,desc=change_desc)
+        except Exception as e:
+            raise e
+    except Exception,e:
+        errmsg = "%s"%e
+        msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict),content_type='application/json')

@@ -44,22 +44,6 @@ except ImportError:
 def acct(request):
     return render(request,"acct.html")
 
-# def comboxpid_json(request):
-#     try:
-#         product_info = Productinfo.bojects.all()
-#     except Exception,e:
-#         acct_info = []
-#         errmsg = "%s"%e
-#     if len(product_info) !=0:
-#         msg_dict = {"total":len(acct_info)}
-#         msg_dict["rows"] = []
-#         for key in product_info:
-#             pid = key.pid
-#             pname = key.pname
-#             msg_dict["rows"].append({"pid":pid,"pname":pname})
-#     else:
-#         msg_dict = {"total":0,"rows":0}
-#     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 ###返回资金账户列表
 def acct_json(request):
@@ -220,6 +204,7 @@ def acct_combobox_json(request):
 def acct_fund_change(request):
     change_fund = decimal.Decimal(request.POST.get('fund_change'))
     change_acct = request.POST.get('change_acct')
+    change_desc = request.POST.get('change_desc')
     msg_dict = {}
     try:
         #修改资金账户客户权益、可用资金
@@ -232,11 +217,17 @@ def acct_fund_change(request):
         accmsg = u"账户 [ %s ] 资金修改成功!"%trdacct
         msg_dict['accmsg'] = accmsg
         #修改关联总账号客户权益、可用资金
-        master_equity_ex = Master_acct.objects.filter(trdacct=change_acct)[0].equity
-        master_fund_avaril_ex = Master_acct.objects.filter(trdacct=change_acct)[0].fund_avaril
-        master_equity_ed = master_equity_ex + change_fund
-        master_fund_avaril_ed = master_fund_avaril_ex + change_fund
-        Master_acct.objects.filter(trdacct=change_acct).update(equity=master_equity_ed,fund_avaril=master_fund_avaril_ed)
+        # master_equity_ex = Master_acct.objects.filter(trdacct=change_acct)[0].equity
+        # master_fund_avaril_ex = Master_acct.objects.filter(trdacct=change_acct)[0].fund_avaril
+        # master_equity_ed = master_equity_ex + change_fund
+        # master_fund_avaril_ed = master_fund_avaril_ex + change_fund
+        # Master_acct.objects.filter(trdacct=change_acct).update(equity=master_equity_ed,fund_avaril=master_fund_avaril_ed)
+
+        #出入金记录日志
+        try:
+            Fund_change_log.objects.create(acct_type='acct',acct_id=change_acct,change_fund=change_fund,desc=change_desc)
+        except Exception as e:
+            raise e
     except Exception,e:
         errmsg = "%s"%e
         msg_dict['errmsg'] = errmsg

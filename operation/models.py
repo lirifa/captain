@@ -1,6 +1,7 @@
 # coding:utf-8
 from django.db import models
 
+
 # Create your models here.
 #主机信息表
 class Serverinfo(models.Model):
@@ -97,5 +98,15 @@ class Broker(models.Model):
     class Meta:
         db_table = 'broker'
 
-
-
+#出入金记录表
+class Fund_change_log(models.Model):
+    log_id = models.AutoField(primary_key=True)
+    acct_type = models.CharField(verbose_name='账户类别',max_length=32)
+    acct_id = models.CharField(verbose_name='账户id',max_length=32)
+    change_fund = models.DecimalField(verbose_name='出入金金额',max_digits=17,decimal_places=2)
+    desc = models.CharField(verbose_name='备注',max_length=32)
+    log_tm = models.DateTimeField(verbose_name='保存日期',auto_now=True)
+    def __unicode__(self):
+        return self.log_id
+    class Meta:
+        db_table = 'fund_change_log'

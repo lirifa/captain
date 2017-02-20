@@ -34,7 +34,7 @@ CREATE TABLE `acct` (
 
 /*Data for the table `acct` */
 
-insert  into `acct`(`trdacct`,`acc_name`,`bid`,`pid`,`equity`,`margin_locked`,`fund_avaril`,`risk_degree`) values ('10007177','南华期货交易资金账户',1,4,'4.02','2.00','6.02','4'),('16039','恒邦黄金交易账户',5,4,'5617652.03','2581561.53','3026090.50','46.00%');
+insert  into `acct`(`trdacct`,`acc_name`,`bid`,`pid`,`equity`,`margin_locked`,`fund_avaril`,`risk_degree`) values ('10007177','南华期货交易资金账户',1,4,'11.02','2.00','13.02','4'),('16039','恒邦黄金交易账户',5,4,'5617652.03','2581561.53','3026090.50','46.00%');
 
 /*Table structure for table `acct_hold` */
 
@@ -389,13 +389,15 @@ CREATE TABLE `fund_change_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '日志id',
   `acct_type` varchar(32) NOT NULL COMMENT '账户类型',
   `acct_id` varchar(32) NOT NULL COMMENT '账户id',
-  `in_fund` decimal(17,2) NOT NULL COMMENT '出入金金额',
-  `out_fund` decimal(17,2) NOT NULL,
+  `change_fund` decimal(17,2) NOT NULL COMMENT '出入金',
+  `desc` varchar(64) NOT NULL COMMENT '备注',
   `log_tm` datetime NOT NULL COMMENT '日志时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `fund_change_log` */
+
+insert  into `fund_change_log`(`log_id`,`acct_type`,`acct_id`,`change_fund`,`desc`,`log_tm`) values (1,'acct','10007177','1.00','哈哈哈哈','2017-02-20 07:54:57'),(2,'master_acct','66660000201','1.00','test','2017-02-20 08:25:55'),(3,'master_acct','66660000201','1.00','test2','2017-02-20 08:26:57'),(4,'sub_acct','66660000000701','1.00','1','2017-02-20 08:50:40');
 
 /*Table structure for table `marginrateinfo` */
 
@@ -446,7 +448,7 @@ CREATE TABLE `master_acct` (
 
 /*Data for the table `master_acct` */
 
-insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期现套利-期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55'),('66660000201','黄金白银期现套利-现货账号','16039','1.00','2.00','3.00','4.00','5.00');
+insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期现套利-期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55'),('66660000201','黄金白银期现套利-现货账号','16039','3.00','2.00','3.00','4.00','7.00');
 
 /*Table structure for table `productinfo` */
 
@@ -512,16 +514,16 @@ CREATE TABLE `sub_acct` (
   `acc_name` varchar(32) NOT NULL,
   `master_acct` varchar(32) NOT NULL,
   `equity` decimal(17,2) NOT NULL,
-  `fund_avaril` decimal(17,2) NOT NULL,
   `margin_locked` decimal(17,2) NOT NULL,
   `buy_margin` decimal(17,2) NOT NULL,
   `sell_margin` decimal(17,2) NOT NULL,
+  `fund_avaril` decimal(17,2) NOT NULL,
   PRIMARY KEY (`acc_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `sub_acct` */
 
-insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`fund_avaril`,`margin_locked`,`buy_margin`,`sell_margin`) values ('666600000001','恒邦黄金-期货交易账号','666600002','3304914.06','1464156.66','1840757.40','1840757.40','0.00'),('66660000000101','恒邦黄金-现货交易账号','66660000201','1.00','5.00','4.00','2.00','3.00'),('666600000004','南华商品多因子交易子账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000005','南华商品CTA策略交易子账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000006','恒邦黄金跨期交易账号','666600002','1.00','5.00','4.00','2.00','3.00'),('666600000007','恒邦白银-期货交易账号','666600002','1.00','5.00','4.00','2.00','3.00'),('66660000000701','恒邦白银-现货交易账号','66660000201','1.00','5.00','4.00','2.00','3.00');
+insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`margin_locked`,`buy_margin`,`sell_margin`,`fund_avaril`) values ('666600000001','恒邦黄金-期货交易账号','666600002','3304914.06','1840757.40','1840757.40','0.00','1464156.66'),('66660000000101','恒邦黄金-现货交易账号','66660000201','1.00','4.00','2.00','3.00','5.00'),('666600000004','南华商品多因子交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000005','南华商品CTA策略交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000006','恒邦黄金跨期交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000007','恒邦白银-期货交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('66660000000701','恒邦白银-现货交易账号','66660000201','2.00','4.00','2.00','3.00','6.00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

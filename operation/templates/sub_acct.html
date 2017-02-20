@@ -12,113 +12,114 @@
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript">
     $(function() {
-                var editRow = '';
-                var permission = [{
-                    "value": "管理员",
-                    "text": "管理员"
+        var editRow = '';
+        var permission = [{
+            "value": "管理员",
+            "text": "管理员"
+        }, {
+            "value": "IT业务",
+            "text": "IT业务"
+        }];
+        $('#sub_acct_table').datagrid({
+            title: '>>>子账号列表',
+            url: '/sub_acct_json/',
+            width: '100%',
+            border: true,
+            fitColumns: true,
+            striped: true,
+            singleSelect: true,
+            pagination: false,
+            idField: 'id',
+            pageSize: 10,
+            pageList: [10, 15, 20, 25, 100],
+            columns: [
+                [{
+                    field: 'id',
+                    title: '序号',
+                    width: 35
                 }, {
-                    "value": "IT业务",
-                    "text": "IT业务"
-                }];
-                $('#sub_acct_table').datagrid({
-                    title: '>>>子账号列表',
-                    url: '/sub_acct_json/',
-                    width: '100%',
-                    border: true,
-                    fitColumns: true,
-                    singleSelect: true,
-                    pagination: false,
-                    idField: 'id',
-                    pageSize: 10,
-                    pageList: [10, 15, 20, 25, 100],
-                    columns: [
-                        [{
-                            field: 'id',
-                            title: '序号',
-                            width: 35
-                        },  {
-                            field: 'acc_num',
-                            title: '账户号',
-                            width: 200,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        },{
-                            field: 'acc_name',
-                            title: '账户名',
-                            width: 200,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        },{
-                            field: 'master_acct',
-                            title: '关联总账号',
-                            width: 120,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        }, {
-                            field: 'equity',
-                            title: '客户权益',
-                            width: 150,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        }, {
-                            field: 'buy_margin',
-                            title: '多仓保证金',
-                            width: 200,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true,
-                                }
-                            }
-                        },{
-                            field: 'sell_margin',
-                            title: '空仓保证金',
-                            width: 200,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true,
-                                }
-                            }
-                        }, {
-                            field: 'margin_locked',
-                            title: '保证金占用',
-                            width: 150,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        }, {
-                            field: 'fund_avaril',
-                            title: '可用资金',
-                            width: 150,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        }]
-                    ],
-                });
+                    field: 'acc_num',
+                    title: '账户号',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'acc_name',
+                    title: '账户名',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'master_acct',
+                    title: '关联总账号',
+                    width: 120,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'equity',
+                    title: '客户权益',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'buy_margin',
+                    title: '多仓保证金',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true,
+                        }
+                    }
+                }, {
+                    field: 'sell_margin',
+                    title: '空仓保证金',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true,
+                        }
+                    }
+                }, {
+                    field: 'margin_locked',
+                    title: '保证金占用',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }, {
+                    field: 'fund_avaril',
+                    title: '可用资金',
+                    width: 150,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
+                }]
+            ],
+        });
 
         /*************************点击添加子账号******************************/
         $('#sub_acct_add').bind('click', function() {
@@ -131,6 +132,16 @@
             $('#modify').hide()
             $('#add').show()
         });
+
+        /*************************点击弹出出入金界面******************************/
+        $('#fund_change_btn').bind('click', function() {
+            $('#fund_change').dialog({
+                closed: false,
+                title: '出入金',
+                cache: false
+            });
+        });
+
         /*************************点击修改子账号信息******************************/
         $('#sub_acct_edit').bind('click', function() {
             var row_select = $('#sub_acct_table').datagrid('getSelected'); //返回的是被选中行的对象
@@ -144,7 +155,7 @@
                         cache: false
                     });
                     $('#fm').form("load", row_select);
-                    $('input[name="acc_num"]').prev().prop('disabled',true)
+                    $('input[name="acc_num"]').prev().prop('disabled', true)
                     $('#add').hide()
                     $('#modify').show()
                 }
@@ -201,6 +212,7 @@
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" id="sub_acct_add">新增</a>
                 <a id="sub_acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="sub_acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <a id="fund_change_btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" plain="true">出入金</a>
                 <!-- <div style="float:right;margin-right:20px">
                     <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
                 </div> -->
@@ -209,41 +221,43 @@
     </div>
     <div id="sub_acct" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <div style="margin-bottom:10px">
-                <div>子账号</div>
-                <input name="acc_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:100%;height:32px" required="true">
+            <p>
+                子 账 号:&nbsp&nbsp&nbsp&nbsp
+                <input name="acc_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                账 户 名:&nbsp&nbsp&nbsp&nbsp
+                <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                关联总账号:
+                <input name="master_acct" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/'">
+            </p>
+            <p>
+                客 户 权 益:
+                <input name="equity" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p>
+                买 保 证 金:
+                <input name="buy_margin" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p>
+                卖 保 证 金:
+                <input name="sell_margin" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p>
+                保证金占用:
+                <input name="margin_locked" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p>
+                可 用 资 金:
+                <input name="fund_avaril" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <div style="text-align: center;">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="subacctinfoadd()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="subacctinfomod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#sub_acct').dialog('close')">取消</a>
             </div>
-            <div style="margin-bottom:10px">
-                <div>账户名</div>
-                <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:100%;height:32px" required="true">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>关联总账号</div>
-                <input name="master_acct" class="easyui-combobox" style="width:100%;height:32px" required="true" data-options="valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/'">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>客户权益</div>
-                <input name="equity" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>买保证金</div>
-                <input name="buy_margin" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>卖保证金</div>
-                <input name="sell_margin" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>保证金占用</div>
-                <input name="margin_locked" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <div style="margin-bottom:10px">
-                <div>可用资金</div>
-                <input name="fund_avaril" class="easyui-textbox " style="width:100%;height:32px" required="false">
-            </div>
-            <a id="add" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="subacctinfoadd()">提交</a>
-            <a id="modify" type="submit" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" onclick="subacctinfomod()">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#sub_acct').dialog('close')">取消</a>
             <!-- 提交产品信息到后台 -->
             <script type="text/javascript">
             document.onkeydown = function(e) {
@@ -305,6 +319,47 @@
             </script>
     </div>
     </form>
+    </div>
+    <div id="fund_change" class="easyui-dialog" closed="true" style="width: 380px;padding: 20px 40px;">
+        <form id="fund_change_fm" method="post">
+            <p>出 入 金:&nbsp
+                <input name="fund_change" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px">
+            </p>
+            <p>资金账户:
+                <input name="change_acct" class="easyui-combobox" style="width:200px;height:32px" data-options="panelHeight:'auto', valueField:'acc_num',textField:'acc_num',url:'/subacc_combobox_json/'">
+            </p>
+            <p>备&nbsp&nbsp&nbsp&nbsp&nbsp 注:
+                <input name="change_desc" class="easyui-textbox" style="width: 200px;height: 32px">
+            </p>
+            <div style="text-align: center;">
+                <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin:0 20px">提交</a>
+                <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#fund_change').dialog('close')" style="margin:0 20px">取消</a>
+            </div>
+            <script>
+            function fund_change() {
+                if ($("input[name='fund_change']").val() == "") {
+                    $.messager.alert('警告', '出入金不可为空!', 'warning');
+                    $("input[name='fund_change']").focus();
+                } else if ($("input[name='change_acct']").val() == "") {
+                    $.messager.alert('警告', '请选取出入金总账号！!', 'warning');
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/sub_acct_fund_change/",
+                        data: $("#fund_change_fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/sub_acct/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+            }
+            </script>
+        </form>
     </div>
 </body>
 
