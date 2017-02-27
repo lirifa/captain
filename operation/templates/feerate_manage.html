@@ -24,31 +24,10 @@
                     idField: 'id',
                     pageSize: 10,
                     pageList: [10, 15, 20, 25, 100],
-                    columns: [
-                        [{
-                            field: 'bid',
-                            title: '经纪商',
-                            width: 35
-                        }, {
-                            field: 'exchange_id',
-                            title: '交易所',
-                            width: 120,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
-                        }, {
-                            field: 'contract_id',
-                            title: '合约品种',
-                            width: 200,
-                            editor: {
-                                type: 'validatebox',
-                                options: {
-                                    required: true
-                                }
-                            }
+                    columns: [[
+                    {field: 'bid',title: '经纪商',width: 35},
+                    {field: 'exchange_id',title: '交易所',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+                    {field: 'contract_id',title: '合约品种',width: 200,editor: {type: 'validatebox',options: {required: true}}
                         }, {
                             field: 'biz_type',
                             title: '开平标志',
@@ -97,7 +76,7 @@
         <div style="margin-bottom:26px">
             <div style="float:left;margin-left:10px">
                 <p style="margin:1px">经纪商：
-                    <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'">
+                    <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
                 </p>
             </div>
         </div>

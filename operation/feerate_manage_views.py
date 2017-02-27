@@ -40,7 +40,9 @@ def feerate_manage(request):
 def feerate_json(request):
     try:
         print "yes"
-        feerate_info = Feerate.objects.all()
+        print "in + " + Feerate.objects.all()[0]
+        feerate_info = Feerate.objects.filter(id = 1)[0].id
+        print feerate_info
     except Exception,e:
         feerate_info = []
         errmsg = "%s"%e
@@ -66,3 +68,4 @@ def feerate_json(request):
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
