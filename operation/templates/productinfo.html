@@ -32,54 +32,13 @@
             idField: 'id',
             pageSize: 10,
             pageList: [10, 15, 20, 25, 100],
-            columns: [
-                [{
-                    field: 'id',
-                    title: '序号',
-                    width: 35
-                }, {
-                    field: 'pid',
-                    title: '产品编号',
-                    width: 120,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'pname',
-                    title: '产品名称',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'admin',
-                    title: '产品管理人',
-                    width: 150,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'desc',
-                    title: '产品介绍',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true,
-                            validType: 'strChinese'
-                        }
-                    }
-                }]
-            ],
+            columns: [[
+                {field: 'id',title: '序号',width: 35},
+                {field: 'pid',title: '产品编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'pname',title: '产品名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'admin',title: '产品管理人',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'desc',title: '产品介绍',width: 200,editor: {type: 'validatebox',options: {required: true,validType:'strChinese'}}}
+                ]],
         });
         
         /*************************点击添加用户******************************/

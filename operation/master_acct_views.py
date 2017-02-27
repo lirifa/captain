@@ -50,7 +50,6 @@ def master_acct_json(request):
     except Exception,e:
         master_acct_info = []
         errmsg = "%s"%e
-    print len(master_acct_info)
     if len(master_acct_info) != 0:
         msg_dict = {"total":len(master_acct_info)}
         msg_dict["rows"] = []

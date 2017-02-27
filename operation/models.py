@@ -3,12 +3,23 @@ from django.db import models
 
 
 # Create your models here.
+#用户信息表
+class User(models.Model):
+    username = models.CharField(verbose_name='用户名',max_length=50,primary_key=True)
+    passwd = models.CharField(verbose_name='用户密码',max_length=50)
+    phone_num = models.CharField(verbose_name='联系电话',max_length=50)
+    email = models.CharField(verbose_name='邮箱地址',max_length=50)
+    def __unicode__(self):
+        return self.username
+    class Meta:
+        db_table = 'userinfo'
+
 #主机信息表
 class Serverinfo(models.Model):
     srvnum = models.CharField(verbose_name='服务器编号',max_length=10,primary_key=True)
     ip = models.GenericIPAddressField(verbose_name="IP",max_length=50,unique=True)
-    user = models.CharField(verbose_name='用户名',max_length=10)
-    passwd = models.CharField(verbose_name='密码',max_length=50)
+    user = models.CharField(verbose_name='主机用户',max_length=10)
+    passwd = models.CharField(verbose_name='登录密码',max_length=50)
     port = models.IntegerField(verbose_name='SSH端口')
     productadmin = models.CharField(verbose_name='产品管理人',max_length=32) 
     desc = models.CharField(verbose_name="业务描述",max_length=100)
@@ -110,3 +121,36 @@ class Fund_change_log(models.Model):
         return self.log_id
     class Meta:
         db_table = 'fund_change_log'
+
+#资金账户持仓表
+class Acct_hold(models.Model):
+    trd_date = models.CharField(verbose_name='交易日期',max_length=8)
+    trdacct = models.CharField(verbose_name='资金账户号',max_length=32)
+    instrument = models.CharField(verbose_name='合约名',max_length=32)
+    variety = models.CharField(verbose_name='品种名',max_length=32)
+    long_pos = models.IntegerField(verbose_name='买持仓')
+    avg_buy_price = models.DecimalField(verbose_name='买均价',max_digits=17,decimal_places=3)
+    short_pos = models.IntegerField(verbose_name='卖持仓')
+    avg_sell_price = models.DecimalField(verbose_name='卖均价',max_digits=17,decimal_places=3)
+    pos_pl = models.DecimalField(verbose_name='持仓订市盈亏',max_digits=17,decimal_places=2)
+    margin_occupied = models.DecimalField(verbose_name='保证金占用',max_digits=17,decimal_places=2)
+    sh_mark = models.CharField(verbose_name='投保标识',max_length=1)
+    class Meta:
+        db_table = 'acct_hold'
+        unique_together = ("trd_date","trdacct","instrument")
+    def __unicode__(self):
+        return '%s,%s,%s'%(self.trd_date,self.trdacct,self.instrument)
+
+#手续费率信息表
+class Feerate(object):
+    bid = models.IntegerField(verbose_name='券商id')
+    exchange_id = models.CharField(verbose_name='交易所',max_length=32)
+    contract_id = models.CharField(verbose_name='合约标识',max_length=32)
+    biz_type = models.CharField(verbose_name='开平标志',max_length=1)
+    feerate_by_amt = models.DecimalField(verbose_name='百分比',max_digits=17,decimal_places=8)
+    feerate_by_qty = models.DecimalField(verbose_name='按手数',max_digits=17,decimal_places=8)
+    def __unicode__(self):
+        return '%d,%s,%s,%s'%(self.bid,self.exchange_id,self.contract_id,self.biz_type)
+    class Meta:
+        db_table = 'feerate'
+        unique_together = ("bid","exchange_id","contract_id","biz_type")

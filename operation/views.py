@@ -25,6 +25,7 @@ from operation.acct_views import *
 from operation.master_acct_views import *
 from operation.sub_acct_views import *
 from operation.clear_views import *
+from operation.feerate_manage_views import *
 
 try:
     from django.http import JsonResponse
@@ -58,3 +59,9 @@ def supervisor(request):
 def configure(request):
     return render(request,"configure.html")
 
+#404页面
+def page_not_found(request):
+    return render_to_response('404.html')
+
+def page_error(request):
+    return render_to_response('500.html')

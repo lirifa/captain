@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <script>
+    $(function() {
+                $('#feerate_table').datagrid({
+                    title: '>>>费率列表',
+                    url: '/feerate_json/',
+                    width: '100%',
+                    border: true,
+                    fitColumns: true,
+                    striped: true,
+                    singleSelect: true,
+                    pagination: false,
+                    idField: 'id',
+                    pageSize: 10,
+                    pageList: [10, 15, 20, 25, 100],
+                    columns: [
+                        [{
+                            field: 'bid',
+                            title: '经纪商',
+                            width: 35
+                        }, {
+                            field: 'exchange_id',
+                            title: '交易所',
+                            width: 120,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'contract_id',
+                            title: '合约品种',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'biz_type',
+                            title: '开平标志',
+                            width: 150,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'feerate_by_amt',
+                            title: '手续费率（按金额）',
+                            width: 200,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }, {
+                            field: 'feerate_by_qty',
+                            title: '手续费率（按手数）',
+                            width: 100,
+                            editor: {
+                                type: 'validatebox',
+                                options: {
+                                    required: true
+                                }
+                            }
+                        }]
+                    ],
+                })
+            })
+    </script>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'费率管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="feerate_table" data-options="toolbar:'#tb'"></table>
+        </div>
+    </div>
+    <!-- toolbar -->
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:26px">
+            <div style="float:left;margin-left:10px">
+                <p style="margin:1px">经纪商：
+                    <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'">
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -41,12 +41,18 @@
                     width: 100,
                     align: 'center',
                     formatter: function(value, row, index) {
-                        var str = '<a class="easyui-linkbutton" iconCls="icon-save" href="javascript:update();"  title="清算">清算</a>';
+                        var str = '<a name="clear-btn"  href="javascript:update();"  title="清算">清算</a> | <a name="clearbk-btn"  href="javascript:update();"  title="回退">回退</a>';
                         return str;
                     }
                 }]
-            ]
-        })
+            ],
+            onLoadSuccess:function(data){
+                $("a[name='clear-btn']").linkbutton({text:'清算',plain:true,iconCls:'icon-reload'});
+                $("a[name='clearbk-btn']").linkbutton({text:'回退',plain:true,iconCls:'icon-undo'});
+            },
+            
+        });
+        
     })
     </script>
 </head>

@@ -12,13 +12,13 @@ import datetime
 import paramiko
 import threading
 
-def cur_file_dir():                 
-    path = sys.path[0]              
-    if os.path.isdir(path):         
-        return path                 
-    elif os.path.isfile(path):      
+def cur_file_dir():
+    path = sys.path[0]
+    if os.path.isdir(path):
+        return path
+    elif os.path.isfile(path):
         return os.path.dirname(path)
-cur_dir = cur_file_dir() + '/'      
+cur_dir = cur_file_dir() + '/'
 pro_dir = os.path.abspath(os.path.join(os.path.dirname(cur_dir),os.path.pardir))
 sys.path.append(pro_dir) 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "captain.settings")
@@ -135,3 +135,4 @@ def productinfo_del(request):
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+

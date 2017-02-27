@@ -47,6 +47,7 @@ def acct(request):
 
 ###返回资金账户列表
 def acct_json(request):
+    print request.session.items()
     try:
         acct_info = Acct.objects.all()
     except Exception,e:

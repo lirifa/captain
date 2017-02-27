@@ -12,11 +12,14 @@ Class-based views
 Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include, url,handler404,handler500
 from django.contrib import admin
 from operation.views import *
 
 admin.autodiscover()
+
+handler404="operation.views.page_not_found"
+handler500="operation.views.page_not_found"
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -78,5 +81,7 @@ urlpatterns = [
     url(r'^sub_acct_fund_change/$','operation.views.sub_acct_fund_change',name='sub_acct_fund_change'),
 
     url(r'^clear/$','operation.views.clear',name='clear'),
+    url(r'^feerate_manage/$','operation.views.feerate_manage',name='feerate_manage'),
+    url(r'^feerate_json/$','operation.views.feerate_json',name='feerate_json'),
 
 ]
