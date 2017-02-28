@@ -22,30 +22,17 @@
             idField: 'id',
             pageSize: 10,
             pageList: [10, 15, 20, 25, 100],
-            columns: [
-                [{
-                    field: 'id',
-                    title: '清算ID',
-                    width: 100
-                }, {
-                    field: 'acc_name',
-                    title: '清算name',
-                    width: 100
-                }, {
-                    field: 'bid',
-                    title: '清算状态',
-                    width: 100,
-                }, {
-                    title: '操作',
-                    field: 'opt',
-                    width: 100,
-                    align: 'center',
+            columns: [[
+                {field: 'id',title: '清算ID',width: 100},
+                {field: 'acc_name',title: '清算name',width: 100},
+                {field: 'bid',title: '清算状态',width: 100,},
+                {title: '操作',field: 'opt',width: 100,align: 'center',
                     formatter: function(value, row, index) {
                         var str = '<a name="clear-btn"  href="javascript:update();"  title="清算">清算</a> | <a name="clearbk-btn"  href="javascript:update();"  title="回退">回退</a>';
                         return str;
                     }
-                }]
-            ],
+                }
+                    ]],
             onLoadSuccess:function(data){
                 $("a[name='clear-btn']").linkbutton({text:'清算',plain:true,iconCls:'icon-reload'});
                 $("a[name='clearbk-btn']").linkbutton({text:'回退',plain:true,iconCls:'icon-undo'});

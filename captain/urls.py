@@ -35,6 +35,11 @@ urlpatterns = [
     url(r'^serverinfo_mod/$', 'operation.views.serverinfo_mod', name='serverinfo_mod'),
     url(r'^serverinfo_del/$', 'operation.views.serverinfo_del', name='serverinfo_del'),
 
+    url(r'^serviceinfo/$','operation.views.serviceinfo',name='serciceinfo'),
+    url(r'^serviceinfo_json/$','operation.views.serviceinfo_json',name='serciceinfo_json'),
+
+    url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
+
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),
     url(r'^productinfo_add/$', 'operation.views.productinfo_add', name='productinfo_add'),
@@ -46,9 +51,7 @@ urlpatterns = [
     url(r'^strategyinfo_add/$', 'operation.views.strategyinfo_add', name='strategyinfo_add'),
     url(r'^strategyinfo_mod/$', 'operation.views.strategyinfo_mod', name='strategyinfo_mod'),
     url(r'^strategyinfo_del/$', 'operation.views.strategyinfo_del', name='strategyinfo_del'),
-    
-
-    url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
+    url(r'^serverinfo_combobox_json/$','operation.views.serverinfo_combobox_json',name='serverinfo_combobox_json'),
 
     url(r'^configure/$','operation.views.configure',name='configure'),
 

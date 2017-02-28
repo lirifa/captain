@@ -59,12 +59,13 @@ def strategyinfo_json(request):
             sname = key.sname
             scfg = key.scfg
             port = key.port
-            product = key.product
+            ssrv = key.ssrv
+            product = Productinfo.objects.filter(pid=key.product)[0].pname
             desc = key.desc
             master_acc = key.master_acc
             sub_acc = key.sub_acc
             num += 1
-            msg_dict["rows"].append({"id":id,"sid":sid,"sname":sname,"scfg":scfg,"port":port,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
+            msg_dict["rows"].append({"id":id,"sid":sid,"sname":sname,"scfg":scfg,"port":port,"ssrv":ssrv,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
@@ -75,6 +76,7 @@ def strategyinfo_add(request):
     sname = request.GET.get('sname')
     scfg = request.GET.get('scfg')
     port = request.GET.get('port')
+    ssrv = request.GET.get('ssrv')
     product = request.GET.get('product')
     master_acc = request.GET.get('master_acc')
     sub_acc = request.GET.get('sub_acc')
@@ -96,6 +98,7 @@ def strategyinfo_add(request):
             strategy_info.sname = sname
             strategy_info.scfg = scfg
             strategy_info.port = port
+            strategy_info.ssrv = ssrv
             strategy_info.product = product
             strategy_info.master_acc = master_acc
             strategy_info.sub_acc = sub_acc
@@ -117,6 +120,7 @@ def strategyinfo_mod(request):
     sname = request.GET.get('sname')
     scfg = request.GET.get('scfg')
     port = request.GET.get('port')
+    ssrv = request.GET.get('ssrv')
     product = request.GET.get('product')
     master_acc = request.GET.get('master_acc')
     sub_acc = request.GET.get('sub_acc')
@@ -124,7 +128,7 @@ def strategyinfo_mod(request):
     msg_dict={}
     if sid:
         try:
-            strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
+            strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,ssrv=ssrv,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
             accmsg = u"策略 [ %s ] 修改成功!"%sname
             msg_dict['accmsg'] = accmsg
         except Exception,e:
@@ -154,3 +158,19 @@ def strategyinfo_del(request):
             msg_dict["errmsg"] = errmsg
     print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#combobox产品列表
+def serverinfo_combobox_json(request):
+    try:
+        server_info = Serverinfo.objects.all()
+    except Exception, e:
+        server_info = []
+        errmsg = "%s"%e
+    if len(server_info) != 0:
+        msg_dict = []
+        for key in server_info:
+            srvnum = key.srvnum
+            ip = key.ip
+            msg_dict.append({"srvnum":srvnum,"ip":ip})
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+

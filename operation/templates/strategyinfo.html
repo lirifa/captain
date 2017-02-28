@@ -81,6 +81,16 @@
                             required: true
                         }
                     }
+                },{
+                    field: 'ssrv',
+                    title: '所属主机',
+                    width: 200,
+                    editor: {
+                        type: 'validatebox',
+                        options: {
+                            required: true
+                        }
+                    }
                 }, {
                     field: 'product',
                     title: '所属产品',
@@ -277,6 +287,10 @@
                 <p>
                     策 略 端 口:
                     <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true">
+                </p>
+                <p>
+                    所 属 主 机:
+                    <input name="ssrv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'">
                 </p>
                 <p>
                     所 属 产 品:

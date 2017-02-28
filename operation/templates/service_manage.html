@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+
+</head>
+
+<body classs="easyui-layout">
+    <div data-options="region:'center',title:'服务配置',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="service_table" data-options="toolbar:'#tb'"></table>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#service_table').datagrid({
+            title: '>>>服务列表',
+            url: '/serviceinfo_json/',
+            width: '100%',
+            border: true,
+            fitColumns: true,
+            striped:true,
+            singleSelect: true,
+            pagination: false,
+            idField: 'id',
+            pageSize: 10,
+            pageList: [10, 15, 20, 25, 100],
+            columns: [[
+                {field:'service_id',title:'服务编号',width:35},
+                {field:'service_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
+                {field:'service_cfg',title:'配置名',width:200,editor:{type:'validatebox',options:{required:true}}},
+                {field:'service_port',title:'端口',width:150,editor:{type:'validatebox',options:{required:true}}},
+                {field:'service_srv',title:'所属主机',width:200,editor:{type:'validatebox',options:{required:true}}},
+                {field:'desc',title:'备注',width:100,editor:{type:'validatebox',options:{required:true}}},
+            ]]
+        })
+        })
+    </script>
+    <!-- toolbar -->
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:26px">
+            <div style="float:left;margin-left:10px">
+                <a id="service_add" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+                <a id="service_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="service_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

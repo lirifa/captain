@@ -28,6 +28,19 @@ class Serverinfo(models.Model):
     class Meta:
         db_table = 'serverinfo'
 
+#服务信息表
+class Serviceinfo(models.Model):
+    ser_id = models.CharField('服务id',max_length=8,primary_key=True)
+    ser_name = models.CharField('服务名称',max_length=32)
+    ser_cfg = models.CharField('对应配置名',max_length=32)
+    ser_port =  models.IntegerField('端口')
+    ser_srv = models.CharField('所属主机',max_length=10)
+    desc = models.CharField('备注',max_length=32)
+    def __unicode__(self):
+        return self.service_id
+    class Meta:
+        db_table = 'serviceinfo'
+
 #产品信息表
 class Productinfo(models.Model):
     pid = models.IntegerField(verbose_name='产品编号',primary_key=True)
@@ -44,6 +57,7 @@ class Strategyinfo(models.Model):
     sid = models.IntegerField(verbose_name='策略编号',primary_key=True)
     sname = models.CharField(verbose_name='策略名称',max_length=32)
     scfg = models.CharField(verbose_name='对应配置名',max_length=32)
+    ssrv = models.CharField('对应主机',max_length=32)
     product = models.CharField(verbose_name='所属产品',max_length=32)
     master_acc = models.CharField(verbose_name='总账号',max_length=32)
     sub_acc = models.CharField(verbose_name='子账号',max_length=32)
