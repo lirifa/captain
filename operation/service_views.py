@@ -60,7 +60,19 @@ def serviceinfo_json(request):
             ser_port = key.ser_port
             ser_srv = key.ser_srv
             desc = key.desc
-            msg_dict["rows"].append({"service_id":ser_id,"service_name":ser_name,"service_cfg":ser_cfg,"service_port":ser_port,"service_srv":ser_srv,"desc":desc})
+            msg_dict["rows"].append({"ser_id":ser_id,"ser_name":ser_name,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
+def check_stat(request):
+    stats=('172.27.13.179', 'ss-HjhyComMulti,up,up\r\nss-HjhyStkMulti,up,up\r\nPriceServer,up,up\r\nss-HjhyMT,up,up\r\nss-HjhyRollover500,down,down\r\nss2ison,up,up\r\nss-HjhyComCta,up,up\r\ngw-HjhyZXFut,up,up\r\nss-HjhyIcs500Port,up,up\r\nss-HjhyStat300Spec,up,up\r\nss-HjhyIcsPortfolio,down,down\r\n',)
+    ser_cfg = request.POST.get('ser_cfg')
+    ser_port = request.POST.get('ser_port')
+    ser_srv = request.POST.get('ser_srv')
+    msg_dict = {}
+    msg_dict["ser_stat"]="up"
+    msg_dict["port_stat"]="up"
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+

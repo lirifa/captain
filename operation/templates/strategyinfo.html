@@ -36,104 +36,18 @@
             idField: 'id',
             pageSize: 10,
             pageList: [10, 15, 20, 25, 100],
-            columns: [
-                [{
-                    field: 'id',
-                    title: '序号',
-                    width: 35
-                }, {
-                    field: 'sid',
-                    title: '策略编号',
-                    width: 120,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'sname',
-                    title: '策略名称',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'scfg',
-                    title: '对应配置名',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'port',
-                    title: '策略端口',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                },{
-                    field: 'ssrv',
-                    title: '所属主机',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'product',
-                    title: '所属产品',
-                    width: 150,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'master_acc',
-                    title: '总账号',
-                    width: 150,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'sub_acc',
-                    title: '子账号',
-                    width: 150,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true
-                        }
-                    }
-                }, {
-                    field: 'desc',
-                    title: '策略介绍',
-                    width: 200,
-                    editor: {
-                        type: 'validatebox',
-                        options: {
-                            required: true,
-                        }
-                    }
-                }]
-            ],
-
+            columns: [[
+                {field: 'id',title: '序号',width: 35},
+                {field: 'sid',title: '策略编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'sname',title: '策略名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'scfg',title: '对应配置名',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'port',title: '策略端口',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'ssrv',title: '所属主机',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'product',title: '所属产品',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'master_acc',title: '总账号',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'sub_acc',title: '子账号',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'desc',title: '策略介绍',width: 200,editor: {type: 'validatebox',options: {required: true,}}}
+            ]],
         });
 
         /*************************点击添加策略******************************/

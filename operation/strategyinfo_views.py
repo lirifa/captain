@@ -128,6 +128,7 @@ def strategyinfo_mod(request):
     msg_dict={}
     if sid:
         try:
+            ssrv = Productinfo.objects.filter(pname=ssrv)[0].pid
             strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,ssrv=ssrv,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
             accmsg = u"策略 [ %s ] 修改成功!"%sname
             msg_dict['accmsg'] = accmsg
