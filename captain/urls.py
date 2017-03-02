@@ -37,6 +37,7 @@ urlpatterns = [
 
     url(r'^serviceinfo/$','operation.views.serviceinfo',name='serciceinfo'),
     url(r'^serviceinfo_json/$','operation.views.serviceinfo_json',name='serciceinfo_json'),
+    url(r'^service_add/$','operation.views.service_add',name='sercice_add'),
     url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
 
     url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),

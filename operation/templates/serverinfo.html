@@ -35,11 +35,11 @@
                     {field:'productadmin',title:'产品管理人',width:100,editor:{type:'validatebox',options:{required:true}}},
                     {field:'desc',title:'业务描述',width:200,editor:{type:'validatebox',options:{required:true,validType:'strChinese'}}}
                 ]],
-                onLoadSuccess:function(data){    
+                onLoadSuccess:function(data){
                     $("#server_table").datagrid("hideColumn", "passwd"); // 设置隐藏列    
                     $("#passwd_hide").hide();
-            }  
-            });    
+            }
+            });
             /*************************点击添加用户******************************/
             $('#server_add').bind('click', function(){
                 $('#server').dialog({closed:false,title:'>>>新增服务器',cache:false});
@@ -240,6 +240,7 @@
             </div>
         </div>
     </div>
+    
     <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
             <p>

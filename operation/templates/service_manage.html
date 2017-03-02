@@ -11,38 +11,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <script>
-        function check_stat() {
-                var row_select = $('#service_table').datagrid('getSelected')
-                var ser_cfg = row_select.ser_cfg
-                var ser_port = row_select.ser_port
-                var ser_srv = row_select.ser_srv
-                console.log("in")
-                $.ajax({
-                    type:"POSt",
-                    url:"/check_stat/",
-                    data:{ser_cfg,ser_port,ser_srv},
-                    success: function (msg) {
-
-                    }
-                })
-            }
-    </script>
-    <style>
-        .datagrid-row-selected{
-            background: #fff;
-            color:#030303;
-        }
-    </style>
-</head>
-
-<body classs="easyui-layout">
-    <div data-options="region:'center',title:'服务配置',iconCls:'icon-large-smartart'">
-        <div title="DataGrid" style="padding:2px">
-            <table id="service_table" data-options="toolbar:'#tb'"></table>
-        </div>
-    </div>
-    <script>
         $(function () {
+            //加载服务列表数据
             $('#service_table').datagrid({
                 title: '>>>服务列表',
                 url: '/serviceinfo_json/',
@@ -58,15 +28,15 @@
                 columns: [[
                     {field:'ser_id',title:'服务编号',width:35},
                     {field:'ser_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
-                    {field:'ser_cfg',title:'配置名',width:200,editor:{type:'validatebox',options:{required:true}}},
-                    {field:'ser_port',title:'端口',width:150,editor:{type:'validatebox',options:{required:true}}},
-                    {field:'ser_srv',title:'所属主机',width:200,editor:{type:'validatebox',options:{required:true}}},
-                    {field:'desc',title:'备注',width:100,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'ser_cfg',title:'配置名',width:150,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'ser_port',title:'服务端口',width:150,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'ser_srv',title:'所属主机',width:150,editor:{type:'validatebox',options:{required:true}}},
+                    {field:'desc',title:'备注',width:250,editor:{type:'validatebox',options:{required:true}}},
                     {field:'ser_stat',title:'服务状态',width:50,align:'center'},
                     {field:'port_stat',title:'端口状态',width:50,align:'center'},
                     {field:'opt',title:'操作',width:50,align:'center',
                         formatter: function(value, row, index) {
-                            var str = '<a name="check-btn" href="javascript:check_stat();"  title="check">检查</a>';   
+                            var str = '<a name="check-btn" href="javascript:check_stat();"  title="check">检查</a>';
                             return str; 
                         }   
                     },  
@@ -75,20 +45,123 @@
                     $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-reload'});
                 },
             });
-        })
+
+            /*************************点击添加服务******************************/
+            $('#service_add').bind('click', function(){
+                $('#service').dialog({closed:false,cache:false});
+                $('#fm').form('clear');
+                $('#modify').hide()
+                $('#add').show()
+            });
+        });
+
+
     </script>
-    <!-- toolbar -->
-    <div id="tb" style="padding:3px;height:auto">
-        <div style="margin-bottom:26px">
-            <div style="float:left;margin-left:10px">
-                <a id="service_add" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
-                <a id="service_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
-                <a id="service_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
-                <a id="service_check" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">查看状态</a>
-            </div>
+
+    <script>
+        function check_stat() {
+                var row_select = $('#service_table').datagrid('getSelected')
+                var ser_cfg = row_select.ser_cfg
+                var ser_port = row_select.ser_port
+                var ser_srv = row_select.ser_srv
+                console.log("in")
+                $.ajax({
+                    type:"POSt",
+                    url:"/check_stat/",
+                    data:{ser_cfg,ser_port,ser_srv},
+                    success: function (msg) {
+                        $('#service_table').datagrid('updateRow',{
+                            index:$('#service_table').datagrid('getRowIndex',$('#service_table').datagrid('getSelected')),
+                            row:{
+                                ser_stat: msg.ser_stat,
+                                port_stat:msg.port_stat,
+                            }
+                        })
+                        $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-reload'});
+                    }
+                })
+            }
+
+        function service_add() {
+            if ($("input[name='ser_id']").val() == "") {
+                $.messager.alert('警告','输入内容不可为空!','warning'); 
+                $("input[name='ser_id']").focus();
+            } else {
+                $.ajax({
+                    type: "GET", 
+                    url: "/service_add/",
+                    data: $("#fm").serialize(), 
+                    success: function(msg){
+                        if(msg.accmsg){
+                            $.messager.alert('恭喜',msg.accmsg,'info');
+                            location.href = "/serviceinfo_json/";
+                        }else{
+                            $.messager.alert('警告',msg.errmsg,'error'); 
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    <style>
+        .datagrid-row-selected{
+            background: #fff;
+            color:#030303;
+        }
+    </style>
+</head>
+
+<body class="easyui-layout">
+
+    <div data-options="region:'center',title:'服务配置',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="service_table" data-options="toolbar:'#tb'"></table>
         </div>
     </div>
 
+    <!-- toolbar -->
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:1px">
+                <a id="service_add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+                <a id="service_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="service_delete" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <a id="service_check" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">查看状态</a>
+        </div>
+    </div>
+
+    <div id="service" class="easyui-dialog" closed=true title=">>>新增服务进程" style="width:400px;padding:20px 40px">
+        <form id="fm" method="get">
+            <p>
+                服务编号:
+                <input name="ser_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                服务名称:
+                <input name="ser_name" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                配 置 名:
+                <input name="ser_cfg" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                服务端口:
+                <input name="ser_port" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                所属主机:
+                <input name="ser_srv" class="easyui-textbox" style="width:200px;height:32px" required="true">
+            </p>
+            <p>
+                备注:&nbsp&nbsp
+                <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
+            </p>
+            <div style="text-align: center">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="service_add()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="service_mod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#service').dialog('close')">取消</a>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
