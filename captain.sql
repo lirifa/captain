@@ -42,15 +42,17 @@ DROP TABLE IF EXISTS `acct_hold`;
 
 CREATE TABLE `acct_hold` (
   `trd_date` char(8) NOT NULL COMMENT '交易日期',
-  `variety` varchar(32) NOT NULL COMMENT '品种名',
+  `trdacct` varchar(32) NOT NULL COMMENT '资金账户号',
   `instrument` varchar(32) NOT NULL COMMENT '合约名',
+  `variety` varchar(32) NOT NULL COMMENT '品种名',
   `long_pos` int(11) NOT NULL COMMENT '买持仓',
   `avg_buy_price` decimal(17,3) NOT NULL COMMENT '买均价',
   `short_pos` int(11) NOT NULL COMMENT '卖持仓',
   `avg_sell_price` decimal(17,3) NOT NULL COMMENT '卖均价',
   `pos_pl` decimal(17,2) NOT NULL COMMENT '持仓盯市盈亏',
   `margin_occupied` decimal(17,2) NOT NULL COMMENT '保证金占用',
-  `sh_mark` char(1) NOT NULL COMMENT '投保标识'
+  `sh_mark` char(1) NOT NULL COMMENT '投保标识',
+  PRIMARY KEY (`trd_date`,`instrument`,`trdacct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `acct_hold` */
@@ -97,11 +99,11 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permissi_content_type_id_51277a81_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 /*Data for the table `auth_permission` */
 
-insert  into `auth_permission`(`id`,`name`,`content_type_id`,`codename`) values (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add productinfo',7,'add_productinfo'),(20,'Can change productinfo',7,'change_productinfo'),(21,'Can delete productinfo',7,'delete_productinfo'),(22,'Can add serverinfo',8,'add_serverinfo'),(23,'Can change serverinfo',8,'change_serverinfo'),(24,'Can delete serverinfo',8,'delete_serverinfo'),(25,'Can add strategyinfo',9,'add_strategyinfo'),(26,'Can change strategyinfo',9,'change_strategyinfo'),(27,'Can delete strategyinfo',9,'delete_strategyinfo');
+insert  into `auth_permission`(`id`,`name`,`content_type_id`,`codename`) values (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add productinfo',7,'add_productinfo'),(20,'Can change productinfo',7,'change_productinfo'),(21,'Can delete productinfo',7,'delete_productinfo'),(22,'Can add serverinfo',8,'add_serverinfo'),(23,'Can change serverinfo',8,'change_serverinfo'),(24,'Can delete serverinfo',8,'delete_serverinfo'),(25,'Can add strategyinfo',9,'add_strategyinfo'),(26,'Can change strategyinfo',9,'change_strategyinfo'),(27,'Can delete strategyinfo',9,'delete_strategyinfo'),(28,'Can add user',10,'add_user'),(29,'Can change user',10,'change_user'),(30,'Can delete user',10,'delete_user'),(31,'Can add acct',11,'add_acct'),(32,'Can change acct',11,'change_acct'),(33,'Can delete acct',11,'delete_acct'),(34,'Can add master_acct',12,'add_master_acct'),(35,'Can change master_acct',12,'change_master_acct'),(36,'Can delete master_acct',12,'delete_master_acct'),(37,'Can add sub_acct',13,'add_sub_acct'),(38,'Can change sub_acct',13,'change_sub_acct'),(39,'Can delete sub_acct',13,'delete_sub_acct'),(40,'Can add broker',14,'add_broker'),(41,'Can change broker',14,'change_broker'),(42,'Can delete broker',14,'delete_broker'),(43,'Can add fund_change_log',15,'add_fund_change_log'),(44,'Can change fund_change_log',15,'change_fund_change_log'),(45,'Can delete fund_change_log',15,'delete_fund_change_log'),(46,'Can add acct_hold',16,'add_acct_hold'),(47,'Can change acct_hold',16,'change_acct_hold'),(48,'Can delete acct_hold',16,'delete_acct_hold');
 
 /*Table structure for table `auth_user` */
 
@@ -125,7 +127,7 @@ CREATE TABLE `auth_user` (
 
 /*Data for the table `auth_user` */
 
-insert  into `auth_user`(`id`,`password`,`last_login`,`is_superuser`,`username`,`first_name`,`last_name`,`email`,`is_staff`,`is_active`,`date_joined`) values (1,'pbkdf2_sha256$20000$essOsaZ1ibAb$7hk4ymJebLlyQzuu7ugmKIBvPm+VBEukRBeFtF+FpRk=','2017-02-03 03:00:15',1,'fafa','','','199201680@163.com',1,1,'2017-01-20 07:24:21');
+insert  into `auth_user`(`id`,`password`,`last_login`,`is_superuser`,`username`,`first_name`,`last_name`,`email`,`is_staff`,`is_active`,`date_joined`) values (1,'pbkdf2_sha256$20000$essOsaZ1ibAb$7hk4ymJebLlyQzuu7ugmKIBvPm+VBEukRBeFtF+FpRk=','2017-02-21 08:36:00',1,'fafa','','','199201680@163.com',1,1,'2017-01-20 07:24:21');
 
 /*Table structure for table `auth_user_groups` */
 
@@ -253,11 +255,11 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_3ec8c61c_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 /*Data for the table `django_content_type` */
 
-insert  into `django_content_type`(`id`,`app_label`,`model`) values (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(7,'operation','productinfo'),(8,'operation','serverinfo'),(9,'operation','strategyinfo'),(6,'sessions','session');
+insert  into `django_content_type`(`id`,`app_label`,`model`) values (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(11,'operation','acct'),(16,'operation','acct_hold'),(14,'operation','broker'),(15,'operation','fund_change_log'),(12,'operation','master_acct'),(7,'operation','productinfo'),(8,'operation','serverinfo'),(9,'operation','strategyinfo'),(13,'operation','sub_acct'),(10,'operation','user'),(6,'sessions','session');
 
 /*Table structure for table `django_migrations` */
 
@@ -269,11 +271,11 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 /*Data for the table `django_migrations` */
 
-insert  into `django_migrations`(`id`,`app`,`name`,`applied`) values (1,'contenttypes','0001_initial','2017-01-20 07:22:00'),(2,'auth','0001_initial','2017-01-20 07:22:12'),(3,'admin','0001_initial','2017-01-20 07:22:13'),(4,'contenttypes','0002_remove_content_type_name','2017-01-20 07:22:14'),(5,'auth','0002_alter_permission_name_max_length','2017-01-20 07:22:15'),(6,'auth','0003_alter_user_email_max_length','2017-01-20 07:22:15'),(7,'auth','0004_alter_user_username_opts','2017-01-20 07:22:15'),(8,'auth','0005_alter_user_last_login_null','2017-01-20 07:22:16'),(9,'auth','0006_require_contenttypes_0002','2017-01-20 07:22:16'),(10,'operation','0001_initial','2017-01-20 07:22:16'),(11,'sessions','0001_initial','2017-01-20 07:22:17'),(12,'operation','0002_auto_20170120_1524','2017-01-20 07:25:35'),(13,'operation','0003_serverinfo','2017-01-20 11:10:19'),(14,'operation','0004_auto_20170120_1913','2017-01-20 11:13:46');
+insert  into `django_migrations`(`id`,`app`,`name`,`applied`) values (1,'contenttypes','0001_initial','2017-01-20 07:22:00'),(2,'auth','0001_initial','2017-01-20 07:22:12'),(3,'admin','0001_initial','2017-01-20 07:22:13'),(4,'contenttypes','0002_remove_content_type_name','2017-01-20 07:22:14'),(5,'auth','0002_alter_permission_name_max_length','2017-01-20 07:22:15'),(6,'auth','0003_alter_user_email_max_length','2017-01-20 07:22:15'),(7,'auth','0004_alter_user_username_opts','2017-01-20 07:22:15'),(8,'auth','0005_alter_user_last_login_null','2017-01-20 07:22:16'),(9,'auth','0006_require_contenttypes_0002','2017-01-20 07:22:16'),(10,'operation','0001_initial','2017-01-20 07:22:16'),(11,'sessions','0001_initial','2017-01-20 07:22:17'),(12,'operation','0002_auto_20170120_1524','2017-01-20 07:25:35'),(13,'operation','0003_serverinfo','2017-01-20 11:10:19'),(14,'operation','0004_auto_20170120_1913','2017-01-20 11:13:46'),(15,'operation','0002_auto_20170207_1528','2017-02-22 08:36:43'),(16,'operation','0003_auto_20170207_1543','2017-02-22 08:36:43');
 
 /*Table structure for table `django_session` */
 
@@ -296,16 +298,19 @@ insert  into `django_session`(`session_key`,`session_data`,`expire_date`) values
 DROP TABLE IF EXISTS `feerate`;
 
 CREATE TABLE `feerate` (
-  `bid` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bid` int(11) NOT NULL COMMENT '券商id',
   `exchange_id` varchar(32) NOT NULL COMMENT '交易所',
   `contract_id` varchar(32) NOT NULL COMMENT '合约标识',
-  `biz_type` char(1) NOT NULL,
-  `feerate_by_amt` decimal(15,8) NOT NULL,
-  `feerate_by_qty` decimal(15,8) NOT NULL,
-  PRIMARY KEY (`bid`,`exchange_id`,`contract_id`,`biz_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `biz_type` char(1) NOT NULL COMMENT '开平标志',
+  `feerate_by_amt` decimal(15,8) NOT NULL COMMENT '按金额（成交金额百分比）',
+  `feerate_by_qty` decimal(15,8) NOT NULL COMMENT '按数量（每手收费）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `feerate` */
+
+insert  into `feerate`(`id`,`bid`,`exchange_id`,`contract_id`,`biz_type`,`feerate_by_amt`,`feerate_by_qty`) values (1,1,'CFFEX','AU','0','0.00020000','1.20000000');
 
 /*Table structure for table `fts_order` */
 
@@ -399,6 +404,21 @@ CREATE TABLE `fund_change_log` (
 
 insert  into `fund_change_log`(`log_id`,`acct_type`,`acct_id`,`change_fund`,`desc`,`log_tm`) values (1,'acct','10007177','1.00','哈哈哈哈','2017-02-20 07:54:57'),(2,'master_acct','66660000201','1.00','test','2017-02-20 08:25:55'),(3,'master_acct','66660000201','1.00','test2','2017-02-20 08:26:57'),(4,'sub_acct','66660000000701','1.00','1','2017-02-20 08:50:40');
 
+/*Table structure for table `gwinfo` */
+
+DROP TABLE IF EXISTS `gwinfo`;
+
+CREATE TABLE `gwinfo` (
+  `gw_id` varchar(4) NOT NULL COMMENT 'gateway_id',
+  `gw_name` varchar(32) NOT NULL COMMENT 'gateway_name',
+  `stat` char(1) NOT NULL COMMENT '状态',
+  `clear_tm` datetime NOT NULL COMMENT '清算时间',
+  `oper` varchar(32) NOT NULL COMMENT '执行人',
+  PRIMARY KEY (`gw_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `gwinfo` */
+
 /*Table structure for table `marginrateinfo` */
 
 DROP TABLE IF EXISTS `marginrateinfo`;
@@ -450,6 +470,27 @@ CREATE TABLE `master_acct` (
 
 insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期现套利-期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55'),('66660000201','黄金白银期现套利-现货账号','16039','3.00','2.00','3.00','4.00','7.00');
 
+/*Table structure for table `master_acct_hold` */
+
+DROP TABLE IF EXISTS `master_acct_hold`;
+
+CREATE TABLE `master_acct_hold` (
+  `trd_date` char(8) NOT NULL COMMENT '交易日期',
+  `acc_num` varchar(32) NOT NULL COMMENT '总账号',
+  `instrument` varchar(32) NOT NULL COMMENT '合约名',
+  `variety` varchar(32) NOT NULL COMMENT '品种名',
+  `long_pos` int(11) NOT NULL COMMENT '买持仓',
+  `avg_buy_price` decimal(17,3) NOT NULL COMMENT '买均价',
+  `short_pos` int(11) NOT NULL COMMENT '卖持仓',
+  `avg_sell_price` decimal(17,3) NOT NULL COMMENT '卖均价',
+  `pos_pl` decimal(17,2) NOT NULL COMMENT '持仓订市盈亏',
+  `margin_occupied` decimal(17,2) NOT NULL COMMENT '保证金占用',
+  `sh_mark` char(1) NOT NULL COMMENT '投保标识',
+  PRIMARY KEY (`trd_date`,`acc_num`,`instrument`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `master_acct_hold` */
+
 /*Table structure for table `productinfo` */
 
 DROP TABLE IF EXISTS `productinfo`;
@@ -458,12 +499,13 @@ CREATE TABLE `productinfo` (
   `pid` int(11) NOT NULL,
   `pname` varchar(32) NOT NULL,
   `admin` varchar(32) NOT NULL,
-  `desc` varchar(128) NOT NULL
+  `desc` varchar(128) NOT NULL,
+  PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `productinfo` */
 
-insert  into `productinfo`(`pid`,`pname`,`admin`,`desc`) values (1,'洪荒世纪1号','丽海弘金','哈哈嘿嘿'),(2,'弘金世纪1号','丽海弘金','嘿嘿好'),(3,'博弈安盈1号','丽海弘金','测试'),(4,'南华自营','世纪盛元','测试'),(5,'信达自营','丽海弘金','嘿嘿好'),(6,'弘金华银','世纪盛元','测试');
+insert  into `productinfo`(`pid`,`pname`,`admin`,`desc`) values (1,'洪荒世纪1号','丽海弘金','哈哈嘿嘿'),(2,'弘金世纪1号','丽海弘金','嘿嘿好'),(3,'博益安盈1号','丽海弘金','测试'),(4,'南华自营','世纪盛元','测试'),(5,'信达自营','丽海弘金','嘿嘿好'),(6,'弘金华银','世纪盛元','测试');
 
 /*Table structure for table `serverinfo` */
 
@@ -485,6 +527,24 @@ CREATE TABLE `serverinfo` (
 
 insert  into `serverinfo`(`srvnum`,`ip`,`user`,`passwd`,`port`,`productadmin`,`desc`) values ('prod001','172.24.58.1','pmops','pmops@#$',22,'丽海弘金','弘金自营产品'),('prod002','172.24.10.34','pmops','pmops@#$',22,'丽海弘金','博弈安盈产品'),('srvnh001','172.24.54.1','pmops','pmops@#$',22018,'世纪盛元','南华服务器'),('srvxd001','172.18.12.128','pmops','pmops@#$',22,'丽海弘金','信达服务器'),('srvzx001','172.27.13.179','pmops','pmops@#$',22,'世纪盛元','中信服务器'),('trd004','172.24.53.4','pmops','pmops@#$',22,'---','交易服务器');
 
+/*Table structure for table `serviceinfo` */
+
+DROP TABLE IF EXISTS `serviceinfo`;
+
+CREATE TABLE `serviceinfo` (
+  `ser_id` varchar(8) NOT NULL COMMENT '服务id',
+  `ser_name` varchar(32) NOT NULL COMMENT '服务名称',
+  `ser_cfg` varchar(32) NOT NULL COMMENT '服务对应配置名',
+  `ser_port` int(11) NOT NULL COMMENT '服务端口',
+  `ser_srv` varchar(32) NOT NULL COMMENT '所属主机',
+  `desc` varchar(32) NOT NULL COMMENT '备注',
+  PRIMARY KEY (`ser_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `serviceinfo` */
+
+insert  into `serviceinfo`(`ser_id`,`ser_name`,`ser_cfg`,`ser_port`,`ser_srv`,`desc`) values ('118','ManualTrader','ss-HjhyMT',10304,'srvzx001','弘金华银手动下单策略'),('120','SS-ICS500port','ss-hjhyICS500port',10311,'srvzx001','弘金华银500port'),('121','ss-HHHH','ss-heglj',100304,'srvzx001','test');
+
 /*Table structure for table `strategyinfo` */
 
 DROP TABLE IF EXISTS `strategyinfo`;
@@ -493,6 +553,7 @@ CREATE TABLE `strategyinfo` (
   `sid` int(8) NOT NULL,
   `sname` varchar(32) NOT NULL,
   `scfg` varchar(32) NOT NULL,
+  `ssrv` varchar(32) NOT NULL,
   `port` int(11) NOT NULL,
   `product` int(8) NOT NULL,
   `master_acc` varchar(32) NOT NULL,
@@ -503,7 +564,7 @@ CREATE TABLE `strategyinfo` (
 
 /*Data for the table `strategyinfo` */
 
-insert  into `strategyinfo`(`sid`,`sname`,`scfg`,`port`,`product`,`master_acc`,`sub_acc`,`desc`) values (101,'黄金期现套利','ss-PropAuArb',9019,4,'666600002','666600000001','黄金期现套利策略'),(104,'商品多因子策略','ss-PropComMulti',9069,4,'666600002','666600000004','商品多因子策略'),(105,'商品CTA策略','ss-PropComCta',9063,4,'666600002','666600000001','商品CTA策略'),(106,'黄金跨期套利策略','ss-PropAucal',9033,4,'666600002','666600000006','黄金跨期套利策略'),(107,'白银期现套利策略','ss-PropAgArb',9020,4,'666600002','666600000007','白银期现套利策略');
+insert  into `strategyinfo`(`sid`,`sname`,`scfg`,`ssrv`,`port`,`product`,`master_acc`,`sub_acc`,`desc`) values (101,'黄金期现套利','ss-PropAuArb','srvnh001',9019,4,'666600002','666600000001','黄金期现套利策略'),(104,'商品多因子策略','ss-PropComMulti','srvnh001',9069,4,'666600002','666600000004','商品多因子策略'),(105,'商品CTA策略','ss-PropComCta','prod002',9063,2,'666600002','666600000001','商品CTA策略'),(106,'黄金跨期套利策略','ss-PropAucal','srvnh001',9033,4,'666600002','666600000006','黄金跨期套利策略'),(107,'白银期现套利策略','ss-PropAgArb','srvnh001',9020,4,'666600002','666600000007','白银期现套利策略');
 
 /*Table structure for table `sub_acct` */
 
@@ -524,6 +585,41 @@ CREATE TABLE `sub_acct` (
 /*Data for the table `sub_acct` */
 
 insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`margin_locked`,`buy_margin`,`sell_margin`,`fund_avaril`) values ('666600000001','恒邦黄金-期货交易账号','666600002','3304914.06','1840757.40','1840757.40','0.00','1464156.66'),('66660000000101','恒邦黄金-现货交易账号','66660000201','1.00','4.00','2.00','3.00','5.00'),('666600000004','南华商品多因子交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000005','南华商品CTA策略交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000006','恒邦黄金跨期交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000007','恒邦白银-期货交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('66660000000701','恒邦白银-现货交易账号','66660000201','2.00','4.00','2.00','3.00','6.00');
+
+/*Table structure for table `sub_acct_hold` */
+
+DROP TABLE IF EXISTS `sub_acct_hold`;
+
+CREATE TABLE `sub_acct_hold` (
+  `trd_date` char(8) NOT NULL COMMENT '交易日期',
+  `acc_num` varchar(32) NOT NULL COMMENT '总账号',
+  `instrument` varchar(32) NOT NULL COMMENT '合约名',
+  `variety` varchar(32) NOT NULL COMMENT '品种名',
+  `long_pos` int(11) NOT NULL COMMENT '买持仓',
+  `avg_buy_price` decimal(17,3) NOT NULL COMMENT '买均价',
+  `short_pos` int(11) NOT NULL COMMENT '卖持仓',
+  `avg_sell_price` decimal(17,3) NOT NULL COMMENT '卖均价',
+  `pos_pl` decimal(17,2) NOT NULL COMMENT '持仓订市盈亏',
+  `margin_occupied` decimal(17,2) NOT NULL COMMENT '保证金占用',
+  `sh_mark` char(1) NOT NULL COMMENT '投保标识',
+  PRIMARY KEY (`trd_date`,`acc_num`,`instrument`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `sub_acct_hold` */
+
+/*Table structure for table `userinfo` */
+
+DROP TABLE IF EXISTS `userinfo`;
+
+CREATE TABLE `userinfo` (
+  `username` varchar(50) NOT NULL,
+  `passwd` varchar(50) NOT NULL,
+  `phone_num` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `userinfo` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
