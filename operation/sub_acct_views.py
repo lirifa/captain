@@ -156,6 +156,7 @@ def sub_acct_del(request):
 
 def subacc_combobox_json(request,*param1):
     master_acct = request.GET.get('param1')
+    print master_acct
     if master_acct:
         try:
             sub_info = Sub_acct.objects.filter(master_acct=master_acct)

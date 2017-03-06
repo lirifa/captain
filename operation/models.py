@@ -24,7 +24,7 @@ class Serverinfo(models.Model):
     productadmin = models.CharField(verbose_name='产品管理人',max_length=32) 
     desc = models.CharField(verbose_name="业务描述",max_length=100)
     def __unicode__(self):
-        return self.ip
+        return self.srvnum
     class Meta:
         db_table = 'serverinfo'
 

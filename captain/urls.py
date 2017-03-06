@@ -38,7 +38,10 @@ urlpatterns = [
     url(r'^serviceinfo/$','operation.views.serviceinfo',name='serciceinfo'),
     url(r'^serviceinfo_json/$','operation.views.serviceinfo_json',name='serciceinfo_json'),
     url(r'^service_add/$','operation.views.service_add',name='sercice_add'),
+    url(r'^service_mod/$','operation.views.service_mod',name='sercice_mod'),
+    url(r'^service_del/$','operation.views.service_del',name='sercice_del'),
     url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
+    url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
 
     url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
 
@@ -81,7 +84,7 @@ urlpatterns = [
     url(r'^sub_acct_add/$','operation.views.sub_acct_add',name='sub_acct_add'),
     url(r'^sub_acct_mod/$','operation.views.sub_acct_mod',name='sub_acct_mod'),
     url(r'^sub_acct_del/$','operation.views.sub_acct_del',name='sub_acct_del'),
-    url(r'^strategyinfo/subacc_combobox_json/(.+)$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
+    url(r'^strategyinfo/subacc_combobox_json/(.*)$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
     url(r'^subacc_combobox_json/$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
     url(r'^sub_acct_fund_change/$','operation.views.sub_acct_fund_change',name='sub_acct_fund_change'),
 

@@ -22,7 +22,7 @@
                 striped:true,
                 singleSelect: true,
                 pagination: false,
-                idField: 'id',
+                idField: 'ser_id',
                 pageSize: 10,
                 pageList: [10, 15, 20, 25, 100],
                 columns: [[
@@ -34,28 +34,145 @@
                     {field:'desc',title:'备注',width:250,editor:{type:'validatebox',options:{required:true}}},
                     {field:'ser_stat',title:'服务状态',width:50,align:'center'},
                     {field:'port_stat',title:'端口状态',width:50,align:'center'},
-                    {field:'opt',title:'操作',width:50,align:'center',
+                    {field:'opt',title:'操作',width:100,align:'center',
                         formatter: function(value, row, index) {
                             var str = '<a name="check-btn" href="javascript:check_stat();"  title="check">检查</a>';
                             return str; 
-                        }   
-                    },  
+                        } 
+                    }, 
                 ]], 
                 onLoadSuccess:function(data){   
                     $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-reload'});
                 },
+                
             });
 
-            /*************************点击添加服务******************************/
+        /*************************点击添加服务******************************/
             $('#service_add').bind('click', function(){
-                $('#service').dialog({closed:false,cache:false});
+                $('#service').dialog({ 
+                    title:"新增服务进程",
+                    closed:false,
+                    cache:false
+                });
                 $('#fm').form('clear');
                 $('#modify').hide()
                 $('#add').show()
             });
+
+
+        /*************************加载服务器combobox******************************/
+            $('#check_all_server').combobox({
+                width:100,
+                editable:false,
+                panelHeight:'auto',
+                url:'/serverinfo_combobox_json/',
+                valueField:'srvnum',
+                textField:'srvnum',
+                value:'all',
+                loadFilter : function (data) {
+                    if (data && data instanceof Array) {
+                        data.splice(0, 0, {srvnum: 'all', srvnum: 'all'});
+                    }
+                    return data;
+                },
+                onSelect:function (rec) {
+                    var url = '/serviceinfo_json/'+rec.srvnum
+                    $('#service_table').datagrid('reload',{"ser_srv":rec.srvnum})
+                },
+            })
+
+
+
+        /*************************检查服务器下所有服务、端口状态******************************/
+        $('#service_check').bind('click',function() {
+            var srvnum = $('#check_all_server').val()
+            $.ajax({
+                url: '/ser_check_stat/',
+                type: 'POST',
+                dataType: 'json',
+                data: {srvnum: srvnum},
+                success:function (msg) {
+                    var rows = msg.rows
+                    for (i=0;i < rows.length;i++){
+                        var id = rows[i].ser_id
+                        var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+                        $('#service_table').datagrid('updateRow',{
+                            index: rowIndex,
+                            row:{
+                                ser_stat: rows[i].ser_stat,
+                                port_stat:rows[i].port_stat,
+                            }
+                        })
+                        $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-reload'});
+                    }
+                    
+                }
+            })
+            
         });
 
 
+        /*************************修改服务信息******************************/
+        $('#service_edit').bind('click',function(){
+            var row_select = $('#service_table').datagrid('getSelected'); //返回的是被选中行的对象
+            if (row_select) {
+                if (row_select.length == 1) {
+                    $.messager.alert('警告', row_select.length, 'warning');
+                } else {
+                    $('#service').dialog({
+                        closed: false,
+                        title: '修改服务信息',
+                        cache: false
+                    });
+                    $('#fm').form("load", row_select);
+                    $('input[name="ser_id"]').prev().prop('disabled', true)
+                    $('#add').hide()
+                    $('#modify').show()
+                }
+            } else {
+                $.messager.alert('警告', '请先选中需要修改行！', 'warning');
+            }
+        })
+
+        /*************************删除服务进程******************************/
+        $('#service_delete').bind('click', function() {
+            var services = "";
+            var row_select = $('#service_table').datagrid('getSelections'); //返回的是被选中行的对象
+            console.log(row_select)
+            for (var i = 0; i < row_select.length; i++) {
+                services += '#' + row_select[i].ser_id;
+            }
+            if (services == "") {
+                $.messager.alert('警告', '请先选中需要删除的服务进程！', 'warning');
+                return false;
+            } else {
+                $.messager.confirm('确认', '您确认想要删除此服务进程吗？', function(r) {
+                    if (r) {
+                        $.ajax({
+                            type: "GET",
+                            cache: false,
+                            url: "/service_del/",
+                            data: {
+                                "delinfo": services
+                            },
+                            dataType: 'json',
+                            success: function(msg) {
+                                if (msg.accmsg) {
+                                    $.messager.alert('message','服务进程'+msg.accmsg+"删除成功！" );
+                                    $('#service_table').datagrid('reload', {"ser_srv":"all"});
+                                } else {
+                                    $.messager.alert('错误', msg.errmsg);
+                                    $('#service_table').datagrid('reload', {});
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+
+});
     </script>
 
     <script>
@@ -102,10 +219,32 @@
                 });
             }
         }
+
+        function service_mod() {
+            if ($("input[name='ser_id']").val() == "") {
+                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
+                    $("input[name='ser_name']").focus();
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/service_mod/",
+                        data: $("#fm").serialize(),
+                        success: function(msg) {
+                            if (msg.accmsg) {
+                                $.messager.alert('恭喜', msg.accmsg, 'info');
+                                location.href = "/serviceinfo/";
+                            } else {
+                                $.messager.alert('警告', msg.errmsg, 'error');
+                            }
+                        }
+                    });
+                }
+        }
+
     </script>
     <style>
         .datagrid-row-selected{
-            background: #fff;
+            background: #C8C7C7;
             color:#030303;
         }
     </style>
@@ -125,11 +264,12 @@
                 <a id="service_add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
                 <a id="service_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="service_delete" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
-                <a id="service_check" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">查看状态</a>
+                <input type = "text" id="check_all_server" placeholder="选择服务器">
+                <a id="service_check" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">检查</a>
         </div>
     </div>
 
-    <div id="service" class="easyui-dialog" closed=true title=">>>新增服务进程" style="width:400px;padding:20px 40px">
+    <div id="service" class="easyui-dialog" closed=true  style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
             <p>
                 服务编号:
