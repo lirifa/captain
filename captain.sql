@@ -543,8 +543,6 @@ CREATE TABLE `serviceinfo` (
 
 /*Data for the table `serviceinfo` */
 
-insert  into `serviceinfo`(`ser_id`,`ser_name`,`ser_cfg`,`ser_port`,`ser_srv`,`desc`) values ('118','ManualTrader','ss-HjhyMT',10304,'srvzx001','弘金华银手动下单策略'),('120','SS-ICS500port','ss-hjhyICS500port',10311,'srvzx001','弘金华银500port'),('121','ss-HHHH','ss-heglj',100304,'srvzx001','test');
-
 /*Table structure for table `strategyinfo` */
 
 DROP TABLE IF EXISTS `strategyinfo`;
