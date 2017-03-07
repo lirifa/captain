@@ -169,8 +169,9 @@ def check_stat(request):
     print ip
     user = server.user
     port = server.port
-    #sevice_status = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
-    sevice_status=('172.27.13.179', 'ss-HjhyComMulti,up,up\r\n',)
+    #theUser = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
+    #service_status = theUser.workrun()
+    sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,DOWN\r\n',)
     all_info = sevice_status[1].split("\r\n")[0].split(",")
     cfg_name = all_info[0]
     process_statu = all_info[1]
@@ -199,9 +200,10 @@ def ser_check_stat(request):
                     ser_id =  service_info[i].ser_id
                     ser_cfg = service_info[i].ser_cfg
                     ser_port = service_info[i].ser_port
-                    #sevice_status = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
-                    sevice_status=('172.27.13.179', 'ss-HjhyComMulti,up,up\r\n',)
-                    all_info = sevice_status[1].split("\r\n")[0].split(",")
+                    #theUser = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
+                    #service_status=theUser.workrun()
+                    service_status=('172.27.13.179', 'ss-HjhyComMulti,UP,DOWN\r\n',)
+                    all_info = service_status[1].split("\r\n")[0].split(",")
                     cfg_name = all_info[0]
                     process_statu = all_info[1]
                     port_statu = all_info[2]
@@ -221,9 +223,10 @@ def ser_check_stat(request):
                 ser_id = service_info[i].ser_id
                 ser_cfg = service_info[i].ser_cfg
                 ser_port = service_info[i].ser_port
-                #sevice_status = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
-                sevice_status=('172.27.13.179', 'ss-HjhyComMulti,up,up\r\n',)
-                all_info = sevice_status[1].split("\r\n")[0].split(",")
+                #theUser = AnsibleWork(ip,port,user,"script","./check_services.py %s:%s#"%(ser_cfg,ser_port))
+                #service_status = theUser.workrun()
+                service_status=('172.27.13.179', 'ss-HjhyComMulti,UP,DOWN\r\n',)
+                all_info = service_status[1].split("\r\n")[0].split(",")
                 cfg_name = all_info[0]
                 process_statu = all_info[1]
                 port_statu = all_info[2]

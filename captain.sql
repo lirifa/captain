@@ -1,23 +1,16 @@
 /*
 SQLyog Ultimate v11.24 (32 bit)
-MySQL - 5.6.33-log : Database - captain
+MySQL - 5.6.33-log : Database - captain量化运维清算数据库
 *********************************************************************
-*/
-
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`captain` /*!40100 DEFAULT CHARACTER SET utf8 */;
+*/CREATE DATABASE IF NOT EXISTS captain;
+GRANT ALL ON captain.* TO 'pmops'@'%';
+GRANT ALL ON captain.* TO 'pmops'@'localhost';
+GRANT ALL ON captain.* TO 'pmops'@'127.0.0.1';
 
 USE `captain`;
 
 /*Table structure for table `acct` */
-
+--资金账户表
 DROP TABLE IF EXISTS `acct`;
 
 CREATE TABLE `acct` (
@@ -37,7 +30,7 @@ CREATE TABLE `acct` (
 insert  into `acct`(`trdacct`,`acc_name`,`bid`,`pid`,`equity`,`margin_locked`,`fund_avaril`,`risk_degree`) values ('10007177','南华期货交易资金账户',1,4,'11.02','2.00','13.02','4'),('16039','恒邦黄金交易账户',5,4,'5617652.03','2581561.53','3026090.50','46.00%');
 
 /*Table structure for table `acct_hold` */
-
+--资金账户持仓表
 DROP TABLE IF EXISTS `acct_hold`;
 
 CREATE TABLE `acct_hold` (
@@ -164,7 +157,7 @@ CREATE TABLE `auth_user_user_permissions` (
 /*Data for the table `auth_user_user_permissions` */
 
 /*Table structure for table `broker` */
-
+--券商表
 DROP TABLE IF EXISTS `broker`;
 
 CREATE TABLE `broker` (
@@ -210,7 +203,7 @@ CREATE TABLE `cusfund` (
 /*Data for the table `cusfund` */
 
 /*Table structure for table `delayfeeinfo` */
-
+--递延费率表
 DROP TABLE IF EXISTS `delayfeeinfo`;
 
 CREATE TABLE `delayfeeinfo` (
@@ -294,7 +287,7 @@ CREATE TABLE `django_session` (
 insert  into `django_session`(`session_key`,`session_data`,`expire_date`) values ('piqorpgbun2dsl8l91ikw8hr92h5fxhj','MjZiODZkNzlmY2FiY2Y1ZDg4MDFjNTFkN2RiZWFjYzk1OTM5Y2M2Mjp7Il9hdXRoX3VzZXJfaGFzaCI6IjkyOWFkNTEzMzcyNjE2YjBkZTRiMWU2Njk5OGRlZjRhMzhkZmRiMjMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=','2017-02-17 03:00:15');
 
 /*Table structure for table `feerate` */
-
+--费率表
 DROP TABLE IF EXISTS `feerate`;
 
 CREATE TABLE `feerate` (
@@ -313,7 +306,7 @@ CREATE TABLE `feerate` (
 insert  into `feerate`(`id`,`bid`,`exchange_id`,`contract_id`,`biz_type`,`feerate_by_amt`,`feerate_by_qty`) values (1,1,'CFFEX','AU','0','0.00020000','1.20000000');
 
 /*Table structure for table `fts_order` */
-
+--订单表
 DROP TABLE IF EXISTS `fts_order`;
 
 CREATE TABLE `fts_order` (
@@ -350,7 +343,7 @@ CREATE TABLE `fts_order` (
 /*Data for the table `fts_order` */
 
 /*Table structure for table `fts_order_his` */
-
+--历史订单表
 DROP TABLE IF EXISTS `fts_order_his`;
 
 CREATE TABLE `fts_order_his` (
@@ -387,7 +380,7 @@ CREATE TABLE `fts_order_his` (
 /*Data for the table `fts_order_his` */
 
 /*Table structure for table `fund_change_log` */
-
+--出入金记录表
 DROP TABLE IF EXISTS `fund_change_log`;
 
 CREATE TABLE `fund_change_log` (
@@ -405,7 +398,7 @@ CREATE TABLE `fund_change_log` (
 insert  into `fund_change_log`(`log_id`,`acct_type`,`acct_id`,`change_fund`,`desc`,`log_tm`) values (1,'acct','10007177','1.00','哈哈哈哈','2017-02-20 07:54:57'),(2,'master_acct','66660000201','1.00','test','2017-02-20 08:25:55'),(3,'master_acct','66660000201','1.00','test2','2017-02-20 08:26:57'),(4,'sub_acct','66660000000701','1.00','1','2017-02-20 08:50:40');
 
 /*Table structure for table `gwinfo` */
-
+--清算信息表
 DROP TABLE IF EXISTS `gwinfo`;
 
 CREATE TABLE `gwinfo` (
@@ -436,7 +429,7 @@ CREATE TABLE `marginrateinfo` (
 /*Data for the table `marginrateinfo` */
 
 /*Table structure for table `marketinfo` */
-
+--交易所信息表
 DROP TABLE IF EXISTS `marketinfo`;
 
 CREATE TABLE `marketinfo` (
@@ -451,7 +444,7 @@ CREATE TABLE `marketinfo` (
 insert  into `marketinfo`(`stkex`,`exchange_id`,`market_name`) values ('0','SZ','深交所'),('1','SH','上交所'),('5','CFFEX','中金所'),('6','SHFE','上期所'),('7','DCE','大商所'),('8','CZCE','郑商所'),('9','SGE','金交所');
 
 /*Table structure for table `master_acct` */
-
+--主账号信息表
 DROP TABLE IF EXISTS `master_acct`;
 
 CREATE TABLE `master_acct` (
@@ -471,7 +464,7 @@ CREATE TABLE `master_acct` (
 insert  into `master_acct`(`acc_num`,`acc_name`,`trdacct`,`equity`,`buy_margin`,`sell_margin`,`margin_locked`,`fund_avaril`) values ('666600002','黄金白银期现套利-期货账号','10007177','5051487.10','184680.85','2005858.70','2190539.55','2860947.55'),('66660000201','黄金白银期现套利-现货账号','16039','3.00','2.00','3.00','4.00','7.00');
 
 /*Table structure for table `master_acct_hold` */
-
+--主账号持仓表
 DROP TABLE IF EXISTS `master_acct_hold`;
 
 CREATE TABLE `master_acct_hold` (
@@ -492,7 +485,7 @@ CREATE TABLE `master_acct_hold` (
 /*Data for the table `master_acct_hold` */
 
 /*Table structure for table `productinfo` */
-
+--产品信息表
 DROP TABLE IF EXISTS `productinfo`;
 
 CREATE TABLE `productinfo` (
@@ -508,7 +501,7 @@ CREATE TABLE `productinfo` (
 insert  into `productinfo`(`pid`,`pname`,`admin`,`desc`) values (1,'洪荒世纪1号','丽海弘金','哈哈嘿嘿'),(2,'弘金世纪1号','丽海弘金','嘿嘿好'),(3,'博益安盈1号','丽海弘金','测试'),(4,'南华自营','世纪盛元','测试'),(5,'信达自营','丽海弘金','嘿嘿好'),(6,'弘金华银','世纪盛元','测试');
 
 /*Table structure for table `serverinfo` */
-
+--服务器主机信息表
 DROP TABLE IF EXISTS `serverinfo`;
 
 CREATE TABLE `serverinfo` (
@@ -528,7 +521,7 @@ CREATE TABLE `serverinfo` (
 insert  into `serverinfo`(`srvnum`,`ip`,`user`,`passwd`,`port`,`productadmin`,`desc`) values ('prod001','172.24.58.1','pmops','pmops@#$',22,'丽海弘金','弘金自营产品'),('prod002','172.24.10.34','pmops','pmops@#$',22,'丽海弘金','博弈安盈产品'),('srvnh001','172.24.54.1','pmops','pmops@#$',22018,'世纪盛元','南华服务器'),('srvxd001','172.18.12.128','pmops','pmops@#$',22,'丽海弘金','信达服务器'),('srvzx001','172.27.13.179','pmops','pmops@#$',22,'世纪盛元','中信服务器'),('trd004','172.24.53.4','pmops','pmops@#$',22,'---','交易服务器');
 
 /*Table structure for table `serviceinfo` */
-
+--服务进程信息表
 DROP TABLE IF EXISTS `serviceinfo`;
 
 CREATE TABLE `serviceinfo` (
@@ -544,7 +537,7 @@ CREATE TABLE `serviceinfo` (
 /*Data for the table `serviceinfo` */
 
 /*Table structure for table `strategyinfo` */
-
+-- 策略信息表
 DROP TABLE IF EXISTS `strategyinfo`;
 
 CREATE TABLE `strategyinfo` (
@@ -565,7 +558,7 @@ CREATE TABLE `strategyinfo` (
 insert  into `strategyinfo`(`sid`,`sname`,`scfg`,`ssrv`,`port`,`product`,`master_acc`,`sub_acc`,`desc`) values (101,'黄金期现套利','ss-PropAuArb','srvnh001',9019,4,'666600002','666600000001','黄金期现套利策略'),(104,'商品多因子策略','ss-PropComMulti','srvnh001',9069,4,'666600002','666600000004','商品多因子策略'),(105,'商品CTA策略','ss-PropComCta','prod002',9063,2,'666600002','666600000001','商品CTA策略'),(106,'黄金跨期套利策略','ss-PropAucal','srvnh001',9033,4,'666600002','666600000006','黄金跨期套利策略'),(107,'白银期现套利策略','ss-PropAgArb','srvnh001',9020,4,'666600002','666600000007','白银期现套利策略');
 
 /*Table structure for table `sub_acct` */
-
+--子账号信息表
 DROP TABLE IF EXISTS `sub_acct`;
 
 CREATE TABLE `sub_acct` (
@@ -585,7 +578,7 @@ CREATE TABLE `sub_acct` (
 insert  into `sub_acct`(`acc_num`,`acc_name`,`master_acct`,`equity`,`margin_locked`,`buy_margin`,`sell_margin`,`fund_avaril`) values ('666600000001','恒邦黄金-期货交易账号','666600002','3304914.06','1840757.40','1840757.40','0.00','1464156.66'),('66660000000101','恒邦黄金-现货交易账号','66660000201','1.00','4.00','2.00','3.00','5.00'),('666600000004','南华商品多因子交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000005','南华商品CTA策略交易子账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000006','恒邦黄金跨期交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('666600000007','恒邦白银-期货交易账号','666600002','1.00','4.00','2.00','3.00','5.00'),('66660000000701','恒邦白银-现货交易账号','66660000201','2.00','4.00','2.00','3.00','6.00');
 
 /*Table structure for table `sub_acct_hold` */
-
+--子账号持仓表
 DROP TABLE IF EXISTS `sub_acct_hold`;
 
 CREATE TABLE `sub_acct_hold` (
@@ -606,7 +599,7 @@ CREATE TABLE `sub_acct_hold` (
 /*Data for the table `sub_acct_hold` */
 
 /*Table structure for table `userinfo` */
-
+--用户信息表
 DROP TABLE IF EXISTS `userinfo`;
 
 CREATE TABLE `userinfo` (
@@ -618,8 +611,3 @@ CREATE TABLE `userinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `userinfo` */
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

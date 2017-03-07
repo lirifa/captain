@@ -10,125 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
-    <script type="text/javascript">
-    $(function() {
-        var editRow = '';
-        var permission = [{
-            "value": "管理员",
-            "text": "管理员"
-        }, {
-            "value": "IT业务",
-            "text": "IT业务"
-        }];
-        $('#acct_table').datagrid({
-            title: '>>>资金账户列表',
-            url: '/acct_json/',
-            width: '100%',
-            border: true,
-            fitColumns: true,
-            striped:true,
-            singleSelect: true,
-            pagination: false,
-            idField: 'id',
-            pageSize: 10,
-            pageList: [10, 15, 20, 25, 100],
-            columns: [[
-                {field: 'id',title: '序号',width: 35},
-                {field: 'trdacct',title: '资金账户号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
-                {field: 'acc_name',title: '账户名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
-                {field: 'bid',title: '经纪商',width: 200,editor: { type: 'validatebox', options: { required: true }}},
-                {field: 'pid',title: '所属产品',width: 200,editor: { type: 'validatebox', options: { required: true }}},
-                {field: 'equity',title: '客户权益',width: 150,editor: {type: 'validatebox',options: { required: true}}},
-                {field: 'margin_locked',title: '保证金占用',width: 150,editor: {type: 'validatebox',options: { required: true}}},
-                {field: 'fund_avaril',title: '可用资金',width: 150,editor: { type: 'validatebox', options: { required: true }}},
-                {field: 'risk_degree',title: '风险度',width: 200,editor: { type: 'validatebox', options: { required: true,}}}
-            ]],
-        });
-
-        /*************************点击添加资金账户******************************/
-        $('#acct_add').bind('click', function() {
-            $('#acct').dialog({
-                closed: false,
-                title: '新增资金账户',
-                cache: false
-            });
-            $('#fm').form('clear');
-            $('#modify').hide()
-            $('#add').show()
-        });
-
-        /**************************弹出出入金界面*******************************************/
-        $('#fund_change_btn').bind('click', function() {
-            $('#fund_change').dialog({
-                closed: false,
-                title: '出入金',
-                cache: false
-            });
-        });
-
-        /*************************点击修改资产账户信息******************************/
-        $('#acct_edit').bind('click', function() {
-            var row_select = $('#acct_table').datagrid('getSelected'); //返回的是被选中行的对象
-            if (row_select) {
-                if (row_select.length == 1) {
-                    $.messager.alert('警告', row_select.length, 'warning');
-                } else {
-                    $('#acct').dialog({
-                        closed: false,
-                        title: '编辑资产账户信息',
-                        cache: false
-                    });
-                    $('#fm').form("load", row_select);
-                    $('input[name="trdacct"]').prev().prop('disabled', true)
-                    $('#add').hide()
-                    $('#modify').show()
-                }
-            } else {
-                $.messager.alert('警告', '请先选中需要修改行！', 'warning');
-            }
-        });
-
-
-        /*************************点击删除产品******************************/
-        $('#acct_delete').bind('click', function() {
-            var trdaccts = "";
-            var row_select = $('#acct_table').datagrid('getSelections'); //返回的是被选中行的对象
-            console.log(row_select)
-            for (var i = 0; i < row_select.length; i++) {
-                trdaccts += '#' + row_select[i].trdacct;
-            }
-            if (trdaccts == "") {
-                $.messager.alert('警告', '请先选中需要删除的资金账户！', 'warning');
-                return false;
-            } else {
-                $.messager.confirm('确认', '您确认想要删除此资金账户吗？', function(r) {
-                    if (r) {
-                        $.ajax({
-                            type: "GET",
-                            cache: false,
-                            url: "/acct_del/",
-                            data: {
-                                "delinfo": trdaccts
-                            },
-                            dataType: 'json',
-                            success: function(msg) {
-                                if (msg.accmsg) {
-                                    $.messager.alert('message' + msg.accmsg, 'info');
-                                    $('#acct_table').datagrid('reload', {});
-                                } else {
-                                    $.messager.alert('错误', msg.errmsg);
-                                    $('#acct_table').datagrid('reload', {});
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
-        
-    });
-    </script>
+    <script type="text/javascript" src="/static/Scripts/acct.js"></script>
 </head>
 
 <body class="easyui-layout">
@@ -142,7 +24,7 @@
                 <a id="acct_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="acct_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
                 <a id="fund_change_btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" plain="true">出入金</a>
-                <!--            <div style="float:right;margin-right:20px">
+                <!--<div style="float:right;margin-right:20px">
                     <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
                 </div> -->
             </div>
@@ -150,36 +32,28 @@
     </div>
     <div id="acct" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>
-                资金账户号:
+            <p>资金账户号:
                 <input name="trdacct" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
             </p>
-            <p>
-                账 户 名 称:
+            <p>账 户 名 称:
                 <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
             </p>
-            <p>
-                经 纪 商:&nbsp&nbsp&nbsp&nbsp
+            <p>经 纪 商:&nbsp&nbsp&nbsp&nbsp
                 <input name="bid" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
             </p>
-            <p>
-                所 属 产 品:
+            <p>所 属 产 品:
                 <input name="pid" class="easyui-combobox " style="width:200px;height:32px" required="false" data-options="panelHeight:'auto',valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
             </p>
-            <p>
-                客 户 权 益:
+            <p>客 户 权 益:
                 <input name="equity" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>
-                保证金占用:
+            <p>保证金占用:
                 <input name="margin_locked" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>
-                可 用 资 金:
+            <p>可 用 资 金:
                 <input name="fund_avaril" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>
-                风 险 度:&nbsp&nbsp&nbsp&nbsp
+            <p>风 险 度:&nbsp&nbsp&nbsp&nbsp
                 <input name="risk_degree" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
             <div style="text-align: center">
@@ -187,68 +61,9 @@
             <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfomod()">修改</a>
             <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#acct').dialog('close')">取消</a>
             </div>
-            <!-- 提交产品信息到后台 -->
-            <script type="text/javascript">
-            document.onkeydown = function(e) {
-                var event = e || window.event;
-                var code = event.keyCode || event.which || event.charCode;
-                if (code == 13) {
-                    acctinfoadd();
-                }
-            }
-            $(function() {
-                $("input[name='trdacct']").focus();
-            });
-
-            function cleardata() {
-                $('#fm').form('clear');
-            }
-
-            function acctinfoadd() {
-                if ($("input[name='trdacct']").val() == "") {
-                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
-                    $("input[name='trdacct']").focus();
-                } else {
-                    $.ajax({
-                        type: "GET",
-                        url: "/acct_add/",
-                        data: $("#fm").serialize(),
-                        success: function(msg) {
-                            if (msg.accmsg) {
-                                $.messager.alert('恭喜', msg.accmsg, 'info');
-                                location.href = "/acct/";
-                            } else {
-                                $.messager.alert('警告', msg.errmsg, 'error');
-                            }
-                        }
-                    });
-                }
-            }
-
-            function acctinfomod() {
-                if ($("input[name='trdacct']").val() == "") {
-                    $.messager.alert('警告', '输入内容不可为空!', 'warning');
-                    $("input[name='trdacct']").focus();
-                } else {
-                    $.ajax({
-                        type: "GET",
-                        url: "/acct_mod/",
-                        data: $("#fm").serialize(),
-                        success: function(msg) {
-                            if (msg.accmsg) {
-                                $.messager.alert('恭喜', msg.accmsg, 'info');
-                                location.href = "/acct/";
-                            } else {
-                                $.messager.alert('警告', msg.errmsg, 'error');
-                            }
-                        }
-                    });
-                }
-            }
-            </script>
+        </form>
     </div>
-    </form>
-    </div>
+
     <div id="fund_change" class="easyui-dialog" closed="true" style="width: 380px;padding: 20px 40px;">
         <form id="fund_change_fm" method="post">
             <p>出 入 金:&nbsp
@@ -264,34 +79,21 @@
             <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin:0 20px">提交</a>
             <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#fund_change').dialog('close')" style="margin:0 20px">取消</a>
             </div>
-            <script>
-            function fund_change() {
-                if ($("input[name='fund_change']").val() == "") {
-                    $.messager.alert('警告', '出入金不可为空!', 'warning');
-                    $("input[name='fund_change']").focus();
-                }
-                else if ($("input[name='change_acct']").val() == ""){
-                    $.messager.alert('警告', '请选取出入金资金账户！!', 'warning');
-                }
-                else{
-                    $.ajax({
-                        type: "POST",
-                        url: "/acct_fund_change/",
-                        data: $("#fund_change_fm").serialize(),
-                        success: function(msg) {
-                            if (msg.accmsg) {
-                                $.messager.alert('恭喜', msg.accmsg, 'info');
-                                location.href = "/acct/";
-                            } else {
-                                $.messager.alert('警告', msg.errmsg, 'error');
-                            }
-                        }
-                    });
-                }
-            }
-            </script>
         </form>
     </div>
+    <!--<script type="text/javascript">
+            document.onkeydown = function(e) {
+                var event = e || window.event;
+                var code = event.keyCode || event.which || event.charCode;
+                if (code == 13) {
+                    acctinfoadd();
+                }
+            }
+            $(function() {
+                $("input[name='trdacct']").focus();
+            });
+            
+        </script> -->
 </body>
 
 </html>

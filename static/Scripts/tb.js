@@ -33,7 +33,7 @@
             })
         },
         tabs: function (options) { 
-		var defaults = {
+        var defaults = {
                 MouseMode: 'mouseover' //鼠标操作绑定类型，当然你可以设为click..更多..
             }
             var options = $.extend(defaults, options);

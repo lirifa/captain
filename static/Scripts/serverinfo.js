@@ -1,0 +1,152 @@
+$(function(){
+
+/***********************************加载datagrid服务器主机信息列表**********************************************/
+    $('#server_table').datagrid({
+        title:'>>>服务器信息列表',
+        url:'/serverinfo_json/',
+        width:'100%',
+        border:true,
+        fitColumns:true,
+        striped:true,
+        singleSelect:true,
+        pagination:false,
+        idField:'id',
+        pageSize:10,
+        pageList:[10,15,20,25,100],
+        columns:[[
+            {field:'id',title:'序号',width:35},
+            {field:'srvnum',title:'服务器编号',width:120,editor:{type:'validatebox',options:{required:true}}},
+            {field:'ip',title:'IP地址',width:200,editor:{type:'validatebox',options:{required:true}}},
+            {field:'user',title:'用户名',width:150,editor:{type:'validatebox',options:{required:true}}},
+            {field:'passwd',title:'密码',width:200,editor:{type:'validatebox',options:{required:true}}},
+            {field:'port',title:'SSH端口',width:100,editor:{type:'validatebox',options:{required:true}}},
+            {field:'productadmin',title:'产品管理人',width:100,editor:{type:'validatebox',options:{required:true}}},
+            {field:'desc',title:'业务描述',width:200,editor:{type:'validatebox',options:{required:true,validType:'strChinese'}}}
+        ]],
+        onLoadSuccess:function(data){
+            $("#server_table").datagrid("hideColumn", "passwd"); // 设置隐藏列    
+            $("#passwd_hide").hide();
+        }
+    })
+/************************************** END ****************************************************************/
+
+
+/*****************************新增服务器主机****************************************************************/
+    $('#server_add').bind('click', function(){
+        $('#server').dialog({closed:false,title:'>>>新增服务器',cache:false});
+        $('#fm').form('clear');
+        $('#modify').hide()
+        $('#add').show()
+    });
+
+    function serverinfoadd() {
+        if ($("input[name='ip']").val() == "") {
+            $.messager.alert('警告','输入内容不可为空!','warning'); 
+            $("input[name='ip']").focus();
+        } else {
+            $.ajax({
+                type: "GET", 
+                url: "/serverinfo_add/",
+                data: $("#fm").serialize(), 
+                success: function(msg){
+                    if(msg.accmsg){
+                        $.messager.alert('恭喜',msg.accmsg,'info');
+                        location.href = "/serverinfo/";
+                    }else{
+                        $.messager.alert('警告',msg.errmsg,'error'); 
+                    }
+                }
+            });
+        }
+    }
+/************************************** END ****************************************************************/
+
+
+/**********************************修改主机信息**************************************************************/
+    $('#user_edit').bind('click', function(){
+        var row_select = $('#server_table').datagrid('getSelected');//返回的是被选中行的对象
+        if(row_select){
+            if(row_select.length == 1){
+                $.messager.alert('警告',row_select.length,'warning');
+            }else{
+                $('#server').dialog({closed:false,title:'>>>编辑服务器',cache:false});
+                $('#fm').form("load",row_select);
+                $('#add').hide()
+                $('#modify').show()
+            }
+        }else{
+            $.messager.alert('警告','请先选中需要修改行！','warning'); 
+        }
+    });
+
+    function serverinfomod() {
+        if ($("input[name='srvnum']").val() == "") {
+            $.messager.alert('警告','输入内容不可为空!','warning'); 
+            $("input[name='srvnum']").focus();
+        } else {
+            $.ajax({
+                type: "GET", 
+                url: "/serverinfo_mod/",
+                data: $("#fm").serialize(), 
+                success: function(msg){
+                    if(msg.accmsg){
+                        $.messager.alert('恭喜',msg.accmsg,'info');
+                        location.href = "/serverinfo/";
+                    }else{
+                        $.messager.alert('警告',msg.errmsg,'error'); 
+                    }
+                }
+            });
+        }
+    }
+/************************************** END ****************************************************************/
+
+
+/************************************ 删除主机 *************************************************************/
+    $('#user_delete').bind('click', function(){
+        var srvnums = "";
+        var ips = "";
+        var row_select = $('#server_table').datagrid('getSelections');//返回的是被选中行的对象
+        for (var i = 0; i < row_select.length; i++) {
+            srvnums += '#' + row_select[i].srvnum;
+            ips += ' [' + row_select[i].ip + '] ';
+            }
+        if(srvnums == ""){
+            $.messager.alert('警告','请先选中需要删除的行！','warning'); 
+            return false;
+        }else{
+            $.messager.confirm('确认','您确认想要删除 ' + ips + ' 主机吗？',function(r){
+                if (r){
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: "/serverinfo_del/",
+                        data: {"delinfo":srvnums},
+                        dataType:'json',
+                        success: function(msg){
+                            if(msg.accmsg){
+                                $.messager.alert('恭喜你','成功删除' + msg.accmsg,'主机');
+                                $('#server_table').datagrid('reload',{});
+                            }else{
+                                $.messager.alert('错误',msg.errmsg);
+                                $('#server_table').datagrid('reload',{});
+                            }
+                        } 
+                    });
+                }
+            });
+        }
+    });
+/************************************** END ****************************************************************/
+
+});
+
+/************************************** 搜索函数 ***********************************************************/
+    function doSearch(value){
+        if(value){
+            alert('You input: ' + value);
+        }else{
+            alert('Please input ...');
+        }
+    }
+/************************************** END ****************************************************************/
