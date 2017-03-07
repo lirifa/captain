@@ -6,53 +6,59 @@
 $(function() {
 
 /**************************** 加载datagrid 产品信息列表 ******************************************************/
-    $('#server_table').datagrid({
-        title: '>>>产品列表',
-        url: '/productinfo_json/',
-        width: '100%',
-        border: true,
-        fitColumns: true,
-        singleSelect: false,
-        pagination: false,
-        idField: 'id',
-        pageSize: 10,
-        pageList: [10, 15, 20, 25, 100],
-        columns: [[
-            {field: 'id',title: '序号',width: 35},
-            {field: 'product_num',title: '产品编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
-            {field: 'product_name',title: '产品名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
-            {field: 'product_admin',title: '产品管理人',width: 150,editor: {type: 'validatebox',options: { required: true}}},
-            {field: 'desc',title: '产品介绍',width: 200,editor: {type: 'validatebox',options: { required: true, validType: 'strChinese'}}},
-            ]],
-    });
+    $('#product_table').datagrid({
+            title: '>>>产品列表',
+            url: '/productinfo_json/',
+            width: '100%',
+            border: true,
+            fitColumns: true,
+            striped:true,
+            singleSelect: true,
+            pagination: false,
+            idField: 'id',
+            pageSize: 10,
+            pageList: [10, 15, 20, 25, 100],
+            columns: [[
+                {field: 'id',title: '序号',width: 35},
+                {field: 'pid',title: '产品编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'pname',title: '产品名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'admin',title: '产品管理人',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+                {field: 'desc',title: '产品介绍',width: 200,editor: {type: 'validatebox',options: {required: true}}}
+                ]],
+        });
 /************************************** END ****************************************************************/
 
 
 /********************************* 新增产品 ****************************************************************/
-    $('#server_add').bind('click', function() {
-        $('#server').dialog({
+    $('#product_add').bind('click', function() {
+        $('#product').dialog({
             closed: false,
-            title: '>>>新增产品',
+            title: '新增产品',
             cache: false
         });
         $('#fm').form('clear');
+        $('#modify').hide()
+        $('#add').show()
     });
 /************************************** END ****************************************************************/
 
 
 /********************************** 修改产品信息 ***********************************************************/
-    $('#user_edit').bind('click', function() {
-        var row_select = $('#server_table').datagrid('getSelected'); //返回的是被选中行的对象
+    $('#product_edit').bind('click', function() {
+        var row_select = $('#product_table').datagrid('getSelected'); //返回的是被选中行的对象
         if (row_select) {
             if (row_select.length == 1) {
                 $.messager.alert('警告', row_select.length, 'warning');
             } else {
-                $('#server').dialog({
+                $('#product').dialog({
                     closed: false,
-                    title: '>>>编辑服务器',
+                    title: '编辑产品信息',
                     cache: false
                 });
-                $('#fm').form("load", row_select);
+                $('#fm').form("load", row_select)
+                $("input[name='pid']").prev().prop("disabled",true)
+                $('#add').hide()
+                $('#modify').show()
             }
         } else {
             $.messager.alert('警告', '请先选中需要修改行！', 'warning');
@@ -62,35 +68,36 @@ $(function() {
 
 
 /************************************* 删除产品 ************************************************************/
-    $('#user_delete').bind('click', function() {
+    $('#product_delete').bind('click', function() {
         var ids = "";
-        var ips = "";
-        var row_select = $('#server_table').datagrid('getSelections'); //返回的是被选中行的对象
+        var pids = "";
+        var row_select = $('#product_table').datagrid('getSelections'); //返回的是被选中行的对象
+        console.log(row_select)
         for (var i = 0; i < row_select.length; i++) {
-            ids += '#' + row_select[i].id_db;
-            ips += ' [' + row_select[i].ip + '] ';
+            ids += '#' + row_select[i].pid;
+            pids += ' [' + row_select[i].pid + '] ';
         }
         if (ids == "") {
-            $.messager.alert('警告', '请先选中需要删除的行！', 'warning');
+            $.messager.alert('警告', '请先选中需要删除的产品！', 'warning');
             return false;
         } else {
-            $.messager.confirm('确认', '您确认想要删除 ' + ips + ' 记录吗？', function(r) {
+            $.messager.confirm('确认', '您确认想要删除此产品吗？', function(r) {
                 if (r) {
                     $.ajax({
                         type: "GET",
                         cache: false,
-                        url: "/serverinfo_del/",
+                        url: "/productinfo_del/",
                         data: {
                             "delinfo": ids
                         },
                         dataType: 'json',
                         success: function(msg) {
                             if (msg.accmsg) {
-                                $.messager.alert('恭喜你', '成功删除' + msg.accmsg, 'info');
-                                $('#server_table').datagrid('reload', {});
+                                $.messager.alert('message'+msg.accmsg,'info');
+                                $('#product_table').datagrid('reload', {});
                             } else {
                                 $.messager.alert('错误', msg.errmsg);
-                                $('#server_table').datagrid('reload', {});
+                                $('#product_table').datagrid('reload', {});
                             }
                         }
                     });

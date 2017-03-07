@@ -142,11 +142,11 @@ $(function(){
 });
 
 /************************************** 搜索函数 ***********************************************************/
-    function doSearch(value){
-        if(value){
-            alert('You input: ' + value);
-        }else{
-            alert('Please input ...');
-        }
+function doSearch(value){
+    if(value){
+        alert('You input: ' + value);
+    }else{
+        alert('Please input ...');
     }
+}
 /************************************** END ****************************************************************/

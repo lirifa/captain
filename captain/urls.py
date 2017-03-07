@@ -23,6 +23,7 @@ handler500="operation.views.page_not_found"
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}),
     url(r'^$', 'operation.views.login', name='login'),
     url(r'^login/$', 'operation.views.login', name='login'),
     url(r'^checklogin/$', 'operation.views.checklogin', name='checklogin'),
