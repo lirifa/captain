@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/feerate_manage.js"></script>
 </head>
 
@@ -22,10 +23,11 @@
     <!-- toolbar -->
     <div id="tb" style="padding:3px;height:25px;">
         <div style="float:left;margin-left:1px">
-            <span>经纪商：</span>
-            <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',width:70,valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
+            <span>经纪商</span>
+            <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',width:80,valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
         </div>
-        <a href="javascript:void(0)" data-options="iconCls:'icon-in'">费率导入</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-in'">费率导入</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-out'">费率导出</a>
         <div style="float: right;margin-right: 20px">
             <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px">
         </div>

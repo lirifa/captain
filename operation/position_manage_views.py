@@ -41,31 +41,5 @@ try:
 except ImportError:
     from .tool import JsonResponse
 
-def clear(request):
-    return render(request,"clear.html")
-
-
-def gatewayinfo_json(request):
-    try:
-        gateway_info = Gatewayinfo.objects.all()
-    except Exception as e:
-        gateway_info = []
-        errmsg = "%s"%e
-    if len(gateway_info) != 0:
-        msg_dict = {"total":len(gateway_info)}
-        msg_dict["rows"] = []
-        num = 1
-        for key in gateway_info:
-            id = num
-            gw_id = key.gw_id
-            gw_name = key.gw_name
-            gw_cfg = key.gw_cfg
-            port = key.port
-            gw_srv = key.gw_srv
-            desc = key.desc
-            num += 1
-            msg_dict["rows"].append({"id":id,"gw_id":gw_id,"gw_name":gw_name,"gw_cfg":gw_cfg,"port":port,"gw_srv":gw_srv,"desc":desc})
-    else:
-        msg_dict = {"total":0,"rows":[]}
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
-
+def position(request):
+    return render(request,"position_manage.html")

@@ -69,6 +69,20 @@ class Strategyinfo(models.Model):
     class Meta:
         db_table = 'strategyinfo'
 
+#Gateway信息表
+class Gatewayinfo(models.Model):
+    gw_id = models.CharField('gateway id',max_length=32)
+    gw_name = models.CharField('gateway名称',max_length=32)
+    gw_cfg = models.CharField('对应配置名',max_length=32)
+    port = models.CharField('端口',max_length=32)
+    gw_srv = models.CharField('所属主机',max_length=32)
+    cl_stat = models.CharField('清算状态',max_length=1)
+    desc = models.CharField('备注',max_length=32)
+    def __unicode__(self):
+        return self.sid
+    class Meta:
+        db_table = 'gatewayinfo'
+
 #资金账户信息表
 class Acct(models.Model):
     trdacct = models.CharField(verbose_name='账户号',max_length=32,primary_key=True)

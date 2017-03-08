@@ -91,7 +91,9 @@ urlpatterns = [
     url(r'^sub_acct_fund_change/$','operation.views.sub_acct_fund_change',name='sub_acct_fund_change'),
 
     url(r'^clear/$','operation.views.clear',name='clear'),
+    url(r'^gatewayinfo_json/$','operation.views.gatewayinfo_json',name='gatewayinfo_json'),
     url(r'^feerate_manage/$','operation.views.feerate_manage',name='feerate_manage'),
     url(r'^feerate_json/$','operation.views.feerate_json',name='feerate_json'),
 
+    url(r'^position/$','operation.views.position',name='position'),
 ]

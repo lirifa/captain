@@ -73,7 +73,9 @@
 .icon-in{
 	background:url('icons/in.png') no-repeat center center;
 }
-
+.icon-out{
+	background:url('icons/out.png') no-repeat center center;
+}
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;
 }

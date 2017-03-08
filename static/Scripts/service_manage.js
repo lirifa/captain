@@ -65,7 +65,7 @@ $(function () {
 /*******************************点击添加服务进程*********************************************/
     $('#service_add').bind('click', function(){
         $('#service').dialog({ 
-            title:"新增服务进程",
+            title:">>>新增服务进程",
             closed:false,
             cache:false
         });
@@ -140,7 +140,7 @@ $(function () {
             } else {
                 $('#service').dialog({
                     closed: false,
-                    title: '修改服务信息',
+                    title: '>>>修改服务信息',
                     cache: false
                 });
                 $('#fm').form("load", row_select);

@@ -74,7 +74,6 @@ $(function() {
     $('#strategy_delete').bind('click', function() {
         var sids = "";
         var row_select = $('#strategy_table').datagrid('getSelections'); //返回的是被选中行的对象
-        console.log(row_select)
         for (var i = 0; i < row_select.length; i++) {
             sids += '#' + row_select[i].sid;
         }
@@ -163,7 +162,6 @@ function strategyinfoadd() {
         $.messager.alert('警告', '输入内容不可为空!', 'warning');
         $("input[name='sid']").focus();
     } else {
-        console.log($("#fm").serialize())
         $.ajax({
             type: "GET",
             url: "/strategyinfo_add/",
@@ -188,7 +186,6 @@ function strategyinfomod() {
         $.messager.alert('警告', '输入内容不可为空!', 'warning');
         $("input[name='sid']").focus();
     } else {
-        console.log($("#fm").serialize())
         $.ajax({
             type: "GET",
             url: "/strategyinfo_mod/",

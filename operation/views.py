@@ -28,7 +28,7 @@ from operation.clear_views import *
 from operation.feerate_manage_views import *
 from operation.service_views import *
 from operation.supervisor_views import *
-
+from operation.position_manage_views import *
 try:
     from django.http import JsonResponse
 except ImportError:
