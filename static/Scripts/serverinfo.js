@@ -1,3 +1,5 @@
+/********************************************** 操作 START **************************************************************************/
+
 $(function(){
 
 /***********************************加载datagrid服务器主机信息列表**********************************************/
@@ -39,26 +41,7 @@ $(function(){
         $('#add').show()
     });
 
-    function serverinfoadd() {
-        if ($("input[name='ip']").val() == "") {
-            $.messager.alert('警告','输入内容不可为空!','warning'); 
-            $("input[name='ip']").focus();
-        } else {
-            $.ajax({
-                type: "GET", 
-                url: "/serverinfo_add/",
-                data: $("#fm").serialize(), 
-                success: function(msg){
-                    if(msg.accmsg){
-                        $.messager.alert('恭喜',msg.accmsg,'info');
-                        location.href = "/serverinfo/";
-                    }else{
-                        $.messager.alert('警告',msg.errmsg,'error'); 
-                    }
-                }
-            });
-        }
-    }
+    
 /************************************** END ****************************************************************/
 
 
@@ -79,26 +62,7 @@ $(function(){
         }
     });
 
-    function serverinfomod() {
-        if ($("input[name='srvnum']").val() == "") {
-            $.messager.alert('警告','输入内容不可为空!','warning'); 
-            $("input[name='srvnum']").focus();
-        } else {
-            $.ajax({
-                type: "GET", 
-                url: "/serverinfo_mod/",
-                data: $("#fm").serialize(), 
-                success: function(msg){
-                    if(msg.accmsg){
-                        $.messager.alert('恭喜',msg.accmsg,'info');
-                        location.href = "/serverinfo/";
-                    }else{
-                        $.messager.alert('警告',msg.errmsg,'error'); 
-                    }
-                }
-            });
-        }
-    }
+    
 /************************************** END ****************************************************************/
 
 
@@ -139,7 +103,33 @@ $(function(){
     });
 /************************************** END ****************************************************************/
 
+
+/********************************* 密码显示隐藏 ************************************************************/
+            $('#passwd_show').bind('click', function(){
+                $("#server_table").datagrid("showColumn", "passwd");
+                $("#passwd_show").hide();
+                $("#passwd_hide").show();
+            });
+            $('#passwd_hide').bind('click', function(){
+                $("#server_table").datagrid("hideColumn", "passwd");
+                $("#passwd_show").show();
+                $("#passwd_hide").hide();
+            });
+/************************************** END ****************************************************************/
+
+
 });
+/************************************** 操作部分 END *******************************************************************************/
+
+
+
+
+
+
+
+
+
+/***************************************** 函数部分 START **************************************************************************/
 
 /************************************** 搜索函数 ***********************************************************/
 function doSearch(value){
@@ -150,3 +140,53 @@ function doSearch(value){
     }
 }
 /************************************** END ****************************************************************/
+
+
+/************************************** 新增主机函数 *******************************************************/
+function serverinfoadd() {
+    if ($("input[name='ip']").val() == "") {
+        $.messager.alert('警告','输入内容不可为空!','warning'); 
+        $("input[name='ip']").focus();
+    } else {
+        $.ajax({
+            type: "GET", 
+            url: "/serverinfo_add/",
+            data: $("#fm").serialize(), 
+            success: function(msg){
+                if(msg.accmsg){
+                    $.messager.alert('恭喜',msg.accmsg,'info');
+                    location.href = "/serverinfo/";
+                }else{
+                    $.messager.alert('警告',msg.errmsg,'error'); 
+                }
+            }
+        });
+    }
+}
+/************************************** END ****************************************************************/
+
+
+/************************************** 修改主机信息函数 ***************************************************/
+function serverinfomod() {
+    if ($("input[name='srvnum']").val() == "") {
+        $.messager.alert('警告','输入内容不可为空!','warning'); 
+        $("input[name='srvnum']").focus();
+    } else {
+        $.ajax({
+            type: "GET", 
+            url: "/serverinfo_mod/",
+            data: $("#fm").serialize(), 
+            success: function(msg){
+                if(msg.accmsg){
+                    $.messager.alert('恭喜',msg.accmsg,'info');
+                    location.href = "/serverinfo/";
+                }else{
+                    $.messager.alert('警告',msg.errmsg,'error'); 
+                }
+            }
+        });
+    }
+}
+/************************************** END ****************************************************************/
+
+/************************************ 函数部分 END *********************************************************************************/

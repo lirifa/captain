@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^service_del/$','operation.views.service_del',name='sercice_del'),
     url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
     url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
+    url(r'^strategyinfo_combobox_json/$','operation.views.strategyinfo_combobox_json',name='strategyinfo_combobox_json'),
 
     url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
 

@@ -32,6 +32,7 @@ class Serverinfo(models.Model):
 class Serviceinfo(models.Model):
     ser_id = models.CharField('服务id',max_length=8,primary_key=True)
     ser_name = models.CharField('服务名称',max_length=32)
+    ser_att = models.CharField('服务属性',max_length=32)
     ser_cfg = models.CharField('对应配置名',max_length=32)
     ser_port =  models.IntegerField('端口')
     ser_srv = models.CharField('所属主机',max_length=10)

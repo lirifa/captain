@@ -10,31 +10,7 @@
     <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
-    <script>
-    $(function() {
-                $('#feerate_table').datagrid({
-                    title: '>>>费率列表',
-                    url: '/feerate_json/',
-                    width: '100%',
-                    border: true,
-                    fitColumns: true,
-                    striped: true,
-                    singleSelect: true,
-                    pagination: false,
-                    idField: 'id',
-                    pageSize: 10,
-                    pageList: [10, 15, 20, 25, 100],
-                    columns: [[
-                    {field: 'bid',title: '经纪商',width: 35},
-                    {field: 'exchange_id',title: '交易所',width: 120,editor: {type: 'validatebox',options: {required: true}}},
-                    {field: 'contract_id',title: '合约品种',width: 200,editor: {type: 'validatebox',options: {required: true}}},
-                    {field: 'biz_type',title: '开平标志',width: 150,editor: {type: 'validatebox',options: {required: true    }}},
-                    {field: 'feerate_by_amt',title: '手续费率（按金额）',width: 200,editor: {type: 'validatebox', options: {required:true }}},
-                    {field: 'feerate_by_qty',title: '手续费率（按手数）',width: 100,editor: {type: 'validatebox', options: {required: true}}}
-                    ]],
-                })
-            })
-    </script>
+    <script type="text/javascript" src="/static/Scripts/feerate_manage.js"></script>
 </head>
 
 <body class="easyui-layout">
@@ -44,13 +20,14 @@
         </div>
     </div>
     <!-- toolbar -->
-    <div id="tb" style="padding:3px;height:auto">
-        <div style="margin-bottom:26px">
-            <div style="float:left;margin-left:10px">
-                <p style="margin:1px">经纪商：
-                    <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
-                </p>
-            </div>
+    <div id="tb" style="padding:3px;height:25px;">
+        <div style="float:left;margin-left:1px">
+            <span>经纪商：</span>
+            <input type="text" class="easyui-combobox" data-options="panelHeight:'auto',width:70,valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
+        </div>
+        <a href="javascript:void(0)">费率导入</a>
+        <div style="float: right;margin-right: 20px">
+            <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px">
         </div>
     </div>
 </body>

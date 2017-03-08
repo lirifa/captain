@@ -1,94 +1,104 @@
 /******************************************* 操作部分 START *************************************************************************/
+
 $(function() {
 
 /********************************* 加载datagrid 策略信息列表 **********************************************/
     $('#strategy_table').datagrid({
-        title: '>>>策略列表列表',
+        title: '>>>策略列表',
         url: '/strategyinfo_json/',
         width: '100%',
         border: true,
         fitColumns: true,
-        singleSelect: false,
+        striped:true,
+        singleSelect: true,
         pagination: false,
         idField: 'id',
         pageSize: 10,
         pageList: [10, 15, 20, 25, 100],
         columns: [[
             {field: 'id',title: '序号',width: 35},
-            {field: 'strategy_id',title: '策略编号',width: 120,editor: {type: 'validatebox',options: { required: true}}},
-            {field: 'strategy_name',title: '策略名称',width: 200,editor: {type: 'validatebox',options: { required: true}}},
-            {field: 'strategy_product',title: '所属产品',width: 150,editor: {type: 'validatebox',options: { required: true}}},
-            {field: 'strategy_desc',title: '策略介绍',width: 200,editor: {type: 'validatebox',options: {required: true,validType: 'strChinese'}}},
-            ]],
+            {field: 'sid',title: '策略编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'sname',title: '策略名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'scfg',title: '对应配置名',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'port',title: '策略端口',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'ssrv',title: '所属主机',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'product',title: '所属产品',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'master_acc',title: '总账号',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'sub_acc',title: '子账号',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'desc',title: '策略介绍',width: 200,editor: {type: 'validatebox',options: {required: true,}}}
+        ]],
     });
 /************************************** END ***************************************************************/
 
 
 
-/************************************** 添加用户 **********************************************************/
-    $('#product_add').bind('click', function() {
-        $('#product').dialog({
+/************************************** 新增策略 **********************************************************/
+    $('#strategy_add').bind('click', function() {
+        $('#strategy').dialog({
             closed: false,
-            title: '>>>新增产品',
+            title: '新增策略',
             cache: false
         });
         $('#fm').form('clear');
+        $('#modify').hide()
+        $('#add').show()
     });
 /************************************** END **************************************************************/
 
 
-/************************************* 修改用户 *********************************************************/
-    $('#product_edit').bind('click', function() {
-        var row_select = $('#product_table').datagrid('getSelected'); //返回的是被选中行的对象
+/********************************* 点击修改策略 *********************************************************/
+    $('#strategy_edit').bind('click', function() {
+        var row_select = $('#strategy_table').datagrid('getSelected'); //返回的是被选中行的对象
         if (row_select) {
             if (row_select.length == 1) {
                 $.messager.alert('警告', row_select.length, 'warning');
             } else {
-                $('#product').dialog({
+                $('#strategy').dialog({
                     closed: false,
-                    title: '>>>编辑服务器',
+                    title: '编辑策略信息',
                     cache: false
                 });
                 $('#fm').form("load", row_select);
+                $("input[name='sid']").prev().prop('disabled', true)
+                $('#modify').show();
+                $('#add').hide();
             }
         } else {
             $.messager.alert('警告', '请先选中需要修改行！', 'warning');
         }
     });
-/*************************************** END ******************************************************************/
+/*************************************** END ***************************************************************/
 
 
-/************************************** 删除产品 ************************************************************/
-    $('#product_delete').bind('click', function() {
-        var ids = "";
-        var product_nums = "";
-        var row_select = $('#product_table').datagrid('getSelections'); //返回的是被选中行的对象
+/*********************************** 点击删除策略 **********************************************************/
+    $('#strategy_delete').bind('click', function() {
+        var sids = "";
+        var row_select = $('#strategy_table').datagrid('getSelections'); //返回的是被选中行的对象
         console.log(row_select)
         for (var i = 0; i < row_select.length; i++) {
-            ids += '#' + row_select[i].id_db;
-            product_nums += ' [' + row_select[i].product_num + '] ';
+            sids += '#' + row_select[i].sid;
         }
-        if (ids == "") {
-            $.messager.alert('警告', '请先选中需要删除的产品！', 'warning');
+        if (sids == "") {
+            $.messager.alert('警告', '请先选中需要删除的策略！', 'warning');
             return false;
         } else {
-            $.messager.confirm('确认', '您确认想要删除此产品吗？', function(r) {
+            $.messager.confirm('确认', '您确认想要删除此策略吗？', function(r) {
                 if (r) {
                     $.ajax({
                         type: "GET",
                         cache: false,
-                        url: "/productinfo_del/",
+                        url: "/strategyinfo_del/",
                         data: {
-                            "delinfo": ids
+                            "delinfo": sids
                         },
                         dataType: 'json',
                         success: function(msg) {
                             if (msg.accmsg) {
-                                $.messager.alert('产品删除成功');
-                                $('#product_table').datagrid('reload', {});
+                                $.messager.alert('策略删除成功' + msg.accmsg, 'info');
+                                $('#strategy_table').datagrid('reload', {});
                             } else {
                                 $.messager.alert('错误', msg.errmsg);
-                                $('#product_table').datagrid('reload', {});
+                                $('#strategy_table').datagrid('reload', {});
                             }
                         }
                     });
@@ -96,7 +106,46 @@ $(function() {
             });
         }
     });
-/************************************** END ******************************************************************/
+/************************************* END ******************************************************************/
+
+
+/********************** 对validatebox控件正则表达式验证数据有效性扩展 **************************************/
+    $.extend($.fn.validatebox.defaults.rules, {
+        strip: {
+            validator: function(value) {
+                var re = /^[\d+\.\d+\.\d+\.\d+]/;
+                if (re.test(value))
+                    return false;
+                else
+                if (RegExp.$1 < 256 && RegExp.$2 < 256 && RegExp.$3 < 256 && RegExp.$4 < 256)
+                    return true;
+                else
+                    return false;
+            },
+            message: '只能输入IP格式！'
+        },
+        strChinese: {
+            validator: function(value) {
+                var re = /[^\u4e00-\u9fa5]/;
+                if (re.test(value))
+                    return false;
+                else
+                    return true;
+            },
+            message: '只能输入中文！'
+        },
+        strEngNum: {
+            validator: function(value) {
+                var re = /[^\w+$]/;
+                if (re.test(value))
+                    return false;
+                else
+                    return true;
+            },
+            message: '只能输入英文、数字或下划线！'
+        }
+    });
+/**************************************** END ************************************************************/
 
 });
 /************************************* 操作部分 END *******************************************************************************/
