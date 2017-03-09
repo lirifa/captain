@@ -167,8 +167,8 @@ def serverinfo_combobox_json(request):
     except Exception, e:
         server_info = []
         errmsg = "%s"%e
+    msg_dict = []
     if len(server_info) != 0:
-        msg_dict = []
         for key in server_info:
             srvnum = key.srvnum
             ip = key.ip

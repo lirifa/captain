@@ -172,8 +172,8 @@ def strategyinfo_combobox_json(request):
     except Exception, e:
         strategy_info = []
         errmsg = "%s"%e
+    msg_dict = []
     if len(strategy_info) != 0:
-        msg_dict = []
         for key in strategy_info:
             sid = key.sid
             scfg = key.scfg

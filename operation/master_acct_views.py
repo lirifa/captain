@@ -170,8 +170,8 @@ def masteracc_combobox_json(request):
     except Exception,e:
         master_info = []
         errmsg = "%s"%e
+    msg_dict = []
     if len(master_info) !=0:
-        msg_dict = []
         for key in master_info:
             acc_num = key.acc_num
             acc_name = key.acc_name
