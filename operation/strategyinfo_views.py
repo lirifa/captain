@@ -60,7 +60,7 @@ def strategyinfo_json(request):
             scfg = key.scfg
             port = key.port
             ssrv = key.ssrv
-            product = Productinfo.objects.filter(pid=key.product)[0].pname
+            product = key.product
             desc = key.desc
             master_acc = key.master_acc
             sub_acc = key.sub_acc
@@ -116,21 +116,20 @@ def strategyinfo_add(request):
 
 #修改策略信息
 def strategyinfo_mod(request):
-    sid = request.GET.get('sid')
-    sname = request.GET.get('sname')
-    scfg = request.GET.get('scfg')
-    port = request.GET.get('port')
-    ssrv = request.GET.get('ssrv')
-    product = request.GET.get('product')
-    master_acc = request.GET.get('master_acc')
-    sub_acc = request.GET.get('sub_acc')
-    desc = request.GET.get('desc')
+    sid = request.POST.get('sid')
+    sname = request.POST.get('sname')
+    scfg = request.POST.get('scfg')
+    port = request.POST.get('port')
+    ssrv = request.POST.get('ssrv')
+    product = request.POST.get('product')
+    master_acc = request.POST.get('master_acc')
+    sub_acc = request.POST.get('sub_acc')
+    desc = request.POST.get('desc')
     msg_dict={}
     if sid:
         try:
-            ssrv = Productinfo.objects.filter(pname=ssrv)[0].pid
             strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,ssrv=ssrv,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
-            accmsg = u"策略 [ %s ] 修改成功!"%sname
+            accmsg = u"策略 [ %s ] 修改成功!"%sid
             msg_dict['accmsg'] = accmsg
         except Exception,e:
             strategy_info = []

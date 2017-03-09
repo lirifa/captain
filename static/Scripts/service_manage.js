@@ -16,7 +16,8 @@ $(function () {
         pageSize: 10,
         pageList: [10, 15, 20, 25, 100],
         columns: [[
-            {field:'ser_id',title:'序号',width:35},
+            {field:'id',title:'序号',width:35},
+            {field:'ser_id',title:'服务编号',width:40},
             {field:'ser_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_att',title:'服务属性',width:80,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_cfg',title:'配置名',width:150,editor:{type:'validatebox',options:{required:true}}},
@@ -51,14 +52,14 @@ $(function () {
                     return str; 
                 } 
             }, 
-                ]], 
-                onLoadSuccess:function(data){   
-                    $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
-                    $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-                    $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-                    $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-                },
-            });
+            ]], 
+        onLoadSuccess:function(data){ 
+            $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
+            $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+            $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+            $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+        },
+    });
 /*********************************END*******************************************************/
 
 
@@ -278,9 +279,9 @@ function check_stat() {
         }
     })
 }
-/************************************ END ********************************************************/
+/************************************ END ***************************************************/
 
-/************************************ 服务启动函数 ****************************************/
+/************************************ 服务启动函数 ******************************************/
 function service_start() {
     var row_select = $('#service_table').datagrid('getSelected')
     var ser_cfg = row_select.ser_cfg

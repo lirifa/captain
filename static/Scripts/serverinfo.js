@@ -40,8 +40,6 @@ $(function(){
         $('#modify').hide()
         $('#add').show()
     });
-
-    
 /************************************** END ****************************************************************/
 
 
@@ -61,8 +59,6 @@ $(function(){
             $.messager.alert('警告','请先选中需要修改行！','warning'); 
         }
     });
-
-    
 /************************************** END ****************************************************************/
 
 
@@ -89,10 +85,10 @@ $(function(){
                         dataType:'json',
                         success: function(msg){
                             if(msg.accmsg){
-                                $.messager.alert('恭喜你','成功删除' + msg.accmsg,'主机');
+                                $.messager.alert('成功','成功删除' + msg.accmsg,'info');
                                 $('#server_table').datagrid('reload',{});
                             }else{
-                                $.messager.alert('错误',msg.errmsg);
+                                $.messager.alert('错误',msg.errmsg,'error');
                                 $('#server_table').datagrid('reload',{});
                             }
                         } 

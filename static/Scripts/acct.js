@@ -1,3 +1,5 @@
+/*************************************** 操作部分 START ******************************************************************************/
+
 $(function() {
 
 /******************************************加载datagrid资金账户列表*********************************************/
@@ -28,7 +30,6 @@ $(function() {
 /**************************************END******************************************************************/
 
 
-
 /************************************点击添加资金账户*******************************************************/
     $('#acct_add').bind('click', function() {
         $('#acct').dialog({
@@ -40,27 +41,6 @@ $(function() {
         $('#modify').hide()
         $('#add').show()
     });
-
-    function acctinfoadd() {
-        if ($("input[name='trdacct']").val() == "") {
-            $.messager.alert('警告', '输入内容不可为空!', 'warning');
-            $("input[name='trdacct']").focus();
-        } else {
-            $.ajax({
-                type: "GET",
-                url: "/acct_add/",
-                data: $("#fm").serialize(),
-                success: function(msg) {
-                    if (msg.accmsg) {
-                        $.messager.alert('恭喜', msg.accmsg, 'info');
-                        location.href = "/acct/";
-                    } else {
-                        $.messager.alert('警告', msg.errmsg, 'error');
-                    }
-                }
-            });
-        }
-    }
 /**************************************END******************************************************************/
 
 
@@ -72,31 +52,6 @@ $(function() {
             cache: false
         });
     });
-
-    function fund_change() {
-        if ($("input[name='fund_change']").val() == "") {
-            $.messager.alert('警告', '出入金不可为空!', 'warning');
-            $("input[name='fund_change']").focus();
-        }
-        else if ($("input[name='change_acct']").val() == ""){
-            $.messager.alert('警告', '请选取出入金资金账户！!', 'warning');
-        }
-        else{
-            $.ajax({
-                type: "POST",
-                url: "/acct_fund_change/",
-                data: $("#fund_change_fm").serialize(),
-                success: function(msg) {
-                    if (msg.accmsg) {
-                        $.messager.alert('恭喜', msg.accmsg, 'info');
-                        location.href = "/acct/";
-                    } else {
-                        $.messager.alert('警告', msg.errmsg, 'error');
-                    }
-                }
-            });
-        }
-    }
 /**************************************END******************************************************************/
 
 
@@ -121,27 +76,6 @@ $(function() {
         $.messager.alert('警告', '请先选中需要修改行！', 'warning');
         }
     });
-
-    function acctinfomod() {
-        if ($("input[name='trdacct']").val() == "") {
-            $.messager.alert('警告', '输入内容不可为空!', 'warning');
-            $("input[name='trdacct']").focus();
-        } else {
-            $.ajax({
-                type: "GET",
-                url: "/acct_mod/",
-                data: $("#fm").serialize(),
-                success: function(msg) {
-                    if (msg.accmsg) {
-                        $.messager.alert('恭喜', msg.accmsg, 'info');
-                        location.href = "/acct/";
-                    } else {
-                        $.messager.alert('警告', msg.errmsg, 'error');
-                    }
-                }
-            });
-        }
-    }
 /**************************************END******************************************************************/
 
 
@@ -169,7 +103,7 @@ $(function() {
                         dataType: 'json',
                         success: function(msg) {
                             if (msg.accmsg) {
-                                $.messager.alert('message' + msg.accmsg, 'info');
+                                $.messager.alert('message' + msg.accmsg + 'info');
                                 $('#acct_table').datagrid('reload', {});
                             } else {
                                 $.messager.alert('错误', msg.errmsg);
@@ -185,3 +119,86 @@ $(function() {
 
 
 });
+/****************************** 操作部分 END *********************************************************************************/
+
+
+
+/********************************** 函数部分 START ****************************************************************************/
+
+
+/********************************* 新增资金账户函数 ******************************************/
+function acctinfoadd() {
+    if ($("input[name='trdacct']").val() == "") {
+        $.messager.alert('警告', '输入内容不可为空!', 'warning');
+        $("input[name='trdacct']").focus();
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "/acct_add/",
+            data: $("#fm").serialize(),
+            success: function(msg) {
+                if (msg.accmsg) {
+                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                    location.href = "/acct/";
+                } else {
+                    $.messager.alert('警告', msg.errmsg, 'error');
+                }
+            }
+        });
+    }
+}
+/*********************************** END *****************************************************/
+
+
+/********************************* 修改资金账户函数 ******************************************/
+function acctinfomod() {
+    if ($("input[name='trdacct']").val() == "") {
+        $.messager.alert('警告', '输入内容不可为空!', 'warning');
+        $("input[name='trdacct']").focus();
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "/acct_mod/",
+            data: $("#fm").serialize(),
+            success: function(msg) {
+                if (msg.accmsg) {
+                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                    location.href = "/acct/";
+                } else {
+                    $.messager.alert('警告', msg.errmsg, 'error');
+                }
+            }
+        });
+    }
+}
+/*********************************** END *****************************************************/
+
+
+/******************************** 出入金函数 *************************************************/
+function fund_change() {
+    if ($("input[name='fund_change']").val() == "") {
+        $.messager.alert('警告', '出入金不可为空!', 'warning');
+        $("input[name='fund_change']").focus();
+    }
+    else if ($("input[name='change_acct']").val() == ""){
+        $.messager.alert('警告', '请选取出入金资金账户！!', 'warning');
+    }
+    else{
+        $.ajax({
+            type: "POST",
+            url: "/acct_fund_change/",
+            data: $("#fund_change_fm").serialize(),
+            success: function(msg) {
+                if (msg.accmsg) {
+                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                    location.href = "/acct/";
+                } else {
+                    $.messager.alert('警告', msg.errmsg, 'error');
+                }
+            }
+        });
+    }
+}
+/*********************************** END *****************************************************/
+
+/************************************* 函数部分 END ********************************************************************************/

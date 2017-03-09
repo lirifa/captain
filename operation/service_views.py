@@ -56,6 +56,7 @@ def serviceinfo_json(request):
         if len(service_info) != 0:
             msg_dict = {"total":len(service_info)}
             msg_dict["rows"] = []
+            num =1
             for key in service_info:
                 ser_id = key.ser_id
                 ser_name = key.ser_name
@@ -64,7 +65,8 @@ def serviceinfo_json(request):
                 ser_port = key.ser_port
                 ser_srv = key.ser_srv
                 desc = key.desc
-                msg_dict["rows"].append({"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
+                msg_dict["rows"].append({"id":num,"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
+                num += 1
         else:
             msg_dict = {"total":0,"rows":[]}
     else:

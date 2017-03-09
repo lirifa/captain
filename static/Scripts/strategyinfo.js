@@ -187,12 +187,12 @@ function strategyinfomod() {
         $("input[name='sid']").focus();
     } else {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/strategyinfo_mod/",
             data: $("#fm").serialize(),
             success: function(msg) {
                 if (msg.accmsg) {
-                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                    $.messager.alert('恭喜', msg.accmsg+"策略信息修改成功！", 'info');
                     location.href = "/strategyinfo/";
                 } else {
                     $.messager.alert('警告', msg.errmsg, 'error');

@@ -16,8 +16,8 @@ $(function() {
         pageList: [10, 15, 20, 25, 100],
         columns: [[
             {field: 'id',title: '序号',width: 35},
-            {field: 'acc_num',title: '账户号',width: 200,editor: {type: 'validatebox',options: {required: true}}},
-            {field: 'acc_name',title: '账户名',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'acc_num',title: '账户号',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'acc_name',title: '账户名',width: 250,editor: {type: 'validatebox',options: {required: true}}},
             {field: 'master_acct',title: '关联总账号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
             {field: 'equity',title: '客户权益',width: 150,editor: {type: 'validatebox',options: {required: true}}},
             {field: 'buy_margin',title: '多仓保证金',width: 200,editor: {type: 'validatebox',options: {required: true,}}},
@@ -29,7 +29,21 @@ $(function() {
 /************************************** END ******************************************************************/
 
 
-/*********************************** 点击弹出出入金界面 ******************************************************/
+/********************************* 点击添加子账号 **********************************************************/
+    $('#sub_acct_add').bind('click', function() {
+        $('#sub_acct').dialog({
+            closed: false,
+            title: '新增子账号',
+            cache: false
+        });
+        $('#fm').form('clear');
+        $('#modify').hide()
+        $('#add').show()
+    });
+/************************************** END *****************************************************************/
+
+
+/*********************************** 点击弹出出入金界面 *****************************************************/
     $('#fund_change_btn').bind('click', function() {
         $('#fund_change').dialog({
             closed: false,
@@ -37,7 +51,7 @@ $(function() {
             cache: false
         });
     });
-/************************************** END ******************************************************************/
+/************************************** END *****************************************************************/
 
 
 /*********************************** 点击修改子账号信息 *****************************************************/
