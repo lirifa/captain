@@ -32,19 +32,19 @@
 
     <div id="gateway" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>GW编号:
+            <p><label for="gw_id">GW编号:</label>
                 <input name="gw_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p>GW名称:
+            <p><label for="gw_name">GW名称:</label>
                 <input name="gw_name" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>配置名:
+            <p><label for="gw_cfg">配置名:</label>
                 <input name="gw_cfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>端口:
+            <p><label for="port">端口:</label>
                 <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>所属主机:
+            <p><label for="">所属主机:</label>
                 <input name="gw_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
-            <p>清算状态:
+            <p><label for="cl_stat">清算状态:</label>
                 <input name="cl_stat" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>备注:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="master_acc">备注:</label>
                 <input name="master_acc" class="easyui-textbox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
             <div style="text-align: center;">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="gatewayinfo_add()">提交</a>
