@@ -45,6 +45,7 @@ except ImportError:
 def serviceinfo(request):
     return render(request,"service_manage.html")
 
+#加载服务信息列表
 def serviceinfo_json(request):
     ser_srv = request.POST.get('ser_srv')
     if ser_srv == 'all':
@@ -92,6 +93,7 @@ def serviceinfo_json(request):
 
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+#x新增服务
 def service_add(request):
     ser_id = request.GET.get('ser_id')
     ser_name = request.GET.get('ser_name')
@@ -128,6 +130,7 @@ def service_add(request):
             msg_dict["errmsg"] = errmsg
         return HttpResponse(json.dumps(msg_dict),content_type='application/json')
 
+#修改服务信息
 def service_mod(request):
     ser_id = request.GET.get('ser_id')
     ser_name = request.GET.get('ser_name')
@@ -151,6 +154,8 @@ def service_mod(request):
         msg_dict['errmsg'] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+
+#删除某个服务
 def service_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
@@ -168,6 +173,8 @@ def service_del(request):
             msg_dict["errmsg"] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
+
+#策略combobox
 def strategyinfo_combobox_json(request):
     try:
         strategy_info = Strategyinfo.objects.all()
@@ -182,134 +189,187 @@ def strategyinfo_combobox_json(request):
             msg_dict.append({"sid":sid,"scfg":scfg})
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-def check_stat(request):
-    ser_cfg = request.POST.get('ser_cfg')
-    ser_port = request.POST.get('ser_port')
-    ser_srv = request.POST.get('ser_srv')
-    server = Serverinfo.objects.filter(srvnum=ser_srv)[0]
-    ip = server.ip
-    user = server.user
-    port = server.port
-    #print ip,port,user,ser_cfg,ser_port 
-    #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
-    #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
-    try:
-        #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s:%s#"%(os.getcwd(),ser_cfg,ser_port))
-        #sevice_status = theUser.workrun()
-        sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',)
-        all_info = sevice_status[1].split("\r\n")[0].split(",")
-        cfg_name = all_info[0]
-        process_statu = all_info[1]
-        port_statu = all_info[2]
-    except Exception,e:
-        #日志捕捉
-        cfg_name = ser_cfg
-        process_statu = "检测出错"
-        port_statu = "检测出错"
-    msg_dict = {}
-    msg_dict["cfg_name"] = cfg_name
-    msg_dict["ser_stat"] = process_statu
-    msg_dict["port_stat"] = port_statu
-    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
 
-def ser_check_stat(request):
+
+def get_stat(request):
     srvnum = request.POST.get('srvnum')
-    msg_dict = {}
-    if srvnum == 'all':
+    if ser_srv == 'all':
         try:
-            server_info = Serverinfo.objects.all()
-            msg_dict["rows"] = []       
-            for server in server_info:
-                server = Serverinfo.objects.filter(srvnum=server)[0]
-                ip = server.ip
-                user = server.user
-                port = server.port
-                service_info = Serviceinfo.objects.filter(ser_srv=server)                
-                check_args = ""
-                if len(service_info) != 0:
-                    for i in range(len(service_info)):
-                        ser_id =  service_info[i].ser_id
-                        ser_cfg = service_info[i].ser_cfg
-                        ser_port = service_info[i].ser_port
-                        #print ip,port,user,ser_cfg,ser_port 
-                        #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
-                        #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
-                        check_args = "%s:%s#"%(ser_cfg,ser_port) + check_args
-                    #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s"%(os.getcwd(),check_args))
-                    #sevice_status = theUser.workrun()
-                    sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',) 
-                    all_info = sevice_status[1].split("\r\n")
-                    all_info.remove("")
-                    check_result = {}
-                    for info in all_info:
-                        info = info.split(",")
-                        cfg_name = info[0]
-                        process_statu = info[1]
-                        port_statu = info[2]
-                        check_result[cfg_name] = [process_statu, port_statu]
-                    service_info_dict = {}
-                    for key in service_info:
-                        service_info_dict[key.ser_id] = [key.ser_srv, key.ser_cfg]
-                    for k,v in check_result.items():
-                        for sid in service_info_dict:
-                            if str(server) == str(service_info_dict[sid][0]) and str(k) == str(service_info_dict[sid][1]):
-                                ser_id = sid
-                                process_statu = v[0]
-                                port_statu = v[1]
-                                msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":process_statu,"port_stat":port_statu})
-                            else:
-                                pass
-                else:
-                    pass
+            service_info = Serviceinfo.objects.all()
         except Exception,e:
-            errmsg = "%s"%e 
-            msg_dict['errmsg'] = errmsg
+            service_info = []
+            errmsg = "%s"%e
+        if len(service_info) != 0:
+            msg_dict = {"total":len(service_info)}
+            msg_dict["rows"] = []
+            num =1
+            for key in service_info:
+                ser_id = key.ser_id
+                ser_name = key.ser_name
+                ser_att = key.ser_att
+                ser_cfg = key.ser_cfg
+                ser_port = key.ser_port
+                ser_srv = key.ser_srv
+                desc = key.desc
+                msg_dict["rows"].append({"id":num,"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
+                num += 1
+        else:
+            msg_dict = {"total":0,"rows":[]}
     else:
         try:
-            server = Serverinfo.objects.filter(srvnum=srvnum)[0]
-            ip = server.ip
-            user = server.user
-            port = server.port
-            service_info = Serviceinfo.objects.filter(ser_srv=srvnum)
-            msg_dict["rows"] = []
-            check_args = ""
-            if len(service_info) != 0:
-                for i in range(len(service_info)):
-                    ser_id =  service_info[i].ser_id
-                    ser_cfg = service_info[i].ser_cfg
-                    ser_port = service_info[i].ser_port
-                    #print ip,port,user,ser_cfg,ser_port 
-                    #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
-                    #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
-                    check_args = "%s:%s#"%(ser_cfg,ser_port) + check_args
-                #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s"%(os.getcwd(),check_args))
-                #sevice_status = theUser.workrun()
-                sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',)
-                all_info = sevice_status[1].split("\r\n")
-                all_info.remove("")
-                check_result = {}
-                for info in all_info:
-                    info = info.split(",")
-                    cfg_name = info[0]
-                    process_statu = info[1]
-                    port_statu = info[2]
-                    check_result[cfg_name] = [process_statu, port_statu]
-                service_info_dict = {}
-                for key in service_info:
-                    service_info_dict[key.ser_id] = [key.ser_srv, key.ser_cfg]
-                for k,v in check_result.items():
-                    for sid in service_info_dict:
-                        if str(server) == str(service_info_dict[sid][0]) and str(k) == str(service_info_dict[sid][1]):
-                            ser_id = sid
-                            process_statu = v[0]
-                            port_statu = v[1]
-                            msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":process_statu,"port_stat":port_statu})
-                        else:
-                            pass
-            else:
-                msg_dict['errmsg'] = "未找到services信息，请新增！" 
+            service_info = Serviceinfo.objects.filter(ser_srv=ser_srv)
         except Exception,e:
-            errmsg = "%s"%e 
-            msg_dict['errmsg'] = errmsg
+            service_info = []
+            errmsg = "%s"%e
+        if len(service_info) != 0:
+            msg_dict = {"total":len(service_info)}
+            msg_dict["rows"] = []
+            for key in service_info:
+                ser_id = key.ser_id
+                ser_name = key.ser_name
+                ser_att = key.ser_att
+                ser_cfg = key.ser_cfg
+                ser_port = key.ser_port
+                ser_srv = key.ser_srv
+                desc = key.desc
+                msg_dict["rows"].append({"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
+        else:
+            msg_dict = {"total":0,"rows":[]}
 
-    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
+
+# 检查某个服务及端口的状态
+# def check_stat(request):
+#     ser_cfg = request.POST.get('ser_cfg')
+#     ser_port = request.POST.get('ser_port')
+#     ser_srv = request.POST.get('ser_srv')
+#     server = Serverinfo.objects.filter(srvnum=ser_srv)[0]
+#     ip = server.ip
+#     user = server.user
+#     port = server.port
+#     #print ip,port,user,ser_cfg,ser_port 
+#     #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
+#     #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
+#     try:
+#         #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s:%s#"%(os.getcwd(),ser_cfg,ser_port))
+#         #sevice_status = theUser.workrun()
+#         sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',)
+#         all_info = sevice_status[1].split("\r\n")[0].split(",")
+#         cfg_name = all_info[0]
+#         process_statu = all_info[1]
+#         port_statu = all_info[2]
+#     except Exception,e:
+#         #日志捕捉
+#         cfg_name = ser_cfg
+#         process_statu = "检测出错"
+#         port_statu = "检测出错"
+#     msg_dict = {}
+#     msg_dict["cfg_name"] = cfg_name
+#     msg_dict["ser_stat"] = process_statu
+#     msg_dict["port_stat"] = port_statu
+#     return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+
+
+#检查全部或某个服务器下的所有服务及端口的状态 
+# def ser_check_stat(request):
+#     srvnum = request.POST.get('srvnum')
+#     msg_dict = {}
+#     if srvnum == 'all':
+#         try:
+#             server_info = Serverinfo.objects.all()
+#             msg_dict["rows"] = []       
+#             for server in server_info:
+#                 server = Serverinfo.objects.filter(srvnum=server)[0]
+#                 ip = server.ip
+#                 user = server.user
+#                 port = server.port
+#                 service_info = Serviceinfo.objects.filter(ser_srv=server)                
+#                 check_args = ""
+#                 if len(service_info) != 0:
+#                     for i in range(len(service_info)):
+#                         ser_id =  service_info[i].ser_id
+#                         ser_cfg = service_info[i].ser_cfg
+#                         ser_port = service_info[i].ser_port
+#                         #print ip,port,user,ser_cfg,ser_port 
+#                         #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
+#                         #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
+#                         check_args = "%s:%s#"%(ser_cfg,ser_port) + check_args
+#                     #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s"%(os.getcwd(),check_args))
+#                     #sevice_status = theUser.workrun()
+#                     sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',) 
+#                     all_info = sevice_status[1].split("\r\n")
+#                     all_info.remove("")
+#                     check_result = {}
+#                     for info in all_info:
+#                         info = info.split(",")
+#                         cfg_name = info[0]
+#                         process_statu = info[1]
+#                         port_statu = info[2]
+#                         check_result[cfg_name] = [process_statu, port_statu]
+#                     service_info_dict = {}
+#                     for key in service_info:
+#                         service_info_dict[key.ser_id] = [key.ser_srv, key.ser_cfg]
+#                     for k,v in check_result.items():
+#                         for sid in service_info_dict:
+#                             if str(server) == str(service_info_dict[sid][0]) and str(k) == str(service_info_dict[sid][1]):
+#                                 ser_id = sid
+#                                 process_statu = v[0]
+#                                 port_statu = v[1]
+#                                 msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":process_statu,"port_stat":port_statu})
+#                             else:
+#                                 pass
+#                 else:
+#                     pass
+#         except Exception,e:
+#             errmsg = "%s"%e 
+#             msg_dict['errmsg'] = errmsg
+#     else:
+#         try:
+#             server = Serverinfo.objects.filter(srvnum=srvnum)[0]
+#             ip = server.ip
+#             user = server.user
+#             port = server.port
+#             service_info = Serviceinfo.objects.filter(ser_srv=srvnum)
+#             msg_dict["rows"] = []
+#             check_args = ""
+#             if len(service_info) != 0:
+#                 for i in range(len(service_info)):
+#                     ser_id =  service_info[i].ser_id
+#                     ser_cfg = service_info[i].ser_cfg
+#                     ser_port = service_info[i].ser_port
+#                     #print ip,port,user,ser_cfg,ser_port 
+#                     #print "check_services.py %s:%s#"%(ser_cfg,ser_port)
+#                     #print os.path.isfile("%s/operation/check_services.py"%os.getcwd())
+#                     check_args = "%s:%s#"%(ser_cfg,ser_port) + check_args
+#                 #theUser = AnsibleWork(ip,port,user,"script","%s/operation/check_services.py %s"%(os.getcwd(),check_args))
+#                 #sevice_status = theUser.workrun()
+#                 sevice_status=('172.27.13.179', 'ss-HjhyComMulti,UP,UP\r\n',)
+#                 all_info = sevice_status[1].split("\r\n")
+#                 all_info.remove("")
+#                 check_result = {}
+#                 for info in all_info:
+#                     info = info.split(",")
+#                     cfg_name = info[0]
+#                     process_statu = info[1]
+#                     port_statu = info[2]
+#                     check_result[cfg_name] = [process_statu, port_statu]
+#                 service_info_dict = {}
+#                 for key in service_info:
+#                     service_info_dict[key.ser_id] = [key.ser_srv, key.ser_cfg]
+#                 for k,v in check_result.items():
+#                     for sid in service_info_dict:
+#                         if str(server) == str(service_info_dict[sid][0]) and str(k) == str(service_info_dict[sid][1]):
+#                             ser_id = sid
+#                             process_statu = v[0]
+#                             port_statu = v[1]
+#                             msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":process_statu,"port_stat":port_statu})
+#                         else:
+#                             pass
+#             else:
+#                 msg_dict['errmsg'] = "未找到services信息，请新增！" 
+#         except Exception,e:
+#             errmsg = "%s"%e 
+#             msg_dict['errmsg'] = errmsg
+#     return HttpResponse(json.dumps(msg_dict),content_type='application/json')

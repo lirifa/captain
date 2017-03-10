@@ -48,13 +48,14 @@ $(function () {
             },
             {field:'opt',title:'操作',width:200,align:'center',
                 formatter: function(value, row, index) {
-                    var str = '<a name="check-btn" href="javascript:check_stat();"  title="check">检查</a><a name="start-btn" href="javascript:service_start();"  title="start">启动</a><a name="stop-btn" href="javascript:service_stop();"  title="stop">停止</a><a name="restart-btn" href="javascript:service_restart();"  title="restart">重启</a>';
+                    //var str = '<a name="check-btn" href="javascript:check_stat();"  title="check">检查</a><a name="start-btn" href="javascript:service_start();"  title="start">启动</a><a name="stop-btn" href="javascript:service_stop();"  title="stop">停止</a><a name="restart-btn" href="javascript:service_restart();"  title="restart">重启</a>';
+                    var str = '<a name="start-btn" href="javascript:service_start();"  title="start">启动</a><a name="stop-btn" href="javascript:service_stop();"  title="stop">停止</a><a name="restart-btn" href="javascript:service_restart();"  title="restart">重启</a>';
                     return str; 
                 } 
             }, 
             ]], 
         onLoadSuccess:function(data){ 
-            $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
+            //$("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
             $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
             $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
@@ -63,7 +64,7 @@ $(function () {
 /*********************************END*******************************************************/
 
 
-/*******************************点击添加服务进程*********************************************/
+/*******************************点击添加服务进程********************************************/
     $('#service_add').bind('click', function(){
         $('#service').dialog({ 
             title:">>>新增服务进程",
@@ -100,35 +101,42 @@ $(function () {
 /*********************************END*******************************************************/
 
 
+/************************* 定时查询服务、端口状态 ******************************************/
+    var time = window.setInterval('get_stat()',5000);
+    // 清除定时器
+    //clearInterval(time)   
+
+/***************************** END *********************************************************/
+
 /*************************检查服务器下所有服务、端口状态******************************/
-    $('#service_check').bind('click',function() {
-        var srvnum = $('#check_all_server').val()
-        $.ajax({
-            url: '/ser_check_stat/',
-            type: 'POST',
-            dataType: 'json',
-            data: {srvnum: srvnum},
-            success:function (msg) {
-                var rows = msg.rows
-                for (i=0;i < rows.length;i++){
-                    var id = rows[i].ser_id
-                    var rowIndex = $('#service_table').datagrid('getRowIndex',id)
-                    $('#service_table').datagrid('updateRow',{
-                        index: rowIndex,
-                        row:{
-                            ser_stat: rows[i].ser_stat,
-                            port_stat:rows[i].port_stat,
-                        }
-                    })
-                    $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
-                    $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-                    $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-                    $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-                }
+    // $('#service_check').bind('click',function() {
+    //     var srvnum = $('#check_all_server').val()
+    //     $.ajax({
+    //         url: '/ser_check_stat/',
+    //         type: 'POST',
+    //         dataType: 'json',
+    //         data: {srvnum: srvnum},
+    //         success:function (msg) {
+    //             var rows = msg.rows
+    //             for (i=0;i < rows.length;i++){
+    //                 var id = rows[i].ser_id
+    //                 var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+    //                 $('#service_table').datagrid('updateRow',{
+    //                     index: rowIndex,
+    //                     row:{
+    //                         ser_stat: rows[i].ser_stat,
+    //                         port_stat:rows[i].port_stat,
+    //                     }
+    //                 })
+    //                 $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
+    //                 $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+    //                 $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+    //                 $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+    //             }
                 
-            }
-        })
-    });
+    //         }
+    //     })
+    // });
 /*********************************END*******************************************************/
 
 
@@ -300,13 +308,44 @@ function service_start() {
             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
         }
     })
-    .done(function() {
-        check_stat();
-    })
+    // .done(function() {
+        // check_stat();
+    // })
     .fail(function() {
         console.log("启动失败");
     })
 }
 /************************************ END ********************************************************/
+
+
+/***************************** 获取服务状态及端口状态函数 *****************************************/
+function get_stat(){
+    var srvnum = $('#check_all_server').val()
+    $.ajax({
+        url: '/ser_check_stat/',
+        type: 'POST',
+        dataType: 'json',
+        data: {srvnum: srvnum},
+        success:function (msg) {
+            var rows = msg.rows
+            for (i=0;i < rows.length;i++){
+                var id = rows[i].ser_id
+                var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+                $('#service_table').datagrid('updateRow',{
+                    index: rowIndex,
+                    row:{
+                        ser_stat: rows[i].ser_stat,
+                        port_stat:rows[i].port_stat,
+                    }
+                })
+                $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+                $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+                $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+            }
+            
+        }
+    })
+}
+/************************************** END **********************************************************/
 
 /************************************* 函数部分 END ********************************************************************************/
