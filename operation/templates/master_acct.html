@@ -11,6 +11,13 @@
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/master_acct.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:95px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body class="easyui-layout">
@@ -32,22 +39,22 @@
     </div>
     <div id="master_acct" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>总 账 号:&nbsp&nbsp&nbsp&nbsp
-            <input name="acc_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p>账 户 名:&nbsp&nbsp&nbsp&nbsp
-            <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
-            <p>关联资金账户:
-            <input name="trdacct" class="easyui-combobox" style="width:185px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'"></p>
-            <p>客 户 权 益:
-            <input name="equity" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
-            <p>买 保 证 金:
-            <input name="buy_margin" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
-            <p>卖 保 证 金:
-            <input name="sell_margin" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
-            <p>保证金占用:
-            <input name="margin_locked" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
-            <p>可 用 资 金:
-            <input name="fund_avaril" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="acc_num">总账号:</label>
+                <input name="acc_num" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
+            <p><label for="acc_name">账户名:</label>
+                <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
+            <p><label for="trdacct">关联资金账户:</label>
+                <input name="trdacct" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'"></p>
+            <p><label for="equity">客户权益:</label>
+                <input name="equity" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="buy_margin">买保证金:</label>
+                <input name="buy_margin" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="sell_margin">卖保证金:</label>
+                <input name="sell_margin" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="margin_locked">保证金占用:</label>
+                <input name="margin_locked" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="fund_avaril">可用资金:</label>
+                <input name="fund_avaril" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="masteracctinfoadd()">提交</a>
                 <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="masteracctinfomod()">修改</a>
@@ -55,13 +62,13 @@
             </div>
         </form>
     </div>
-    <div id="fund_change" class="easyui-dialog" closed="true" style="width: 380px;padding: 20px 40px;">
+    <div id="fund_change" class="easyui-dialog" closed="true" style="width: 400px;padding: 20px 40px;">
         <form id="fund_change_fm" method="post">
-            <p>出 入 金:&nbsp
+            <p><label for="fund_change">出入金:</label>
             <input name="fund_change" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px"></p>
-            <p>资金账户:
+            <p><label for="change_acct">资金账户:</label>
             <input name="change_acct" class="easyui-combobox" style="width:200px;height:32px" data-options="panelHeight:'auto', valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/'"></p>
-            <p>备&nbsp&nbsp&nbsp&nbsp&nbsp 注:
+            <p><label for="change_desc">备注:</label>
             <input name="change_desc" class="easyui-textbox" style="width: 200px;height: 32px"></p>
             <div style="text-align: center;">
                 <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin:0 20px">提交</a>

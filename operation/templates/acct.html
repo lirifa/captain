@@ -11,6 +11,13 @@
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/acct.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body class="easyui-layout">
@@ -32,52 +39,52 @@
     </div>
     <div id="acct" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>资金账户号:
+            <p><label for="trdacct">资金账户号:</label>
                 <input name="trdacct" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true">
             </p>
-            <p>账 户 名 称:
+            <p><label for="acc_name">账户名称:</label>
                 <input name="acc_name" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
             </p>
-            <p>经 纪 商:&nbsp&nbsp&nbsp&nbsp
-                <input name="bid" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
+            <p><label for="bid">经纪商:</label>
+                <input name="bid" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
             </p>
-            <p>所 属 产 品:
-                <input name="pid" class="easyui-combobox " style="width:200px;height:32px" required="false" data-options="panelHeight:'auto',valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
+            <p><label for="pid">所属产品:</label>
+                <input name="pid" class="easyui-combobox " style="width:200px;height:32px" required="false" data-options="panelHeight:'116',valueField:'pid',textField:'pname',url:'/product_combobox_json/'">
             </p>
-            <p>客 户 权 益:
+            <p><label for="equity">客户权益:</label>
                 <input name="equity" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>保证金占用:
+            <p><label for="margin_locked">保证金占用:</label>
                 <input name="margin_locked" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>可 用 资 金:
+            <p><label for="fund_avaril">可用资金:</label>
                 <input name="fund_avaril" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
-            <p>风 险 度:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="risk_degree">风险度:</label>
                 <input name="risk_degree" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
             <div style="text-align: center">
-            <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfoadd()">提交</a>
-            <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfomod()">修改</a>
-            <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#acct').dialog('close')">取消</a>
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfoadd()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="acctinfomod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#acct').dialog('close')">取消</a>
             </div>
         </form>
     </div>
 
     <div id="fund_change" class="easyui-dialog" closed="true" style="width: 380px;padding: 20px 40px;">
         <form id="fund_change_fm" method="post">
-            <p>出 入 金:&nbsp
+            <p><label for="fund_change">出入金:</label>
                 <input name="fund_change" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px">
             </p>
-            <p>资金账户:
+            <p><label for="change_acct">资金账户:</label>
                 <input name="change_acct" class="easyui-combobox" style="width:200px;height:32px" data-options="panelHeight:'auto', valueField:'trdacct',textField:'trdacct',url:'/acct_combobox_json/'">
             </p>
-            <p>备&nbsp&nbsp&nbsp&nbsp&nbsp  注:
+            <p><label for="change_desc">备注:</label>
                 <input name="change_desc" class="easyui-textbox" style="width: 200px;height: 32px" >
             </p>
             <div style="text-align: center;">
-            <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin:0 20px">提交</a>
-            <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#fund_change').dialog('close')" style="margin:0 20px">取消</a>
+                <a id="fund_btn" type="submit" class="easyui-linkbutton" iconCls="icon-save" onclick="fund_change()" style="margin:0 20px">提交</a>
+                <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#fund_change').dialog('close')" style="margin:0 20px">取消</a>
             </div>
         </form>
     </div>

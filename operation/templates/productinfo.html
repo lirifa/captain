@@ -11,6 +11,13 @@
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/productinfo.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body class="easyui-layout">
@@ -32,13 +39,13 @@
 
     <div id="product" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>产 品 编 号:
+            <p><label for="pid">产品编号:</label>
             <input name="pid" class="easyui-textbox easyui-validatebox pid" validType="strEngNum" style="width:200px;height:32px" required="true" ></p>
-            <p>产 品 名 称:
+            <p><label for="panme">产品名称:</label>
             <input name="pname" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
-            <p>产品管理人:
+            <p><label for="admin">产品管理人:</label>
             <input name="admin" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>产 品 介 绍:
+            <p><label for="desc">产品介绍:</label>
             <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="productinfoadd()">提交</a>
