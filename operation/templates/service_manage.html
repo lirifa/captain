@@ -17,6 +17,11 @@
             background: #FCF6BA;
             color:#030303;
         }
+        label{
+            display: inline-block;
+            width:70px;
+            text-align: right;
+        }
     </style>
 </head>
 
@@ -44,19 +49,19 @@
 
     <div id="service" class="easyui-dialog" closed=true  style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>服务编号:
+            <p><label for="ser_id">服务编号:</label>
                 <input name="ser_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p>服务名称:
+            <p><label for="ser_name">服务名称:</label>
                 <input name="ser_name" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true"></p>
-            <p>服务属性:
+            <p><label for="ser_att">服务属性:</label>
                 <input name="ser_att" class="easyui-combobox" validType="strip" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto',valueField:'label',textField:'value',data:[{label: 'PS',value: 'PS'},{label: 'SS',value: 'SS'},{label: 'GW',value:'GW'},{label:'SS2ISON',value:'SS2ISON'}]"></p>
-            <p>配 置 名:
+            <p><label for="ser_cfg">配置名:</label>
                 <input name="ser_cfg" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'scfg',textField:'scfg',url:'/strategyinfo_combobox_json/'"></p>
-            <p>服务端口:
+            <p><label for="ser_port">服务端口:</label>
                 <input name="ser_port" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>所属主机:
+            <p><label for="ser_srv">所属主机:</label>
                 <input name="ser_srv" class="easyui-combobox" style="width:200px;height:32px" required="true"  data-options="panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
-            <p>备注:&nbsp&nbsp
+            <p><label for="desc">备注:</label>
                 <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
             <div style="text-align: center">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="service_add()">提交</a>
