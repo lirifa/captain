@@ -3,16 +3,15 @@ $(function () {
 
 /********************************* 加载数据源折叠面板 *****************************************************/
     $('#data_origin').panel({
-        width:500,
-        height:150,
+        // width:1000,
+        // height:120,
         title:'数据源',
+        iconCls:'icon-large-smartart',
+        region:'north',
         collapsible:true,
         tools:[{
-        iconCls:'icon-add',
-        handler:function(){alert('new')}
-            },{
-        iconCls:'icon-save',
-        handler:function(){alert('save')}
+            iconCls:'icon-save',
+            handler:function(){alert('save')}
         }]
     }); 
 /************************************** END **************************************************************/

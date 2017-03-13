@@ -14,7 +14,11 @@
     <script type="text/javascript" src="/static/Scripts/data_send.js"></script>
 </head>
 <body class="easyui-layout">
-    <div data-options="region:'center',title:'数据分发',iconCls:'icon-large-smartart'" style="height:87%;">
+    <div id="data_origin" title="" style="height:13%;" >
+            <p><label for="">data1:</label><input type="text" style="width: 800px"></p>
+            <p><label for="">data2:</label><input type="text" style="width: 800px"></p>
+        </div>
+    <div data-options="region:'south',title:'数据分发',iconCls:'icon-large-smartart'" style="height:87%;">
         <div title="DataGrid" style="padding:2px">
             <table id="server_table"  data-options="toolbar:'#tb'"></table>
         </div>
