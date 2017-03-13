@@ -102,7 +102,7 @@ $(function () {
 
 
 /************************* 定时查询服务、端口状态 ******************************************/
-    var time = window.setInterval('get_stat()',5000);
+    var time = window.setInterval('get_stat()',2000);
     // 清除定时器
     //clearInterval(time)   
 
@@ -322,10 +322,10 @@ function service_start() {
 function get_stat(){
     var srvnum = $('#check_all_server').val()
     $.ajax({
-        url: '/ser_check_stat/',
+        url: '/get_stat/',
         type: 'POST',
         dataType: 'json',
-        data: {srvnum: srvnum},
+        data: {srvnum,},
         success:function (msg) {
             var rows = msg.rows
             for (i=0;i < rows.length;i++){

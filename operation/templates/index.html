@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/static/Styles/ui-lightness/jquery-ui-1.8.22.custom.css" />
     <script type="text/javascript" src="/static/js/jquery-1.7.2.js"></script>
     <script type="text/javascript" src="/static/js/jquery-ui-1.8.22.custom.min.js"></script>
-    <script type="text/javascript" src="/static/Scripts/index.js"></script>
+    <script type="text/javascript" src="/static/Scripts/data_send.js"></script>
 </head>
 <body>
     <div class="warp">
@@ -34,31 +34,44 @@
         <div class="left_c left">
             <h1>操作菜单</h1>
             <div class="acc">
-                <div><ul id="accordion" class="accordion">
+                <div>
+                <ul id="accordion" class="accordion">
                    <li> <a class="one link">主机管理</a>
-                    <ul class="kid submenu">
-                        <li><b class="tip"></b><a target="Conframe" href="/serverinfo/">主机信息</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/serviceinfo/">服务控制</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/configure/">行情检测</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/configure/">数据分发</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/configure/">版本控制</a></li>
-                    </ul></li>
+                        <ul class="kid submenu">
+                            <li><b class="tip"></b><a target="Conframe" href="/serverinfo/">主机信息</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/serviceinfo/">服务控制</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">行情检测</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/data_send/">数据分发</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">版本控制</a></li>
+                        </ul>
+                    </li>
                     <li><a class="one link">产品管理</a>
-                    <ul class="kid submenu">
-                        <li><b class="tip"></b><a target="Conframe" href="/productinfo/">产品列表</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/acct/">资金账户管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/master_acct/">总账号管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/sub_acct/">子账号管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/strategyinfo/">策略管理</a></li>
-                    </ul><li>
+                        <ul class="kid submenu">
+                            <li><b class="tip"></b><a target="Conframe" href="/productinfo/">产品列表</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/acct/">资金账户管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/master_acct/">总账号管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/sub_acct/">子账号管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/strategyinfo/">策略管理</a></li>
+                        </ul>
+                    </li>
                     <li><a class="one link">清算管理</a>
-                    <ul class="kid submenu">
-                        <li><b class="tip"></b><a target="Conframe" href="/clear/">GW管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/feerate_manage/">费率配置</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/configure/">报表管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/position/">仓位管理</a></li>
-                        <li><b class="tip"></b><a target="Conframe" href="/configure/">订单管理</a></li>
-                    </ul><li>
+                        <ul class="kid submenu">
+                            <li><b class="tip"></b><a target="Conframe" href="/clear/">GW管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/feerate_manage/">费率配置</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">报表管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/position/">仓位管理</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">订单管理</a></li>
+                        </ul>
+                    </li>
+                    <li> <a class="one link">日志管理</a>
+                        <ul class="kid submenu">
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">出入金记录</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">服务启动日志</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">行情日志</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">数据分发日志</a></li>
+                            <li><b class="tip"></b><a target="Conframe" href="/configure/">邮件发送日志</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 </div>
                 <div id="datepicker"></div>

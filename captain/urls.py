@@ -41,11 +41,14 @@ urlpatterns = [
     url(r'^service_add/$','operation.views.service_add',name='sercice_add'),
     url(r'^service_mod/$','operation.views.service_mod',name='sercice_mod'),
     url(r'^service_del/$','operation.views.service_del',name='sercice_del'),
-    url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
-    url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
+    #url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
+    # url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
+    url(r'^get_stat/$','operation.views.get_stat',name='get_stat'),
     url(r'^strategyinfo_combobox_json/$','operation.views.strategyinfo_combobox_json',name='strategyinfo_combobox_json'),
 
     url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
+
+    url(r'^data_send/$','operation.views.data_send',name='data_send'),
 
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),

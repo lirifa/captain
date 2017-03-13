@@ -159,7 +159,6 @@ def service_mod(request):
 def service_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
-    print idlist
     del idlist[0]
     msg_dict = {"accmsg":"","errmsg":""}
     for ser_id in idlist:
@@ -192,7 +191,8 @@ def strategyinfo_combobox_json(request):
 
 
 def get_stat(request):
-    srvnum = request.POST.get('srvnum')
+    ser_srv = request.POST.get('srvnum')
+    msg_dict = {}
     if ser_srv == 'all':
         try:
             service_info = Serviceinfo.objects.all()
@@ -200,19 +200,13 @@ def get_stat(request):
             service_info = []
             errmsg = "%s"%e
         if len(service_info) != 0:
-            msg_dict = {"total":len(service_info)}
             msg_dict["rows"] = []
-            num =1
             for key in service_info:
                 ser_id = key.ser_id
-                ser_name = key.ser_name
-                ser_att = key.ser_att
-                ser_cfg = key.ser_cfg
-                ser_port = key.ser_port
-                ser_srv = key.ser_srv
-                desc = key.desc
-                msg_dict["rows"].append({"id":num,"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
-                num += 1
+                ser_stat = key.ser_stat
+                port_stat = key.port_stat
+                print port_stat
+                msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":ser_stat,"port_stat":port_stat})
         else:
             msg_dict = {"total":0,"rows":[]}
     else:
@@ -222,17 +216,12 @@ def get_stat(request):
             service_info = []
             errmsg = "%s"%e
         if len(service_info) != 0:
-            msg_dict = {"total":len(service_info)}
             msg_dict["rows"] = []
             for key in service_info:
                 ser_id = key.ser_id
-                ser_name = key.ser_name
-                ser_att = key.ser_att
-                ser_cfg = key.ser_cfg
-                ser_port = key.ser_port
-                ser_srv = key.ser_srv
-                desc = key.desc
-                msg_dict["rows"].append({"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
+                ser_stat = key.ser_stat
+                port_stat = key.port_stat
+                msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":ser_stat,"port_stat":port_stat})
         else:
             msg_dict = {"total":0,"rows":[]}
 

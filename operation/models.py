@@ -35,6 +35,8 @@ class Serviceinfo(models.Model):
     ser_att = models.CharField('服务属性',max_length=32)
     ser_cfg = models.CharField('对应配置名',max_length=32)
     ser_port =  models.IntegerField('端口')
+    ser_stat = models.CharField('服务状态',max_length=32)
+    port_stat = models.CharField('端口状态',max_length=32)
     ser_srv = models.CharField('所属主机',max_length=10)
     desc = models.CharField('备注',max_length=32)
     def __unicode__(self):
