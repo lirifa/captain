@@ -44,6 +44,20 @@ class Serviceinfo(models.Model):
     class Meta:
         db_table = 'serviceinfo'
 
+#数据分发配置表
+class Data_send(models.Model):
+    id = models.AutoField('主键id',primary_key=True)
+    d_name = models.CharField('配置名',max_length=32)
+    o_srv = models.CharField('源服务器',max_length=32)
+    o_dir = models.CharField('源目录地址',max_length=32)
+    p_srv = models.CharField('目的服务器',max_length=32)
+    p_dir = models.CharField('目的目录地址',max_length=32)
+    update_tm = models.DateTimeField('更新时间',auto_now=True)
+    def __unicode__(self):
+        return self.id
+    class Meta:
+        db_table = 'data_send'
+
 #产品信息表
 class Productinfo(models.Model):
     pid = models.IntegerField(verbose_name='产品编号',primary_key=True)

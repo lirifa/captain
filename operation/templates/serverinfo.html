@@ -14,11 +14,16 @@
 
 <body class="easyui-layout">
 
-    <div data-options="region:'center',title:'主机管理',iconCls:'icon-large-smartart'">
+    <div data-options="region:'center',title:'主机管理',iconCls:'icon-large-smartart'" style="overflow: hidden">
         <div title="DataGrid" style="padding:2px">
             <table id="server_table"  data-options="toolbar:'#tb'"></table>
         </div>
     </div>
+    <!-- <div data-options="region:'center',title:'主机管理',iconCls:'icon-large-smartart'" style="overflow: hidden">
+        <div title="DataGrid" style="padding:2px">
+            <table id="dg" title=">>>服务列表" data-options="toolbar:'#tb',rownumbers:true,singleSelect:true,autoRowHeight:false,pagination:true,pageSize:10"></table>
+        </div>
+    </div> -->
     
 <!-- toolbar -->
     <div id="tb" style="padding:3px;height:auto">  

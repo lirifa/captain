@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
 
     url(r'^data_send/$','operation.views.data_send',name='data_send'),
+    url(r'^data_send_json/$','operation.views.data_send_json',name='data_send_json'),
 
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),

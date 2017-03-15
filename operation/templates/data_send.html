@@ -12,12 +12,52 @@
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/data_send.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
 </head>
 <body class="easyui-layout">
-    <div data-options="region:'center',title:'数据分发',iconCls:'icon-large-smartart'" style="height:87%;">
+    <div data-options="region:'center',title:'数据分发',iconCls:'icon-large-smartart'">
         <div title="DataGrid" style="padding:2px">
-            <table id="server_table"  data-options="toolbar:'#tb'"></table>
+            <table id="data_send"  data-options="toolbar:'#tb'"></table>
         </div>
+    </div>
+
+    <!-- toolbar -->
+    <div id="tb" style="padding:3px;height:auto;">  
+        <div style="margin-bottom:1px">
+            <a id="data_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+            <a id="data_edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+            <a id="data_delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+            <div style="float:right;margin-right:20px">
+                <input class="easyui-searchbox" data-options="prompt:'Please Input Value'," style="width:200px">
+            </div>
+        </div>
+    </div>
+
+    <!-- add dialog -->
+    <div id="data" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
+        <form id="fm" method="get">
+            <p><label for="d_name">数据名称:</label>
+            <input name="d_name" class="easyui-textbox easyui-validatebox pid" validType="strEngNum" style="width:200px;height:32px" required="true" ></p>
+            <p><label for="o_srv">源服务器:</label>
+            <input name="o_srv" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
+            <p><label for="o_dir">源目录:</label>
+            <input name="o_dir" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="p_srv">目标服务器:</label>
+            <input name="p_srv" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <p><label for="p_dir">目标目录:</label>
+            <input name="p_dir" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <div style="text-align: center">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="datainfoadd()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="datainfomod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#data').dialog('close')">取消</a>
+            </div>
+        </form>
     </div>
 </body>
 

@@ -11,18 +11,18 @@ $(function () {
         fitColumns: true,
         striped:true,
         singleSelect: true,
-        pagination: false,
+        pagination: true,
         idField: 'ser_id',
         pageSize: 10,
         pageList: [10, 15, 20, 25, 100],
         columns: [[
-            {field:'id',title:'序号',width:35},
+            {field:'id',title:'',width:20},
             {field:'ser_id',title:'服务编号',width:40},
             {field:'ser_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
-            {field:'ser_att',title:'服务属性',width:80,editor:{type:'validatebox',options:{required:true}}},
+            {field:'ser_att',title:'服务属性',width:60,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_cfg',title:'配置名',width:150,editor:{type:'validatebox',options:{required:true}}},
-            {field:'ser_port',title:'服务端口',width:120,editor:{type:'validatebox',options:{required:true}}},
-            {field:'ser_srv',title:'所属主机',width:120,editor:{type:'validatebox',options:{required:true}}},
+            {field:'ser_port',title:'服务端口',width:80,editor:{type:'validatebox',options:{required:true}}},
+            {field:'ser_srv',title:'所属主机',width:80,editor:{type:'validatebox',options:{required:true}}},
             {field:'desc',title:'备注',width:150,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_stat',title:'服务状态',width:50,align:'center',
                 styler:function(value, row, index){
@@ -63,6 +63,31 @@ $(function () {
     });
 /*********************************END*******************************************************/
 
+    var pager = $('#service_table').datagrid('getPager')
+    pager.pagination({
+        pageSize:10,
+        showPageList:false,
+        buttons:[{
+            iconCls:'icon-search',
+            handler:function(){
+                alert('search');
+            }
+        },{
+            iconCls:'icon-add',
+            handler:function(){
+                alert('add');
+            }
+        },{
+            iconCls:'icon-edit',
+            handler:function(){
+                alert('edit');
+            }
+        }],
+        onBeforeRefresh:function(){
+            alert('before refresh');
+            return true;
+        }
+    })
 
 /*******************************点击添加服务进程********************************************/
     $('#service_add').bind('click', function(){
@@ -74,6 +99,7 @@ $(function () {
         $('#fm').form('clear');
         $('#modify').hide()
         $('#add').show()
+        $('input[name="ser_id"]').prev().prop('disabled', false)
     });
 /*********************************END*******************************************************/
 
@@ -102,10 +128,10 @@ $(function () {
 
 
 /************************* 定时查询服务、端口状态 ******************************************/
-    var time = window.setInterval('get_stat()',2000);
+    //var time = setInterval('get_stat()',5000);
     // 清除定时器
     //clearInterval(time)   
-
+    //timeDown(2)
 /***************************** END *********************************************************/
 
 /*************************检查服务器下所有服务、端口状态******************************/
@@ -168,7 +194,6 @@ $(function () {
     $('#service_delete').bind('click', function() {
         var services = "";
         var row_select = $('#service_table').datagrid('getSelections'); //返回的是被选中行的对象
-        console.log(row_select)
         for (var i = 0; i < row_select.length; i++) {
             services += '#' + row_select[i].ser_id;
         }
@@ -319,33 +344,53 @@ function service_start() {
 
 
 /***************************** 获取服务状态及端口状态函数 *****************************************/
-function get_stat(){
-    var srvnum = $('#check_all_server').val()
-    $.ajax({
-        url: '/get_stat/',
-        type: 'POST',
-        dataType: 'json',
-        data: {srvnum,},
-        success:function (msg) {
-            var rows = msg.rows
-            for (i=0;i < rows.length;i++){
-                var id = rows[i].ser_id
-                var rowIndex = $('#service_table').datagrid('getRowIndex',id)
-                $('#service_table').datagrid('updateRow',{
-                    index: rowIndex,
-                    row:{
-                        ser_stat: rows[i].ser_stat,
-                        port_stat:rows[i].port_stat,
-                    }
-                })
-                $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-                $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-                $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-            }
+// function get_stat(){
+//     var srvnum = $('#check_all_server').val()
+//     $.ajax({
+//         url: '/get_stat/',
+//         type: 'POST',
+//         dataType: 'json',
+//         data: {srvnum,},
+//         success:function (msg) {
+//             var rows = msg.rows
+//             for (i=0;i < rows.length;i++){
+//                 var id = rows[i].ser_id
+//                 var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+//                 $('#service_table').datagrid('updateRow',{
+//                     index: rowIndex,
+//                     row:{
+//                         ser_stat: rows[i].ser_stat,
+//                         port_stat:rows[i].port_stat,
+//                     }
+//                 })
+//                 $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+//                 $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+//                 $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+//             }
             
-        }
-    })
-}
+//         }
+//     })
+// }
 /************************************** END **********************************************************/
 
+
+/************************************* 搜索函数 ***************************************************/
+function doSearch(value){
+    if(value){
+        alert('You input: ' + value);
+    }else{
+        alert('Please input ...');
+    }
+}
+/***************************************** END ****************************************************/
+// function timeDown(limit) {
+//         limit--;
+//         if (limit < 0) {
+//                 limit = 1;
+//                 get_stat();
+//         }
+//         setTimeout(function() {
+//             timeDown(limit);
+//     }, 1000)
+// }
 /************************************* 函数部分 END ********************************************************************************/

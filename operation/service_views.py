@@ -205,7 +205,6 @@ def get_stat(request):
                 ser_id = key.ser_id
                 ser_stat = key.ser_stat
                 port_stat = key.port_stat
-                print port_stat
                 msg_dict["rows"].append({"ser_id":ser_id,"ser_stat":ser_stat,"port_stat":port_stat})
         else:
             msg_dict = {"total":0,"rows":[]}

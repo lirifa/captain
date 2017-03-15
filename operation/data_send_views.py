@@ -44,3 +44,48 @@ except ImportError:
 
 def data_send(request):
     return render(request,"data_send.html")
+
+def data_send_json(request):
+    try:
+        data_send_info = Data_send.objects.all()
+    except Exception,e:
+        data_send_info = []
+        errmsg = "%s"%e
+    if len(data_send_info) != 0:
+        msg_dict = {"total":len(data_send_info)}
+        msg_dict["rows"] = []
+        for key in data_send_info:
+            id = key.id
+            d_name = key.d_name
+            o_srv = key.o_srv
+            o_dir = key.o_dir
+            p_srv = key.p_srv
+            p_dir = key.p_dir
+            msg_dict["rows"].append({"id":id,"d_name":d_name,"o_srv":o_srv,"o_dir":o_dir,"p_srv":p_srv,"p_dir":p_dir})
+    else:
+        msg_dict = {"total":0,"rows":[]}
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+def data_send_add(request):
+    d_name = request.GET.get('d_name')
+    o_srv = request.GET.get('o_srv')
+    o_dir = request.GET.get('o_dir')
+    p_srv = request.GET.get('p_srv')
+    p_dir = request.GET.get('p_dir')
+    msg_dict = {}
+    try:
+        u1 = Data_send(d_name=d_name,o_srv=o_srv,o_dir=o_dir,p_srv=p_srv,p_dir=p_dir)
+        u1.save()
+    except Exception,e:
+        errmsg = "%s"%e
+        msg_dict['errmsg'] = errmsg
+        accmsg = u"新产品 [ %s ] 添加成功!"%pid
+        msg_dict['accmsg'] = accmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+    try:
+        pass
+    except Exception as e:
+        raise e
+    finally:
+        pass
