@@ -9,14 +9,15 @@ $(function () {
         url: '/serviceinfo_json/',
         width: '100%',
         height: $(window).height() - 31,
-        border: true,
-        fitColumns: true,
-        striped:true,
-        singleSelect: true,
-        pagination: true,
-        idField: 'ser_id',
-        pageSize: 10,
-        pageList: [10, 15, 20, 25, 100],
+        border: true,//边框
+        fitColumns: true,//设置为true将自动使列适应表格宽度以防止出现水平滚动,false则自动匹配大小
+        striped:true,//隔行变色
+        singleSelect: true,//单行选中，false可以选中多行
+        pagination: true,//显示最下端的分页工具栏
+        idField: 'ser_id', //标识列，一般设为id，可能会区分大小写
+        pageSize: 20,////读取分页条数，即向后台读取数据时传过去的值
+        pageList: [10, 15, 20, 25, 100],//可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
+        //sortName: "ser_id",
         columns: [[
             {field:'id',title:'序号',width:20},
             {field:'ser_id',title:'服务编号',width:40},
@@ -106,6 +107,7 @@ $(function () {
 
 /************************* 定时查询服务、端口状态 ******************************************/
     //var time = setInterval('get_stat()',5000);
+    get_stat();
     // 清除定时器
     //clearInterval(time)   
     //timeDown(2)
@@ -321,66 +323,94 @@ function service_start() {
 
 
 /***************************** 获取服务状态及端口状态函数 *****************************************/
-// function get_stat(){
-//     var srvnum = $('#check_all_server').val()
-//     $.ajax({
-//         url: '/get_stat/',
-//         type: 'POST',
-//         dataType: 'json',
-//         data: {srvnum,},
-//         success:function (msg) {
-//             var rows = msg.rows
-//             for (i=0;i < rows.length;i++){
-//                 var id = rows[i].ser_id
-//                 var rowIndex = $('#service_table').datagrid('getRowIndex',id)
-//                 $('#service_table').datagrid('updateRow',{
-//                     index: rowIndex,
-//                     row:{
-//                         ser_stat: rows[i].ser_stat,
-//                         port_stat:rows[i].port_stat,
-//                     }
-//                 })
-//                 $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-//                 $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-//                 $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-//             }
+function get_stat(){
+    var srvnum = $('#check_all_server').val()
+    var getting = {
+        url: '/get_stat/',
+        type: 'POST',
+        dataType: 'json',
+        data: {srvnum,},
+        timeout: 10000,
+        success:function (msg) {
+            var rows = msg.rows
+            for (i=0;i < rows.length;i++){
+                var id = rows[i].ser_id
+                var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+                $('#service_table').datagrid('updateRow',{
+                    index: rowIndex,
+                    row:{
+                        ser_stat: rows[i].ser_stat,
+                        port_stat:rows[i].port_stat,
+                    }
+                })
+                $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+                $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+                $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+                $.ajax(getting);
+            }
+        },
+        error:function () {
+            $.ajax(getting)
+        }
+    }
+    // $.ajax({
+    //     url: '/get_stat/',
+    //     type: 'POST',
+    //     dataType: 'json',
+    //     data: {srvnum,},
+    //     success:function (msg) {
+    //         var rows = msg.rows
+    //         for (i=0;i < rows.length;i++){
+    //             var id = rows[i].ser_id
+    //             var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+    //             $('#service_table').datagrid('updateRow',{
+    //                 index: rowIndex,
+    //                 row:{
+    //                     ser_stat: rows[i].ser_stat,
+    //                     port_stat:rows[i].port_stat,
+    //                 }
+    //             })
+    //             $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+    //             $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+    //             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+    //         }
             
-//         }
-//     })
-// }
+    //     }
+    // })
+}
 /************************************** END **********************************************************/
 
 
 /******************************* 分页显示数据函数 ***************************************************/
 function pagerFilter(data) {
-        if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
-            data = {
-                total: data.length,
-                rows: data
-            }
+    if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
+        data = {
+            total: data.length,
+            rows: data
         }
-        var dg = $(this);
-        var opts = dg.datagrid('options');
-        var pager = dg.datagrid('getPager');
-        pager.pagination({
-            onSelectPage: function(pageNum, pageSize) {
-                opts.pageNumber = pageNum;
-                opts.pageSize = pageSize;
-                pager.pagination('refresh', {
-                    pageNumber: pageNum,
-                    pageSize: pageSize
-                });
-                dg.datagrid('loadData', data);
-            }
-        });
-        if (!data.originalRows) {
-            data.originalRows = (data.rows);
-        }
-        var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
-        var end = start + parseInt(opts.pageSize);
-        data.rows = (data.originalRows.slice(start, end));
-        return data;
     }
+    var dg = $(this);
+    var opts = dg.datagrid('options');
+    var pager = dg.datagrid('getPager');
+    pager.pagination({
+        onSelectPage: function(pageNum, pageSize) {
+            opts.pageNumber = pageNum;
+            opts.pageSize = pageSize;
+            pager.pagination('refresh', {
+                pageNumber: pageNum,
+                pageSize: pageSize
+            });
+            dg.datagrid('loadData', data);
+        }
+    });
+    if (!data.originalRows) {
+        data.originalRows = (data.rows);
+    }
+    var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+    var end = start + parseInt(opts.pageSize);
+    data.rows = (data.originalRows.slice(start, end));
+    return data;
+}
 /***************************************** END ****************************************************/
 
 
