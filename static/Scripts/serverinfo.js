@@ -5,6 +5,7 @@ $(function(){
 /***********************************加载datagrid服务器主机信息列表**********************************************/
     $('#server_table').datagrid({
         title:'>>>服务器信息列表',
+        loadFilter: pagerFilter,
         url:'/serverinfo_json/',
         width:'100%',
         height: $(window).height() - 31,
@@ -185,5 +186,38 @@ function serverinfomod() {
     }
 }
 /************************************** END ****************************************************************/
+
+/******************************* 分页显示数据函数 ***************************************************/
+function pagerFilter(data) {
+        if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage: function(pageNum, pageSize) {
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh', {
+                    pageNumber: pageNum,
+                    pageSize: pageSize
+                });
+                dg.datagrid('loadData', data);
+            }
+        });
+        if (!data.originalRows) {
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+/***************************************** END ****************************************************/
+
 
 /************************************ 函数部分 END *********************************************************************************/

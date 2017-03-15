@@ -14,11 +14,16 @@
         body{
             font-family:verdana,helvetica,arial,sans-serif;
         }
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
     </style>
 </head>
 
 <body class="easyui-layout">
-    <div data-options="region:'center',title:'策略管理',iconCls:'icon-large-smartart'">
+    <div data-options="region:'center',title:'策略管理',iconCls:'icon-large-smartart'" style="overflow: hidden;">
         <div title="DataGrid" style="padding:2px">
             <table id="strategy_table" data-options="toolbar:'#tb'"></table>
         </div>
@@ -36,27 +41,27 @@
 
    <div id="strategy" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
        <form id="fm" method="get">
-           <p>策 略 编 号:
+           <p><label for="sid">策略编号:</label>
            <input name="sid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p>策 略 名 称:
+            <p><label for="sname">策略名称:</label>
             <input name="sname" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>配 置 名:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="scfg">配置名:</label>
             <input name="scfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>策 略 端 口:
+            <p><label for="port">策略端口:</label>
             <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p>所 属 主 机:
+            <p><label for="ssrv">所属主机:</label>
             <input name="ssrv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
-            <p>所 属 产 品:
+            <p><label for="product">所属产品:</label>
             <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'pname',textField:'pname',url:'/product_combobox_json/'"></p>
-            <p>总 账 号:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="master_acc">总账号:</label>
             <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',
                     onSelect:function(rec){
                       var url = 'subacc_combobox_json/'+rec.acc_num;
                       $('#combo_sub_acc').combobox('reload',url);
                     }"></p>
-            <p>子 账 号:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="sub_acc">子账号:</label>
             <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true"  data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num'"></p>
-            <p>策 略 介 绍:
+            <p><label for="desc">策略介绍:</label>
             <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center;">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfoadd()">提交</a>

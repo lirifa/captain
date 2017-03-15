@@ -61,7 +61,7 @@ def supervisor(request):
     return render(request,"supervisor.html")
 
 def configure(request):
-    return render(request,"Demo.html")
+    return render(request,"configure.html")
 
 #404页面
 def page_not_found(request):

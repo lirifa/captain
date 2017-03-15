@@ -5,13 +5,15 @@ $(function() {
 /******************************************加载datagrid资金账户列表*********************************************/
     $('#acct_table').datagrid({
         title: '>>>资金账户列表',
+        loadFilter: pagerFilter,
         url: '/acct_json/',
         width: '100%',
+        height: $(window).height() - 31,
         border: true,
         fitColumns: true,
         striped:true,
         singleSelect: true,
-        pagination: false,
+        pagination: true,
         idField: 'id',
         pageSize: 10,
         pageList: [10, 15, 20, 25, 100],
@@ -40,6 +42,7 @@ $(function() {
         $('#fm').form('clear');
         $('#modify').hide()
         $('#add').show()
+        $('input[name="trdacct"]').prev().prop('disabled', false)
     });
 /**************************************END******************************************************************/
 
@@ -200,5 +203,38 @@ function fund_change() {
     }
 }
 /*********************************** END *****************************************************/
+
+
+/******************************* 分页显示数据函数 ***************************************************/
+function pagerFilter(data) {
+        if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage: function(pageNum, pageSize) {
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh', {
+                    pageNumber: pageNum,
+                    pageSize: pageSize
+                });
+                dg.datagrid('loadData', data);
+            }
+        });
+        if (!data.originalRows) {
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+/***************************************** END ****************************************************/
 
 /************************************* 函数部分 END ********************************************************************************/

@@ -10,6 +10,13 @@
     <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
     <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
     <script type="text/javascript" src="/static/Scripts/serverinfo.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:70px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body class="easyui-layout">
@@ -19,11 +26,6 @@
             <table id="server_table"  data-options="toolbar:'#tb'"></table>
         </div>
     </div>
-    <!-- <div data-options="region:'center',title:'主机管理',iconCls:'icon-large-smartart'" style="overflow: hidden">
-        <div title="DataGrid" style="padding:2px">
-            <table id="dg" title=">>>服务列表" data-options="toolbar:'#tb',rownumbers:true,singleSelect:true,autoRowHeight:false,pagination:true,pageSize:10"></table>
-        </div>
-    </div> -->
     
 <!-- toolbar -->
     <div id="tb" style="padding:3px;height:auto">  
@@ -41,19 +43,19 @@
     
     <div id="server" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
         <form id="fm" method="get">
-            <p>服务器编号:
+            <p><label for="srvnum">服务器编号:</label>
             <input name="srvnum" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p>IP 地 址:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="ip">IP地址:</label>
             <input name="ip" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true"></p>
-            <p>用 户 名:&nbsp&nbsp&nbsp&nbsp
+            <p><label for="user">用户名:</label>
             <input name="user" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>密 码:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <p><label for="passwd">密码:</label>
             <input name="passwd" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>SSH 端口:&nbsp&nbsp
+            <p><label for="port">SSH 端口:</label>
             <input name="port" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>产品管理人:
+            <p><label for="productadmin">产品管理人:</label>
             <input name="productadmin" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
-            <p>业 务 描 述:
+            <p><label for="desc">业务描述:</label>
             <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
             <div style="text-align: center">
                 <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="serverinfoadd()">提交</a>

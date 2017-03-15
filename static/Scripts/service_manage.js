@@ -5,8 +5,10 @@ $(function () {
 /***************************************加载datagrid服务列表数据 ***************************************/
     $('#service_table').datagrid({
         title: '>>>服务列表',
+        loadFilter: pagerFilter,
         url: '/serviceinfo_json/',
         width: '100%',
+        height: $(window).height() - 31,
         border: true,
         fitColumns: true,
         striped:true,
@@ -16,7 +18,7 @@ $(function () {
         pageSize: 10,
         pageList: [10, 15, 20, 25, 100],
         columns: [[
-            {field:'id',title:'',width:20},
+            {field:'id',title:'序号',width:20},
             {field:'ser_id',title:'服务编号',width:40},
             {field:'ser_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_att',title:'服务属性',width:60,editor:{type:'validatebox',options:{required:true}}},
@@ -63,31 +65,6 @@ $(function () {
     });
 /*********************************END*******************************************************/
 
-    var pager = $('#service_table').datagrid('getPager')
-    pager.pagination({
-        pageSize:10,
-        showPageList:false,
-        buttons:[{
-            iconCls:'icon-search',
-            handler:function(){
-                alert('search');
-            }
-        },{
-            iconCls:'icon-add',
-            handler:function(){
-                alert('add');
-            }
-        },{
-            iconCls:'icon-edit',
-            handler:function(){
-                alert('edit');
-            }
-        }],
-        onBeforeRefresh:function(){
-            alert('before refresh');
-            return true;
-        }
-    })
 
 /*******************************点击添加服务进程********************************************/
     $('#service_add').bind('click', function(){
@@ -372,6 +349,39 @@ function service_start() {
 //     })
 // }
 /************************************** END **********************************************************/
+
+
+/******************************* 分页显示数据函数 ***************************************************/
+function pagerFilter(data) {
+        if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage: function(pageNum, pageSize) {
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh', {
+                    pageNumber: pageNum,
+                    pageSize: pageSize
+                });
+                dg.datagrid('loadData', data);
+            }
+        });
+        if (!data.originalRows) {
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+/***************************************** END ****************************************************/
 
 
 /************************************* 搜索函数 ***************************************************/

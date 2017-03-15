@@ -7,25 +7,27 @@ $(function() {
 
 /**************************** 加载datagrid 产品信息列表 ******************************************************/
     $('#product_table').datagrid({
-            title: '>>>产品列表',
-            url: '/productinfo_json/',
-            width: '100%',
-            border: true,
-            fitColumns: true,
-            striped:true,
-            singleSelect: true,
-            pagination: false,
-            idField: 'id',
-            pageSize: 10,
-            pageList: [10, 15, 20, 25, 100],
-            columns: [[
-                {field: 'id',title: '序号',width: 35},
-                {field: 'pid',title: '产品编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
-                {field: 'pname',title: '产品名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
-                {field: 'admin',title: '产品管理人',width: 150,editor: {type: 'validatebox',options: {required: true}}},
-                {field: 'desc',title: '产品介绍',width: 200,editor: {type: 'validatebox',options: {required: true}}}
-                ]],
-        });
+        title: '>>>产品列表',
+        loadFilter: pagerFilter,
+        url: '/productinfo_json/',
+        width: '100%',
+        height: $(window).height() - 31,
+        border: true,
+        fitColumns: true,
+        striped:true,
+        singleSelect: true,
+        pagination: true,
+        idField: 'id',
+        pageSize: 10,
+        pageList: [10, 15, 20, 25, 100],
+        columns: [[
+            {field: 'id',title: '序号',width: 35},
+            {field: 'pid',title: '产品编号',width: 120,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'pname',title: '产品名称',width: 200,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'admin',title: '产品管理人',width: 150,editor: {type: 'validatebox',options: {required: true}}},
+            {field: 'desc',title: '产品介绍',width: 200,editor: {type: 'validatebox',options: {required: true}}}
+            ]],
+    });
 /************************************** END ****************************************************************/
 
 
@@ -39,6 +41,7 @@ $(function() {
         $('#fm').form('clear');
         $('#modify').hide()
         $('#add').show()
+        $("input[name='pid']").prev().prop("disabled",false)
     });
 /************************************** END ****************************************************************/
 
@@ -171,3 +174,35 @@ function productinfomod() {
     }
 }
 /************************************** END ****************************************************************/
+
+/******************************* 分页显示数据函数 ***************************************************/
+function pagerFilter(data) {
+        if (typeof data.length == 'number' && typeof data.splice == 'function') { // 判断数据是否是数组
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage: function(pageNum, pageSize) {
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh', {
+                    pageNumber: pageNum,
+                    pageSize: pageSize
+                });
+                dg.datagrid('loadData', data);
+            }
+        });
+        if (!data.originalRows) {
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+/***************************************** END ****************************************************/
