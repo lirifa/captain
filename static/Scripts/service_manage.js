@@ -15,7 +15,7 @@ $(function () {
         singleSelect: true,//单行选中，false可以选中多行
         pagination: true,//显示最下端的分页工具栏
         idField: 'ser_id', //标识列，一般设为id，可能会区分大小写
-        pageSize: 20,////读取分页条数，即向后台读取数据时传过去的值
+        pageSize: 25,////读取分页条数，即向后台读取数据时传过去的值
         pageList: [10, 15, 20, 25, 100],//可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
         //sortName: "ser_id",
         columns: [[
@@ -106,11 +106,11 @@ $(function () {
 
 
 /************************* 定时查询服务、端口状态 ******************************************/
-    //var time = setInterval('get_stat()',5000);
-    get_stat();
+     var time = setInterval('get_stat()',1000);
+    //get_stat()
     // 清除定时器
     //clearInterval(time)   
-    //timeDown(2)
+    // timeDown(3)
 /***************************** END *********************************************************/
 
 /*************************检查服务器下所有服务、端口状态******************************/
@@ -325,58 +325,34 @@ function service_start() {
 /***************************** 获取服务状态及端口状态函数 *****************************************/
 function get_stat(){
     var srvnum = $('#check_all_server').val()
-    var getting = {
+    $.ajax({
         url: '/get_stat/',
         type: 'POST',
         dataType: 'json',
         data: {srvnum,},
-        timeout: 10000,
         success:function (msg) {
-            var rows = msg.rows
-            for (i=0;i < rows.length;i++){
-                var id = rows[i].ser_id
-                var rowIndex = $('#service_table').datagrid('getRowIndex',id)
-                $('#service_table').datagrid('updateRow',{
-                    index: rowIndex,
-                    row:{
-                        ser_stat: rows[i].ser_stat,
-                        port_stat:rows[i].port_stat,
+            var m_rows = msg.rows
+            for (i=0;i < m_rows.length;i++){
+                 var id = m_rows[i].ser_id
+                var rows = $('#service_table').datagrid('getRows')
+                for (j=0;j < rows.length; j++){
+                    if (rows[j].ser_id == id){
+                        var rowIndex = $('#service_table').datagrid('getRowIndex',id)
+                        $('#service_table').datagrid('updateRow',{
+                            index: rowIndex,
+                            row:{
+                            ser_stat: m_rows[i].ser_stat,
+                            port_stat:m_rows[i].port_stat,
+                            }
+                        })
                     }
-                })
-                $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-                $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-                $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-                $.ajax(getting);
+                }
             }
-        },
-        error:function () {
-            $.ajax(getting)
+            $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+            $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+            $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
         }
-    }
-    // $.ajax({
-    //     url: '/get_stat/',
-    //     type: 'POST',
-    //     dataType: 'json',
-    //     data: {srvnum,},
-    //     success:function (msg) {
-    //         var rows = msg.rows
-    //         for (i=0;i < rows.length;i++){
-    //             var id = rows[i].ser_id
-    //             var rowIndex = $('#service_table').datagrid('getRowIndex',id)
-    //             $('#service_table').datagrid('updateRow',{
-    //                 index: rowIndex,
-    //                 row:{
-    //                     ser_stat: rows[i].ser_stat,
-    //                     port_stat:rows[i].port_stat,
-    //                 }
-    //             })
-    //             $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-    //             $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-    //             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
-    //         }
-            
-    //     }
-    // })
+    })
 }
 /************************************** END **********************************************************/
 
@@ -423,14 +399,14 @@ function doSearch(value){
     }
 }
 /***************************************** END ****************************************************/
-// function timeDown(limit) {
-//         limit--;
-//         if (limit < 0) {
-//                 limit = 1;
-//                 get_stat();
-//         }
-//         setTimeout(function() {
-//             timeDown(limit);
-//     }, 1000)
-// }
+function timeDown(limit) {
+        limit--;
+        if (limit < 0) {
+                limit = 1;
+                get_stat();
+        }
+        setTimeout(function() {
+            timeDown(limit);
+    }, 5000)
+}
 /************************************* 函数部分 END ********************************************************************************/

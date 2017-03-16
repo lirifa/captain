@@ -14,7 +14,7 @@ $(function() {
         singleSelect: true,
         pagination: false,
         idField: 'id',
-        pageSize: 10,
+        pageSize: 25,
         pageList: [10, 15, 20, 25, 100],
         columns: [[
             {field: 'id',title: '序号',width: 35},

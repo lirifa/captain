@@ -25,6 +25,12 @@
 .icon-no{
 	background:url('icons/no.png') no-repeat center center;
 }
+.icon-switch_on{
+	background:url('icons/switch_on.png') no-repeat center center;
+}
+.icon-switch_off{
+	background:url('icons/switch_off.png') no-repeat center center;
+}
 .icon-cancel{
 	background:url('icons/cancel.png') no-repeat center center;
 }
