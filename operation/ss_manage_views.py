@@ -40,10 +40,10 @@ try:
 except ImportError:
     from .tool import JsonResponse
 
-def strategyinfo(request):
-    return render(request,'strategyinfo.html')
+def ss_manage(request):
+    return render(request,'ss_manage.html')
 
-def strategyinfo_json(request):
+def ssinfo_json(request):
     try:
         strategy_info = Strategyinfo.objects.all()
     except Exception as e:
@@ -52,62 +52,59 @@ def strategyinfo_json(request):
     if len(strategy_info) != 0:
         msg_dict = {"total":len(strategy_info)}
         msg_dict["rows"] = []
-        num = 1
         for key in strategy_info:
-            id = num
-            sid = key.sid
-            sname = key.sname
-            scfg = key.scfg
+            ss_id = key.ss_id
+            ss_name = key.ss_name
+            ss_cfg = key.ss_cfg
             port = key.port
-            ssrv = key.ssrv
+            ss_srv = key.ss_srv
             product = key.product
             desc = key.desc
             master_acc = key.master_acc
             sub_acc = key.sub_acc
-            num += 1
-            msg_dict["rows"].append({"id":id,"sid":sid,"sname":sname,"scfg":scfg,"port":port,"ssrv":ssrv,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
+            msg_dict["rows"].append({"ss_id":ss_id,"ss_name":ss_name,"ss_cfg":ss_cfg,"port":port,"ss_srv":ss_srv,"product":product,"master_acc":master_acc,"sub_acc":sub_acc,"desc":desc})
     else:
         msg_dict = {"total":0,"rows":[]}
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 #新增策略
-def strategyinfo_add(request):
-    sid = request.GET.get('sid')
-    sname = request.GET.get('sname')
-    scfg = request.GET.get('scfg')
+def ss_add(request):
+    ss_id = request.GET.get('ss_id')
+    ss_name = request.GET.get('ss_name')
+    ss_cfg = request.GET.get('ss_cfg')
     port = request.GET.get('port')
-    ssrv = request.GET.get('ssrv')
+    ss_srv = request.GET.get('ss_srv')
     product = request.GET.get('product')
     master_acc = request.GET.get('master_acc')
     sub_acc = request.GET.get('sub_acc')
     desc = request.GET.get('desc')
     msg_dict={}
-    if sid:
+    if ss_id:
         try:
-            strategy_info = Strategyinfo.objects.filter(sid=sid)
+            strategy_info = Strategyinfo.objects.filter(ss_id=ss_id)
         except Exception,e:
             strategy_info = []
             errmsg = "%s"%e 
             msg_dict['errmsg'] = errmsg
         if len(strategy_info) == 0:
             try:
-                strategy_info = Strategyinfo.objects.get(sid=sid)
+                strategy_info = Strategyinfo.objects.get(ss_id=ss_id)
             except:
                 strategy_info = Strategyinfo()
-            strategy_info.sid = sid
-            strategy_info.sname = sname
-            strategy_info.scfg = scfg
+            strategy_info.ss_id = ss_id
+            strategy_info.ss_name = ss_name
+            strategy_info.ss_cfg = ss_cfg
             strategy_info.port = port
-            strategy_info.ssrv = ssrv
+            strategy_info.ss_srv = ss_srv
             strategy_info.product = product
             strategy_info.master_acc = master_acc
             strategy_info.sub_acc = sub_acc
             strategy_info.desc = desc
             strategy_info.save()
-            accmsg = u"策略 [ %s ] 添加成功!"%sname
+            accmsg = u"策略 [ %s ] 添加成功!"%ss_name
             msg_dict['accmsg'] = accmsg
         else:
-            errmsg = u"策略 [ %s ] 已存在，不可重复添加!"%sname
+            errmsg = u"策略 [ %s ] 已存在，不可重复添加!"%ss_name
             msg_dict['accmsg'] = errmsg
     else:
         errmsg = u"输入策略编号为空"
@@ -115,21 +112,21 @@ def strategyinfo_add(request):
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 #修改策略信息
-def strategyinfo_mod(request):
-    sid = request.POST.get('sid')
-    sname = request.POST.get('sname')
-    scfg = request.POST.get('scfg')
+def ss_mod(request):
+    ss_id = request.POST.get('ss_id')
+    ss_name = request.POST.get('ss_name')
+    ss_cfg = request.POST.get('ss_cfg')
     port = request.POST.get('port')
-    ssrv = request.POST.get('ssrv')
+    ss_srv = request.POST.get('ss_srv')
     product = request.POST.get('product')
     master_acc = request.POST.get('master_acc')
     sub_acc = request.POST.get('sub_acc')
     desc = request.POST.get('desc')
     msg_dict={}
-    if sid:
+    if ss_id:
         try:
-            strategy_info = Strategyinfo.objects.filter(sid=sid).update(sname=sname,scfg=scfg,port=port,ssrv=ssrv,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
-            accmsg = u"策略 [ %s ] 修改成功!"%sid
+            strategy_info = Strategyinfo.objects.filter(ss_id=ss_id).update(ss_name=ss_name,ss_cfg=ss_cfg,port=port,ss_srv=ss_srv,product=product,master_acc=master_acc,sub_acc=sub_acc,desc=desc)
+            accmsg = u"策略 [ %s ] 修改成功!"%ss_id
             msg_dict['accmsg'] = accmsg
         except Exception,e:
             strategy_info = []
@@ -142,21 +139,20 @@ def strategyinfo_mod(request):
 
 
 #删除策略
-def strategyinfo_del(request):
+def ss_del(request):
     delinfo = request.GET.get('delinfo')
-    sidlist = delinfo.split("#")
-    del sidlist[0]
+    ssidlist = delinfo.split("#")
+    del ssidlist[0]
     msg_dict = {"accmsg":"","errmsg":""}
-    for sid in sidlist:
+    for ss_id in ssidlist:
         try:
-            sname = Strategyinfo.objects.filter(sid=sid)[0].sname
-            sid = Strategyinfo.objects.filter(sid=sid)[0].sid
-            Strategyinfo.objects.filter(sid=sid).delete()
-            msg_dict["accmsg"] += "<p>%s</p>"%sname 
+            ss_name = Strategyinfo.objects.filter(ss_id=ss_id)[0].ss_name
+            ss_id = Strategyinfo.objects.filter(ss_id=ss_id)[0].ss_id
+            Strategyinfo.objects.filter(ss_id=ss_id).delete()
+            msg_dict["accmsg"] += "%s "%ss_name 
         except Exception,e:
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
-    print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 #combobox产品列表

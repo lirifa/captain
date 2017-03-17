@@ -20,14 +20,15 @@ from django.contrib.auth.models import User
 from operation.models import *
 from operation.serverinfo_views import *
 from operation.productinfo_views import *
-from operation.strategyinfo_views import *
 from operation.acct_views import *
 from operation.master_acct_views import *
 from operation.sub_acct_views import *
 from operation.clear_views import *
 from operation.feerate_manage_views import *
 from operation.service_views import *
-from operation.supervisor_views import *
+from operation.gw_manage_views import *
+from operation.ss_manage_views import *
+from operation.ps_manage_views import *
 from operation.position_manage_views import *
 from operation.data_send_views import *
 

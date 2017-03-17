@@ -71,10 +71,10 @@ class Productinfo(models.Model):
 
 #策略信息表
 class Strategyinfo(models.Model):
-    sid = models.IntegerField(verbose_name='策略编号',primary_key=True)
-    sname = models.CharField(verbose_name='策略名称',max_length=32)
-    scfg = models.CharField(verbose_name='对应配置名',max_length=32)
-    ssrv = models.CharField('对应主机',max_length=32)
+    ss_id = models.IntegerField(verbose_name='策略编号',primary_key=True)
+    ss_name = models.CharField(verbose_name='策略名称',max_length=32)
+    ss_cfg = models.CharField(verbose_name='对应配置名',max_length=32)
+    ss_srv = models.CharField('对应主机',max_length=32)
     product = models.CharField(verbose_name='所属产品',max_length=32)
     master_acc = models.CharField(verbose_name='总账号',max_length=32)
     sub_acc = models.CharField(verbose_name='子账号',max_length=32)
@@ -85,17 +85,30 @@ class Strategyinfo(models.Model):
     class Meta:
         db_table = 'strategyinfo'
 
-#Gateway信息表
-class Gatewayinfo(models.Model):
-    gw_id = models.CharField('gateway id',max_length=32)
-    gw_name = models.CharField('gateway名称',max_length=32)
-    gw_cfg = models.CharField('对应配置名',max_length=32)
-    port = models.CharField('端口',max_length=32)
-    gw_srv = models.CharField('所属主机',max_length=32)
-    cl_stat = models.CharField('清算状态',max_length=1)
+#PriceServer信息表
+class Priceserverinfo(models.Model):
+    ps_id = models.CharField('PS id',max_length=32,primary_key=True)
+    ps_name = models.CharField('PS名称',max_length=32)
+    ps_cfg = models.CharField('对应配置名',max_length=32)
+    port = models.IntegerField('ps端口')
+    ps_srv = models.CharField('所属主机',max_length=32)
     desc = models.CharField('备注',max_length=32)
     def __unicode__(self):
-        return self.sid
+        return self.ps_id
+    class Meta:
+        db_table = 'priceserverinfo'
+
+#Gateway信息表
+class Gatewayinfo(models.Model):
+    gw_id = models.CharField('gateway id',max_length=32,primary_key=True)
+    gw_name = models.CharField('gateway名称',max_length=32)
+    gw_cfg = models.CharField('对应配置名',max_length=32)
+    port = models.IntegerField('gw端口')
+    gw_srv = models.CharField('所属主机',max_length=32)
+    product = models.CharField('所属产品',max_length=32)
+    desc = models.CharField('备注',max_length=32)
+    def __unicode__(self):
+        return self.gw_id
     class Meta:
         db_table = 'gatewayinfo'
 

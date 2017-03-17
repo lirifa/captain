@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript" src="/static/Scripts/ps_manage.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body class="easyui-layout">
+    <!-- ps datagrid列表 -->
+    <div data-options="region:'center',title:'行情服务管理',iconCls:'icon-large-smartart'" style="overflow: hidden;">
+        <div id="DataGrid" style="padding:2px">
+            <table id="ps_table" data-options="toolbar:'#tb'"></table>
+        </div>
+        <div id="ps_watcher" style="padding:2px;" >
+            <p>panel content.</p>
+            <p>panel content.</p>
+        </div>
+        <div id="tb" style="padding:3px;height:auto">
+            <div style="margin-bottom:1px">
+                <a id="ps_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+                <a id="ps_edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="ps_delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <!--<div style="float:right;margin-right:20px">
+                    <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div id="priceserver" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
+        <form id="fm" method="get">
+            <p><label for="ps_id">行情编号:</label>
+            <input name="ps_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
+            <p><label for="ps_name">行情名称:</label>
+            <input name="ps_name" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="ps_cfg">配置名:</label>
+            <input name="ps_cfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="port">行情端口:</label>
+            <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="ps_srv">所属主机:</label>
+            <input name="ps_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <p><label for="desc">备注:</label>
+            <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
+            <div style="text-align: center">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="priceserver_add()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="priceserver_mod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#priceserver').dialog('close')">取消</a>
+            </div>
+        </form>
+    </div>
+
+
+
+</body>
+
+</html>

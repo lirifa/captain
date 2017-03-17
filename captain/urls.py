@@ -45,8 +45,25 @@ urlpatterns = [
     # url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
     url(r'^get_stat/$','operation.views.get_stat',name='get_stat'),
     url(r'^strategyinfo_combobox_json/$','operation.views.strategyinfo_combobox_json',name='strategyinfo_combobox_json'),
+    
+    url(r'^ss_manage/$','operation.views.ss_manage',name='ss_manage'),
+    url(r'^ssinfo_json/$', 'operation.views.ssinfo_json', name='strategyinfo_json'),
+    url(r'^ss_add/$', 'operation.views.ss_add', name='strategy_add'),
+    url(r'^ss_mod/$', 'operation.views.ss_mod', name='strategy_mod'),
+    url(r'^ss_del/$', 'operation.views.ss_del', name='strategy_del'),
+    url(r'^serverinfo_combobox_json/$','operation.views.serverinfo_combobox_json',name='serverinfo_combobox_json'),
 
-    url(r'^supervisor/$','operation.views.supervisor',name='supervisor'),
+    url(r'^ps_manage/$','operation.views.ps_manage',name='ps_manage'),
+    url(r'^psinfo_json/$', 'operation.views.psinfo_json', name='priceserverinfo_json'),
+    url(r'^ps_add/$', 'operation.views.ps_add', name='priceserver_add'),
+    url(r'^ps_mod/$', 'operation.views.ps_mod', name='priceserver_mod'),
+    url(r'^ps_del/$', 'operation.views.ps_del', name='priceserver_del'),
+
+    url(r'^gw_manage/$','operation.views.gw_manage',name='gw_manage'),
+    url(r'^gwinfo_json/$', 'operation.views.gwinfo_json', name='gatewyinfo_json'),
+    url(r'^gw_add/$', 'operation.views.gw_add', name='gw_add'),
+    url(r'^gw_mod/$', 'operation.views.gw_mod', name='gw_mod'),
+    url(r'^gw_del/$', 'operation.views.gw_del', name='gw_del'),
 
     url(r'^data_send/$','operation.views.data_send',name='data_send'),
     url(r'^data_send_json/$','operation.views.data_send_json',name='data_send_json'),
@@ -57,12 +74,7 @@ urlpatterns = [
     url(r'^productinfo_mod/$', 'operation.views.productinfo_mod', name='productinfo_mod'),
     url(r'^productinfo_del/$', 'operation.views.productinfo_del', name='productinfo_del'),
 
-    url(r'^strategyinfo/$','operation.views.strategyinfo',name='strategyinfo'),
-    url(r'^strategyinfo_json/$', 'operation.views.strategyinfo_json', name='strategyinfo_json'),
-    url(r'^strategyinfo_add/$', 'operation.views.strategyinfo_add', name='strategyinfo_add'),
-    url(r'^strategyinfo_mod/$', 'operation.views.strategyinfo_mod', name='strategyinfo_mod'),
-    url(r'^strategyinfo_del/$', 'operation.views.strategyinfo_del', name='strategyinfo_del'),
-    url(r'^serverinfo_combobox_json/$','operation.views.serverinfo_combobox_json',name='serverinfo_combobox_json'),
+
 
     url(r'^configure/$','operation.views.configure',name='configure'),
 

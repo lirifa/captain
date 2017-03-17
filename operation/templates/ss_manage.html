@@ -9,7 +9,7 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="/static/Scripts/strategyinfo.js"></script>
+    <script type="text/javascript" src="/static/Scripts/ss_manage.js"></script>
     <style type="text/css">
         body{
             font-family:verdana,helvetica,arial,sans-serif;
@@ -25,13 +25,13 @@
 <body class="easyui-layout">
     <div data-options="region:'center',title:'策略管理',iconCls:'icon-large-smartart'" style="overflow: hidden;">
         <div title="DataGrid" style="padding:2px">
-            <table id="strategy_table" data-options="toolbar:'#tb'"></table>
+            <table id="ss_table" data-options="toolbar:'#tb'"></table>
         </div>
         <div id="tb" style="padding:3px;height:auto">
             <div style="margin-bottom:1px">
-                <a id="strategy_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
-                <a id="strategy_edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
-                <a id="strategy_delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <a id="ss_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+                <a id="ss_edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="ss_delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
                 <div style="float:right;margin-right:20px">
                     <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
                 </div>
@@ -41,16 +41,16 @@
 
    <div id="strategy" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
        <form id="fm" method="get">
-           <p><label for="sid">策略编号:</label>
-           <input name="sid" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
-            <p><label for="sname">策略名称:</label>
-            <input name="sname" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p><label for="scfg">配置名:</label>
-            <input name="scfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+           <p><label for="ss_id">策略编号:</label>
+           <input name="ss_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
+            <p><label for="ss_name">策略名称:</label>
+            <input name="ss_name" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="ss_cfg">配置名:</label>
+            <input name="ss_cfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
             <p><label for="port">策略端口:</label>
             <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
-            <p><label for="ssrv">所属主机:</label>
-            <input name="ssrv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <p><label for="ss_srv">所属主机:</label>
+            <input name="ss_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
             <p><label for="product">所属产品:</label>
             <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'pname',textField:'pname',url:'/product_combobox_json/'"></p>
             <p><label for="master_acc">总账号:</label>
@@ -64,8 +64,8 @@
             <p><label for="desc">策略介绍:</label>
             <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center;">
-                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfoadd()">提交</a>
-                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategyinfomod()">修改</a>
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategy_add()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="strategy_mod()">修改</a>
                 <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#strategy').dialog('close')">取消</a>
             </div>
         </form>

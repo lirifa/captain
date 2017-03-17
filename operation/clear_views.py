@@ -42,7 +42,7 @@ except ImportError:
     from .tool import JsonResponse
 
 def clear(request):
-    return render(request,"clear.html")
+    return render(request,"gw_manage.html")
 
 
 def gatewayinfo_json(request):

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>量化运维管理系统</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript" src="/static/Scripts/gw_manage.js"></script>
+    <style type="text/css">
+        body{
+            font-family:verdana,helvetica,arial,sans-serif;
+        }
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'网关管理',iconCls:'icon-large-smartart'">
+        <div title="DataGrid" style="padding:2px">
+            <table id="gw_table" data-options="toolbar:'#tb'"></table>
+        </div>
+    </div>
+    <div id="tb" style="padding:3px;height:auto">
+        <div style="margin-bottom:1px">
+            <a id="gw_add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+            <a id="gw_edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+            <a id="gw_delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+            <div style="float:right;margin-right:20px">
+                <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+            </div>
+        </div>
+    </div>
+
+    <div id="gateway" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
+        <form id="fm" method="post">
+            <p><label for="gw_id">网关编号:</label>
+                <input name="gw_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
+            <p><label for="gw_name">网关名称:</label>
+                <input name="gw_name" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="gw_cfg">配置名:</label>
+                <input name="gw_cfg" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="port">端口:</label>
+                <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
+            <p><label for="">所属主机:</label>
+                <input name="gw_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <p><label for="product">所属产品:</label>
+            <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'pname',textField:'pname',url:'/product_combobox_json/'"></p>
+            <p><label for="desc">备注:</label>
+                <input name="desc" class="easyui-textbox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
+            <div style="text-align: center;">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="gateway_add()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="gateway_mod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#gateway').dialog('close')">取消</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
