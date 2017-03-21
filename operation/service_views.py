@@ -57,7 +57,6 @@ def serviceinfo_json(request):
         if len(service_info) != 0:
             msg_dict = {"total":len(service_info)}
             msg_dict["rows"] = []
-            num =1
             for key in service_info:
                 ser_id = key.ser_id
                 ser_name = key.ser_name
@@ -66,8 +65,7 @@ def serviceinfo_json(request):
                 ser_port = key.ser_port
                 ser_srv = key.ser_srv
                 desc = key.desc
-                msg_dict["rows"].append({"id":num,"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
-                num += 1
+                msg_dict["rows"].append({"ser_id":ser_id,"ser_name":ser_name,"ser_att":ser_att,"ser_cfg":ser_cfg,"ser_port":ser_port,"ser_srv":ser_srv,"desc":desc})
         else:
             msg_dict = {"total":0,"rows":[]}
     else:
@@ -95,7 +93,7 @@ def serviceinfo_json(request):
 
 #x新增服务
 def service_add(request):
-    ser_id = request.GET.get('ser_id')
+    # ser_id = request.GET.get('ser_id')
     ser_name = request.GET.get('ser_name')
     ser_att = request.GET.get('ser_att')
     ser_cfg = request.GET.get('ser_cfg')
@@ -103,19 +101,19 @@ def service_add(request):
     ser_srv = request.GET.get('ser_srv')
     desc = request.GET.get('desc')
     msg_dict = {}
-    if ser_id:
+    if ser_name:
         try:
-            service_info=Serviceinfo.objects.filter(ser_id=ser_id)
+            service_info=Serviceinfo.objects.filter(ser_name=ser_name)
         except Exception, e:
             service_info=[]
             errmsg = "%s"%e
             msg_dict['errmsg'] = errmsg
         if len(service_info) == 0:
             try:
-                service_info = Serviceinfo.objects.get(ser_id=ser_id)
+                service_info = Serviceinfo.objects.get(ser_name=ser_name)
             except :
                 service_info = Serviceinfo()
-            service_info.ser_id = ser_id
+            # service_info.ser_id = ser_id
             service_info.ser_name = ser_name
             service_info.ser_att = ser_att
             service_info.ser_cfg = ser_cfg
@@ -126,7 +124,7 @@ def service_add(request):
             accmsg = u'服务程序[ %s ] 添加成功！'%ser_name
             msg_dict['accmsg']=accmsg
         else:
-            errmsg = u"输入服务程序编号为空"
+            errmsg = u"输入服务名称为空！"
             msg_dict["errmsg"] = errmsg
         return HttpResponse(json.dumps(msg_dict),content_type='application/json')
 
@@ -166,7 +164,7 @@ def service_del(request):
             ser_id = Serviceinfo.objects.filter(ser_id=ser_id)[0].ser_id
             ser_cfg = Serviceinfo.objects.filter(ser_id=ser_id)[0].ser_cfg
             Serviceinfo.objects.filter(ser_id=ser_id).delete()
-            msg_dict["accmsg"] += "<p>%s</p>"%ser_cfg
+            msg_dict["accmsg"] += "%s "%ser_cfg
         except Exception,e:
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
@@ -174,21 +172,109 @@ def service_del(request):
 
 
 #策略combobox
-def strategyinfo_combobox_json(request):
-    try:
-        strategy_info = Strategyinfo.objects.all()
-    except Exception, e:
-        strategy_info = []
-        errmsg = "%s"%e
-    msg_dict = []
-    if len(strategy_info) != 0:
-        for key in strategy_info:
-            sid = key.sid
-            scfg = key.scfg
-            msg_dict.append({"sid":sid,"scfg":scfg})
+def add_combobox_json(request):
+    ser_att = request.GET.get('ser_att')
+    ser_srv = request.GET.get('ser_srv')
+    msg_dict=[]
+    if ser_srv:
+        if ser_att == 'SS':
+            try:
+                combobox_info = Strategyinfo.objects.filter(ss_srv=ser_srv)
+            except Exception,e:
+                combobox_info = []
+                errmsg = "%s"%e
+            if len(combobox_info) != 0:
+                for key in combobox_info:
+                    id = key.ss_id
+                    cfg = key.ss_cfg
+                    port = key.port
+                    ser = key.ss_srv
+                    msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+        elif ser_att == 'PS':
+            try:
+                combobox_info = Priceserverinfo.objects.filter(ps_srv=ser_srv)
+            except Exception,e:
+                combobox_info = []
+                errmsg = "%s"%e
+            if len(combobox_info) != 0:
+                for key in combobox_info:
+                    id = key.ps_id
+                    cfg = key.ps_cfg
+                    port = key.port
+                    ser = key.ps_srv
+                    msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+        elif ser_att == 'GW':
+            try:
+                combobox_info = Gatewayinfo.objects.filter(gw_srv=ser_srv)
+            except Exception,e:
+                combobox_info = []
+                errmsg = "%s"%e
+            if len(combobox_info) != 0:
+                for key in combobox_info:
+                    id = key.gw_id
+                    cfg = key.gw_cfg
+                    port = key.port
+                    ser = key.gw_srv
+                    msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+        else:
+            id = '请先选择服务属性'
+            cfg = '请先选择服务属性'
+            port = '请先选择服务属性'
+            ser = '请先选择服务属性'
+            msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+    else:
+        id = '请先选择所属主机'
+        cfg = '请先选择所属主机'
+        port = '请先选择所属主机'
+        ser = '请先选择所属主机'
+        msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-
+def combobox_port_json(request):
+    ser_att = request.GET.get('ser_att')
+    ser_srv = request.GET.get('ser_srv')
+    ser_cfg = request.GET.get('ser_cfg')
+    msg_dict=[]
+    if ser_att == 'SS':
+        try:
+            combobox_info = Strategyinfo.objects.filter(ss_srv=ser_srv,ss_cfg=ser_cfg)
+        except Exception,e:
+            combobox_info = []
+            errmsg = "%s"%e
+        if len(combobox_info) != 0:
+            for key in combobox_info:
+                id = key.ss_id
+                cfg = key.ss_cfg
+                port = key.port
+                ser = key.ss_srv
+                msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+    elif ser_att == 'PS':
+        try:
+            combobox_info = Priceserverinfo.objects.filter(ps_srv=ser_srv,ps_cfg=ser_cfg)
+        except Exception,e:
+            combobox_info = []
+            errmsg = "%s"%e
+        if len(combobox_info) != 0:
+            for key in combobox_info:
+                id = key.ps_id
+                cfg = key.ps_cfg
+                port = key.port
+                ser = key.ps_srv
+                msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+    elif ser_att == 'GW':
+        try:
+            combobox_info = Gatewayinfo.objects.filter(gw_srv=ser_srv,gw_cfg=ser_cfg)
+        except Exception,e:
+            combobox_info = []
+            errmsg = "%s"%e
+        if len(combobox_info) != 0:
+            for key in combobox_info:
+                id = key.gw_id
+                cfg = key.gw_cfg
+                port = key.port
+                ser = key.gw_srv
+                msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
 def get_stat(request):
     ser_srv = request.POST.get('srvnum')

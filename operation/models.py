@@ -30,7 +30,7 @@ class Serverinfo(models.Model):
 
 #服务信息表
 class Serviceinfo(models.Model):
-    ser_id = models.CharField('服务id',max_length=8,primary_key=True)
+    ser_id = models.IntegerField('服务id',primary_key=True)
     ser_name = models.CharField('服务名称',max_length=32)
     ser_att = models.CharField('服务属性',max_length=32)
     ser_cfg = models.CharField('对应配置名',max_length=32)

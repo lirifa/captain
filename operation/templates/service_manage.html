@@ -53,14 +53,39 @@
                 <input name="ser_id" class="easyui-textbox easyui-validatebox" validType="strEngNum" style="width:200px;height:32px" required="true"></p>
             <p><label for="ser_name">服务名称:</label>
                 <input name="ser_name" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true"></p>
-            <p><label for="ser_att">服务属性:</label>
-                <input name="ser_att" class="easyui-combobox" validType="strip" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto',valueField:'label',textField:'value',data:[{label: 'PS',value: 'PS'},{label: 'SS',value: 'SS'},{label: 'GW',value:'GW'},{label:'SS2ISON',value:'SS2ISON'}]"></p>
-            <p><label for="ser_cfg">配置名:</label>
-                <input name="ser_cfg" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'scfg',textField:'scfg',url:'/strategyinfo_combobox_json/'"></p>
-            <p><label for="ser_port">服务端口:</label>
-                <input name="ser_port" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
             <p><label for="ser_srv">所属主机:</label>
-                <input name="ser_srv" class="easyui-combobox" style="width:200px;height:32px" required="true"  data-options="panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+                <input id=ser_srv name="ser_srv" class="easyui-combobox" style="width:200px;height:32px" required="true"  data-options="editable:false,panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <p><label for="ser_att">服务属性:</label>
+                <input id="ser_att" name="ser_att" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto',valueField:'ser_att',textField:'label', data:[{label: 'PS',ser_att: 'PS'},{label: 'SS',ser_att:'SS'},{label: 'GW',ser_att:'GW'}],
+                onSelect:function(rec){
+                    var ser_srv = $('#ser_srv').combobox('getValue')
+                    var url = '/add_combobox_json/?ser_att='+rec.ser_att+'&ser_srv='+ser_srv
+                    $('#ser_cfg').combobox('reload',url)
+                }
+                "></p>
+            <p><label for="ser_cfg">配置名:</label>
+                <input id='ser_cfg' name="ser_cfg" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'116',valueField:'cfg',textField:'cfg',url:'/add_combobox_json/',
+                onSelect:function(rec){
+                    var ser_srv = $('#ser_srv').combobox('getValue')
+                    var ser_att = $('#ser_att').combobox('getValue')
+                    var ser_cfg = rec.cfg
+                    console.log(ser_srv)
+                    console.log(ser_att)
+                    console.log(ser_cfg)
+                    $.ajax({
+                        type: 'GET',
+                        cache: false,
+                        url: '/combobox_port_json/',
+                        data: {ser_srv,ser_cfg,ser_att},
+                        dataType: 'json',
+                        success:function (msg) {
+                            console.log(msg[0].port)
+                            $('#ser_port').textbox('setValue',msg[0].port)
+                        }
+                    })
+                }"></p>
+            <p><label for="ser_port">服务端口:</label>
+                <input id="ser_port" name="ser_port" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
             <p><label for="desc">备注:</label>
                 <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
             <div style="text-align: center">

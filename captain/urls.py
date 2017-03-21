@@ -44,7 +44,8 @@ urlpatterns = [
     #url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
     # url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
     url(r'^get_stat/$','operation.views.get_stat',name='get_stat'),
-    url(r'^strategyinfo_combobox_json/$','operation.views.strategyinfo_combobox_json',name='strategyinfo_combobox_json'),
+    url(r'^add_combobox_json/$','operation.views.add_combobox_json',name='add_combobox_json'),
+    url(r'^combobox_port_json/$','operation.views.combobox_port_json',name='combobox_port_json'),
     
     url(r'^ss_manage/$','operation.views.ss_manage',name='ss_manage'),
     url(r'^ssinfo_json/$', 'operation.views.ssinfo_json', name='strategyinfo_json'),

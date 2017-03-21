@@ -17,9 +17,9 @@ $(function () {
         idField: 'ser_id', //标识列，一般设为id，可能会区分大小写
         pageSize: 25,////读取分页条数，即向后台读取数据时传过去的值
         pageList: [10, 15, 20, 25, 100],//可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
-        //sortName: "ser_id",
+        // sortName: "ser_id",
         columns: [[
-            {field:'id',title:'序号',width:20},
+            // {field:'id',title:'序号',width:20},
             {field:'ser_id',title:'服务编号',width:40},
             {field:'ser_name',title:'服务名称',width:120,editor:{type:'validatebox',options:{required:true}}},
             {field:'ser_att',title:'服务属性',width:60,editor:{type:'validatebox',options:{required:true}}},
@@ -69,6 +69,7 @@ $(function () {
 
 /*******************************点击添加服务进程********************************************/
     $('#service_add').bind('click', function(){
+        $("#fm p:first").attr("style", "display:none;");
         $('#service').dialog({ 
             title:">>>新增服务进程",
             closed:false,
@@ -77,12 +78,12 @@ $(function () {
         $('#fm').form('clear');
         $('#modify').hide()
         $('#add').show()
-        $('input[name="ser_id"]').prev().prop('disabled', false)
+        //$('input[name="ser_id"]').prev().prop('disabled', false)
     });
 /*********************************END*******************************************************/
 
 
-/*****************************加载服务器combobox********************************************/
+/***************************** 加载服务器combobox ********************************************/
     $('#check_all_server').combobox({
         width:100,
         editable:false,
@@ -102,16 +103,16 @@ $(function () {
             $('#service_table').datagrid('reload',{"ser_srv":rec.srvnum})
         },
     })
-/*********************************END*******************************************************/
+/********************************* END ******************************************************/
+
 
 
 /************************* 定时查询服务、端口状态 ******************************************/
-     var time = setInterval('get_stat()',1000);
-    //get_stat()
-    // 清除定时器
-    //clearInterval(time)   
-    // timeDown(3)
+    var time = setInterval('get_stat()',1000);
+    // // 清除定时器
+    // clearInterval(time)
 /***************************** END *********************************************************/
+
 
 /*************************检查服务器下所有服务、端口状态******************************/
     // $('#service_check').bind('click',function() {
@@ -158,6 +159,7 @@ $(function () {
                     cache: false
                 });
                 $('#fm').form("load", row_select);
+                $("#fm p:first").attr("style", "display:block;");
                 $('input[name="ser_id"]').prev().prop('disabled', true)
                 $('#add').hide()
                 $('#modify').show()
@@ -192,10 +194,10 @@ $(function () {
                         dataType: 'json',
                         success: function(msg) {
                             if (msg.accmsg) {
-                                $.messager.alert('message','服务进程'+msg.accmsg+"删除成功！" );
+                                $.messager.alert('message','服务进程'+msg.accmsg+"删除成功！",'info' );
                                 $('#service_table').datagrid('reload', {"ser_srv":"all"});
                             } else {
-                                $.messager.alert('错误', msg.errmsg);
+                                $.messager.alert('message', msg.errmsg,'error');
                                 $('#service_table').datagrid('reload', {});
                             }
                         }
@@ -220,9 +222,9 @@ $(function () {
 
 /********************************* 新增服务函数 ***********************************************/
 function service_add() {
-    if ($("input[name='ser_id']").val() == "") {
+    if ($("input[name='ser_name']").val() == "") {
         $.messager.alert('警告','输入内容不可为空!','warning'); 
-        $("input[name='ser_id']").focus();
+        $("input[name='ser_name']").focus();
     } else {
         $.ajax({
             type: "GET", 
