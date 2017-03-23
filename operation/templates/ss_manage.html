@@ -50,17 +50,18 @@
             <p><label for="port">策略端口:</label>
             <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
             <p><label for="ss_srv">所属主机:</label>
-            <input name="ss_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <input name="ss_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
             <p><label for="product">所属产品:</label>
-            <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'pname',textField:'pname',url:'/product_combobox_json/'"></p>
+            <input name="product" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'pname',textField:'pname',url:'/product_combobox_json/'"></p>
             <p><label for="master_acc">总账号:</label>
-            <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',
-                    onSelect:function(rec){
-                      var url = 'subacc_combobox_json/'+rec.acc_num;
-                      $('#combo_sub_acc').combobox('reload',url);
-                    }"></p>
+            <input name="master_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'acc_num',textField:'acc_num',url:'/masteracc_combobox_json/',method:'GET',
+            onSelect:function(rec){
+                $('#combo_sub_acc').combobox('clear')
+                var url = '/subacc_combobox_json/?master_acc='+rec.acc_num;
+                $('#combo_sub_acc').combobox('reload',url);
+            }"></p>
             <p><label for="sub_acc">子账号:</label>
-            <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true"  data-options="panelHeight:'auto',valueField:'acc_num',textField:'acc_num'"></p>
+            <input id="combo_sub_acc" name="sub_acc" class="easyui-combobox" validType="strEngNum" style="width:200px;height:32px" required="true"  data-options="panelHeight:'116',valueField:'acc_num',textField:'acc_num',method:'GET',url:'/subacc_combobox_json/'"></p>
             <p><label for="desc">策略介绍:</label>
             <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center;">

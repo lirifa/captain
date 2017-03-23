@@ -135,7 +135,6 @@ def serverinfo_del(request):
     delinfo = request.GET.get('delinfo')
     idlist = delinfo.split("#")
     del idlist[0]
-    print idlist
     msg_dict = {"accmsg":"","errmsg":""}
     for srvnum in idlist:
         try:

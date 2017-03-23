@@ -134,7 +134,24 @@ function doSearch(value){
 
 /************************************* 新增发送配置函数 ***********************************************/
 function data_add() {
-    
+    // if ($("input[name='ps_id']").val() == "") {
+    //     $.messager.alert('message', '输入内容不可为空!', 'warning');
+    //     $("input[name='ps_id']").focus();
+    // } else {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/ps_add/",
+    //         data: $("#fm").serialize(),
+    //         success: function(msg) {
+    //             if (msg.accmsg) {
+    //                 $.messager.alert('message', msg.accmsg, 'info');
+    //                 location.href = "/ps_manage/";
+    //             } else {
+    //                 $.messager.alert('message', msg.errmsg, 'error');
+    //             }
+    //         }
+    //     });
+    // }
 }
 
 

@@ -45,11 +45,11 @@
             <p><label for="d_name">数据名称:</label>
             <input name="d_name" class="easyui-textbox easyui-validatebox pid" validType="strEngNum" style="width:200px;height:32px" required="true" ></p>
             <p><label for="o_srv">源服务器:</label>
-            <input name="o_srv" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
+            <input name="o_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
             <p><label for="o_dir">源目录:</label>
             <input name="o_dir" class="easyui-textbox" style="width:200px;height:32px" required="true"></p>
             <p><label for="p_srv">目标服务器:</label>
-            <input name="p_srv" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
+            <input name="p_srv" class="easyui-combobox " style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
             <p><label for="p_dir">目标目录:</label>
             <input name="p_dir" class="easyui-textbox " style="width:200px;height:32px" required="false"></p>
             <div style="text-align: center">

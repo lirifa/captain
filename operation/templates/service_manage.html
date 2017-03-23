@@ -22,6 +22,66 @@
             width:70px;
             text-align: right;
         }
+        #looker_on > .l-btn-icon-left .l-btn-text,
+        #looker_off > .l-btn-icon-left .l-btn-text{
+            margin:0 4px 0 30px;
+        }
+        #looker_on .icon-switch_on,
+        #looker_off .icon-switch_off{
+            width: 26px;
+        }
+        .breathe-btn-on{ 
+            position:relative;
+            float: right;
+            top:5px;
+            right: 10px;
+            display: inline-block;
+            width:10px;
+            height:10px; 
+            margin:2px auto;
+            line-height:10px; 
+            border:1px solid #2b92d4; 
+            border-radius:5px; 
+            color:#fff; font-size:20px; 
+            text-align:center;
+            /*cursor:pointer; */
+            box-shadow:0 1px 2px rgba(0,0,0,.3); 
+            overflow:hidden; 
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#CCFAE1), to(#09A849));
+            -webkit-animation-timing-function: ease-in-out;/*动画时间曲线*/
+            -webkit-animation-name: breathe;  /*动画名称，与@keyframes搭配使用*/
+            -webkit-animation-duration: 700ms; /*动画持续时间*/
+            -webkit-animation-iteration-count: infinite; /*动画要重复次数*/
+            -webkit-animation-direction: alternate; /*动画执行方向，alternate 表示反复*/
+        }
+        @-webkit-keyframes breathe {
+            0% { opacity: .2; box-shadow:0 1px 2px rgba(255,255,255,0.1);}
+            100% { opacity: 1; border:1px solid rgba(59,235,235,1); box-shadow:0 1px 30px rgba(59,255,255,1);}
+        }
+        .breathe-btn-off{
+            position:relative;
+            float: right;
+            top:5px;
+            right: 10px;
+            display: inline-block;
+            width:10px;
+            height:10px; 
+            margin:2px auto;
+            line-height:10px; 
+            border:1px solid #FEFFFF; 
+            border-radius:5px; 
+            color:#fff; font-size:20px; 
+            text-align:center;
+            /*cursor:pointer; */
+            /*box-shadow:0 1px 2px rgba(0,0,0,0); */
+            overflow:hidden; 
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#FF020C), to(#FF020C));
+            -webkit-animation-timing-function: ease-in-out;/*动画时间曲线*/
+            -webkit-animation-name: breathe;  /*动画名称，与@keyframes搭配使用*/
+            -webkit-animation-duration: 0ms; /*动画持续时间*/
+            -webkit-animation-iteration-count: infinite; /*动画要重复次数*/
+            -webkit-animation-direction: alternate; /*动画执行方向，alternate 表示反复*/
+        }
     </style>
 </head>
 
@@ -40,10 +100,12 @@
                 <a id="service_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
                 <a id="service_delete" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
                 <input type = "text" id="check_all_server" placeholder="选择服务器"></input>
-                <!-- <a id="service_check" class="easyui-linkbutton" data-options="iconCls:'icon-magnifier'" plain="true">检查</a> -->
                 <a id="service_start" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" plain="true">启动</a>
                 <a id="service_stop" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">停止</a>
                 <a id="service_restart" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">重启</a>
+                <a id="looker_on" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-switch_on'" plain="true">开启监控</a>
+                <a id="looker_off" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-switch_off'" plain="true">停止监控</a>
+                <div id="breathe-btn" class="breathe-btn-on"></div>
         </div>
     </div>
 
@@ -54,10 +116,17 @@
             <p><label for="ser_name">服务名称:</label>
                 <input name="ser_name" class="easyui-textbox easyui-validatebox" validType="strip" style="width:200px;height:32px" required="true"></p>
             <p><label for="ser_srv">所属主机:</label>
-                <input id=ser_srv name="ser_srv" class="easyui-combobox" style="width:200px;height:32px" required="true"  data-options="editable:false,panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
-            <p><label for="ser_att">服务属性:</label>
-                <input id="ser_att" name="ser_att" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto',valueField:'ser_att',textField:'label', data:[{label: 'PS',ser_att: 'PS'},{label: 'SS',ser_att:'SS'},{label: 'GW',ser_att:'GW'}],
+                <input id=ser_srv name="ser_srv" class="easyui-combobox" style="width:200px;height:32px" required="true"  data-options="editable:false,panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/',
                 onSelect:function(rec){
+                    $('#ser_att').combobox('clear')
+                    $('#ser_cfg').combobox('clear')
+                    $('#ser_port').textbox('clear')
+                }"></p>
+            <p><label for="ser_att">服务属性:</label>
+                <input id="ser_att" name="ser_att" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto',valueField:'ser_att',textField:'label', data:[{label: 'PS',ser_att: 'PS'},{label: 'PP',ser_att: 'PP'},{label: 'SS',ser_att:'SS'},{label: 'GW',ser_att:'GW'},{label: 'SS2ISON',ser_att:'SS2ISON'}],
+                onSelect:function(rec){
+                    $('#ser_cfg').combobox('clear')
+                    $('#ser_port').textbox('clear')
                     var ser_srv = $('#ser_srv').combobox('getValue')
                     var url = '/add_combobox_json/?ser_att='+rec.ser_att+'&ser_srv='+ser_srv
                     $('#ser_cfg').combobox('reload',url)
@@ -66,6 +135,7 @@
             <p><label for="ser_cfg">配置名:</label>
                 <input id='ser_cfg' name="ser_cfg" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'116',valueField:'cfg',textField:'cfg',url:'/add_combobox_json/',
                 onSelect:function(rec){
+                    $('#ser_port').textbox('clear')
                     var ser_srv = $('#ser_srv').combobox('getValue')
                     var ser_att = $('#ser_att').combobox('getValue')
                     var ser_cfg = rec.cfg

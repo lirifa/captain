@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^index/$', 'operation.views.index', name='index'),
     url(r'^dashboard/$', 'operation.views.dashboard', name='dashboard'),
 
+    url(r'^user_manage/$','operation.views.user_manage',name='user_manage'),
+    url(r'^userinfo_json/$','operation.views.userinfo_json',name='userinfo_json'),
+
     url(r'^serverinfo/$', 'operation.views.serverinfo', name='serverinfo'),
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
     url(r'^serverinfo_add/$', 'operation.views.serverinfo_add', name='serverinfo_add'),
@@ -38,21 +41,32 @@ urlpatterns = [
 
     url(r'^serviceinfo/$','operation.views.serviceinfo',name='serciceinfo'),
     url(r'^serviceinfo_json/$','operation.views.serviceinfo_json',name='serciceinfo_json'),
-    url(r'^service_add/$','operation.views.service_add',name='sercice_add'),
-    url(r'^service_mod/$','operation.views.service_mod',name='sercice_mod'),
-    url(r'^service_del/$','operation.views.service_del',name='sercice_del'),
+    url(r'^service_add/$','operation.views.service_add',name='service_add'),
+    url(r'^service_mod/$','operation.views.service_mod',name='service_mod'),
+    url(r'^service_del/$','operation.views.service_del',name='service_del'),
+    url(r'^service_start/$','operation.views.service_start',name='service_start'),
+    url(r'^service_stop/$','operation.views.service_stop',name='service_stop'),
+    url(r'^service_restart/$','operation.views.service_restart',name='service_restart'),
+    url(r'^services_start/$','operation.views.services_start',name='services_start'),
+    url(r'^services_stop/$','operation.views.services_stop',name='services_stop'),
+    url(r'^services_restart/$','operation.views.services_restart',name='services_restart'),
+    url(r'^monitor_run/$','operation.views.monitor_run',name='monitor_run'),
+    url(r'^monitor_stop/$','operation.views.monitor_stop',name='monitor_stop'),
+
     #url(r'^check_stat/$','operation.views.check_stat',name='check_stat'),
-    # url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
+    #url(r'^ser_check_stat/$','operation.views.ser_check_stat',name='ser_check_stat'),
+
     url(r'^get_stat/$','operation.views.get_stat',name='get_stat'),
     url(r'^add_combobox_json/$','operation.views.add_combobox_json',name='add_combobox_json'),
     url(r'^combobox_port_json/$','operation.views.combobox_port_json',name='combobox_port_json'),
-    
+
     url(r'^ss_manage/$','operation.views.ss_manage',name='ss_manage'),
     url(r'^ssinfo_json/$', 'operation.views.ssinfo_json', name='strategyinfo_json'),
     url(r'^ss_add/$', 'operation.views.ss_add', name='strategy_add'),
     url(r'^ss_mod/$', 'operation.views.ss_mod', name='strategy_mod'),
     url(r'^ss_del/$', 'operation.views.ss_del', name='strategy_del'),
     url(r'^serverinfo_combobox_json/$','operation.views.serverinfo_combobox_json',name='serverinfo_combobox_json'),
+    url(r'^subacc_combobox_json/$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
 
     url(r'^ps_manage/$','operation.views.ps_manage',name='ps_manage'),
     url(r'^psinfo_json/$', 'operation.views.psinfo_json', name='priceserverinfo_json'),
@@ -68,7 +82,6 @@ urlpatterns = [
 
     url(r'^data_send/$','operation.views.data_send',name='data_send'),
     url(r'^data_send_json/$','operation.views.data_send_json',name='data_send_json'),
-
     url(r'^productinfo/$','operation.views.productinfo',name='productinfo'),
     url(r'^productinfo_json/$', 'operation.views.productinfo_json', name='productinfo_json'),
     url(r'^productinfo_add/$', 'operation.views.productinfo_add', name='productinfo_add'),
@@ -103,8 +116,7 @@ urlpatterns = [
     url(r'^sub_acct_add/$','operation.views.sub_acct_add',name='sub_acct_add'),
     url(r'^sub_acct_mod/$','operation.views.sub_acct_mod',name='sub_acct_mod'),
     url(r'^sub_acct_del/$','operation.views.sub_acct_del',name='sub_acct_del'),
-    url(r'^strategyinfo/subacc_combobox_json/(.*)$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
-    url(r'^subacc_combobox_json/$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
+    # url(r'^subacc_combobox_json/$','operation.views.subacc_combobox_json',name='subacc_combobox_json'),
     url(r'^sub_acct_fund_change/$','operation.views.sub_acct_fund_change',name='sub_acct_fund_change'),
 
     url(r'^clear/$','operation.views.clear',name='clear'),

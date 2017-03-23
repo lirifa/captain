@@ -154,34 +154,6 @@ def sub_acct_del(request):
     print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-def subacc_combobox_json(request,*param1):
-    master_acct = request.GET.get('param1')
-    if master_acct:
-        try:
-            sub_info = Sub_acct.objects.filter(master_acct=master_acct)
-        except Exception,e:
-            sub_info = []
-            errmsg = "%s"%e
-        msg_dict = []
-        if len(sub_info) !=0:
-            for key in sub_info:
-                acc_num = key.acc_num
-                acc_name = key.acc_name
-                msg_dict.append({"acc_num":acc_num,"acc_name":acc_name})
-    else:
-        try:
-            sub_info = Sub_acct.objects.all()
-        except Exception,e:
-            sub_info = []
-            errmsg = "%s"%e
-        msg_dict = []
-        if len(sub_info) !=0:
-            for key in sub_info:
-                acc_num = key.acc_num
-                acc_name = key.acc_name
-                msg_dict.append({"acc_num":acc_num,"acc_name":acc_name})
-    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
-
 def sub_acct_fund_change(request):
     change_fund = decimal.Decimal(request.POST.get('fund_change'))
     change_acct = request.POST.get('change_acct')

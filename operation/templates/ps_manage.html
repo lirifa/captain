@@ -28,14 +28,15 @@
         </div>
         <div id="ps_watcher" style="padding:2px;" >
             <p>
-                <label>行情名称:</label><input class="">
-                <label>配置名:</label><input class="">
-                <label>所属主机:</label><input class="">
-                <label>Ukey:</label><input class="">
-                <label>超时时间:</label><input class="easyui-combobox" data-options="panelHeight:'auto',data:[{text:3,value:3},{text:6,value:6},{text:9,value:9},{text:12,value:9}]" >
-                <input type="button" value="检测">
+                <label>行情名称:</label><input id="watch_name" class="easyui-textbox" style="width: 300px;">
+                <label>配置名:</label><input id="watch_cfg" class="easyui-textbox">
+                <label>所属主机:</label><input id="watch_srv" class="easyui-textbox">
+                <label>Ukey:</label><input id="Ukey" class="easyui-textbox">
+                <label>超时时间:</label><input class="easyui-combobox" data-options=" editable:false, panelHeight:'auto',data:[{text:3,value:3},{text:6,value:6,selected:true},{text:9,value:9},{text:12,value:12}]" style="width: 50px" >
+                <a id="watch_btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" plain="true">检测</a>
             </p>
-            <textarea name="" id="" cols="80" rows="50" style="width: 99.5%;height: 84%;overflow: hidden;"></textarea>
+                <pre name="" id="" cols="80" rows="50" style="width: 95%;height: 80%;overflow: hidden;border: 2px solid #ccc;margin-left: 20px; "></pre>
+            
         </div>
         <div id="tb" style="padding:3px;height:auto">
             <div style="margin-bottom:1px">
@@ -59,7 +60,7 @@
             <p><label for="port">行情端口:</label>
             <input name="port" class="easyui-textbox easyui-validatebox" style="width:200px;height:32px" required="true"></p>
             <p><label for="ps_srv">所属主机:</label>
-            <input name="ps_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'auto',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
+            <input name="ps_srv" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="editable:false, panelHeight:'116',valueField:'srvnum',textField:'srvnum',url:'/serverinfo_combobox_json/'"></p>
             <p><label for="desc">备注:</label>
             <input name="desc" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true"></p>
             <div style="text-align: center">

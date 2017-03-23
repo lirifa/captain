@@ -62,6 +62,9 @@ $(function () {
             $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
             $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+            $("#breathe-btn").attr("class","breathe-btn-off")
+            $("#looker_off").hide();
+            $("#looker_on").show();
         },
     });
 /*********************************END*******************************************************/
@@ -107,14 +110,130 @@ $(function () {
 
 
 
-/************************* 定时查询服务、端口状态 ******************************************/
-    var time = setInterval('get_stat()',1000);
-    // // 清除定时器
-    // clearInterval(time)
+/************************* 启动服务器下所有服务 *******************************************/
+    $('#service_start').bind('click',function () {
+        var srvnum = $('#check_all_server').val()
+        if (srvnum == 'all'){
+            $.messager.confirm('message', '您确认要启动【全部】服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_start/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+        else{
+            $.messager.confirm('message', '您确认要启动【'+srvnum+'】下的所有服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_start/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+        
+    })
+/***************************** END *********************************************************/
+
+/************************* 停止服务器下所有服务 *******************************************/
+    $('#service_stop').bind('click',function () {
+        var srvnum = $('#check_all_server').val()
+        if (srvnum == 'all'){
+            $.messager.confirm('message', '您确认要停止【全部】服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_stop/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+        else{
+            $.messager.confirm('message', '您确认要停止【'+srvnum+'】下的所有服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_stop/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+    })
+/***************************** END *********************************************************/
+
+/************************* 重启服务器下所有服务 *******************************************/
+    $('#service_restart').bind('click',function () {
+        var srvnum = $('#check_all_server').val()
+        if (srvnum == 'all'){
+            $.messager.confirm('message', '您确认要重启【全部】服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_restart/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+        else{
+            $.messager.confirm('message', '您确认要重启【'+srvnum+'】下的所有服务进程吗？', function(r) {
+                if(r){
+                    $.ajax({
+                    url: '/services_restart/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'srvnum' : srvnum},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        $.messager.alert('message', msg.hello, 'info');
+                        }
+                    })
+                }
+            })
+        }
+    })
 /***************************** END *********************************************************/
 
 
-/*************************检查服务器下所有服务、端口状态******************************/
+
+/*************************检查服务器下所有服务、端口状态***********************************/
     // $('#service_check').bind('click',function() {
     //     var srvnum = $('#check_all_server').val()
     //     $.ajax({
@@ -151,7 +270,7 @@ $(function () {
         var row_select = $('#service_table').datagrid('getSelected'); //返回的是被选中行的对象
         if (row_select) {
             if (row_select.length == 1) {
-                $.messager.alert('警告', row_select.length, 'warning');
+                $.messager.alert('message', row_select.length, 'warning');
             } else {
                 $('#service').dialog({
                     closed: false,
@@ -165,7 +284,7 @@ $(function () {
                 $('#modify').show()
             }
         } else {
-            $.messager.alert('警告', '请先选中需要修改行！', 'warning');
+            $.messager.alert('message', '请先选中需要修改行！', 'warning');
         }
     })
 /*********************************END*******************************************************/
@@ -179,10 +298,10 @@ $(function () {
             services += '#' + row_select[i].ser_id;
         }
         if (services == "") {
-            $.messager.alert('警告', '请先选中需要删除的服务进程！', 'warning');
+            $.messager.alert('message', '请先选中需要删除的服务进程！', 'warning');
             return false;
         } else {
-            $.messager.confirm('确认', '您确认想要删除此服务进程吗？', function(r) {
+            $.messager.confirm('message', '您确认想要删除此服务进程吗？', function(r) {
                 if (r) {
                     $.ajax({
                         type: "GET",
@@ -208,9 +327,73 @@ $(function () {
     });
 /*********************************END*******************************************************/
 
+
+/************************* 定时查询服务、端口状态 ******************************************/
+    var monitor = setInterval('get_stat()',1000);
+    // // 清除定时器
+    // clearInterval(monitor)
+/***************************** END *********************************************************/
+
+
+/********************************* 开启关闭监控开关 *****************************************/
+    $('#looker_on').bind('click', function(){
+        $.messager.confirm('message', '您确认要开启监控服务及端口状态吗？', function(r) {
+            if (r) {
+                $.ajax({
+                    url: '/monitor_run/',
+                    type: ' POST',
+                    dataType: 'json',
+                    data: {action: 'run'},
+                    beforeSend: ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        var monitor_statu=(msg.monitor_statu)
+                        if (monitor_statu == 'UP') {
+                            $.messager.alert('message', "监控程序启动成功！", 'info');
+                        }
+                        else if(monitor_statu == 'DOWN'){
+                            $.messager.alert('message', "监控程序启动失败！", 'error');
+                        }
+                        else{
+                            $.messager.alert('message', "系统错误！请管理员检查后台监控程序！", 'erro');
+                        }
+                    }
+                })
+            }
+        })
+    });
+
+    $('#looker_off').bind('click', function(){
+        $.messager.confirm('message', '您确认要停止监控服务及端口状态吗？', function(r) {
+            if(r){
+                $.ajax({
+                    url: '/monitor_stop/',
+                    type: ' POST',
+                    dataType: 'json',
+                    data: {action: 'stop'},
+                    beforeSend: ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd();
+                        var monitor_statu=(msg.monitor_statu)
+                        if (monitor_statu == 'DOWN') {
+                            $.messager.alert('message', "监控程序停止成功！", 'info');
+                        }
+                        else if(monitor_statu == 'UP'){
+                            $.messager.alert('message', "监控程序停止失败！", 'error');
+                        }
+                        else{
+                            $.messager.alert('message', "系统错误！请管理员检查后台监控程序！", 'erro');
+                        }
+                    }
+                })
+            }
+        })
+       
+    });
+/************************************** END ************************************************/
+
 });
 /****************************** 操作部分 END *********************************************************************************/
-
 
 
 
@@ -223,7 +406,7 @@ $(function () {
 /********************************* 新增服务函数 ***********************************************/
 function service_add() {
     if ($("input[name='ser_name']").val() == "") {
-        $.messager.alert('警告','输入内容不可为空!','warning'); 
+        $.messager.alert('message','输入内容不可为空!','warning'); 
         $("input[name='ser_name']").focus();
     } else {
         $.ajax({
@@ -232,10 +415,10 @@ function service_add() {
             data: $("#fm").serialize(), 
             success: function(msg){
                 if(msg.accmsg){
-                    $.messager.alert('恭喜',msg.accmsg,'info');
+                    $.messager.alert('message',msg.accmsg,'info');
                     location.href = "/serviceinfo/";
                 }else{
-                    $.messager.alert('警告',msg.errmsg,'error'); 
+                    $.messager.alert('message',msg.errmsg,'error'); 
                 }
             }
         });
@@ -247,7 +430,7 @@ function service_add() {
 /*********************************** 修改服务信息函数 ****************************************/
 function service_mod() {
     if ($("input[name='ser_id']").val() == "") {
-        $.messager.alert('警告', '输入内容不可为空!', 'warning');
+        $.messager.alert('message', '输入内容不可为空!', 'warning');
         $("input[name='ser_name']").focus();
     } else {
         $.ajax({
@@ -256,10 +439,10 @@ function service_mod() {
             data: $("#fm").serialize(),
             success: function(msg) {
                 if (msg.accmsg) {
-                    $.messager.alert('恭喜', msg.accmsg, 'info');
+                    $.messager.alert('message', msg.accmsg, 'info');
                     location.href = "/serviceinfo/";
                 } else {
-                    $.messager.alert('警告', msg.errmsg, 'error');
+                    $.messager.alert('message', msg.errmsg, 'error');
                 }
             }
         });
@@ -286,7 +469,6 @@ function check_stat() {
                     port_stat:msg.port_stat,
                 }
             })
-            $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
             $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
             $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
             $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
@@ -298,27 +480,98 @@ function check_stat() {
 /************************************ 服务启动函数 ******************************************/
 function service_start() {
     var row_select = $('#service_table').datagrid('getSelected')
+    var ser_att = row_select.ser_att
     var ser_cfg = row_select.ser_cfg
     var ser_port = row_select.ser_port
     var ser_srv = row_select.ser_srv
-    $.ajax({
-        url: '/path/to/file',
-        type: 'POST',
-        dataType: 'json',
-        data: {ser_cfg,ser_port,ser_srv},
-        success: function(msg){
-            // 看后端怎么回数据
-            $("a[name='check-btn']").linkbutton({text:'检查',plain:true,iconCls:'icon-magnifier'});
-            $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
-            $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
-            $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+    $.messager.confirm('message', '您确认要启动此服务进程吗？', function(r) {
+        if(r){
+            $.ajax({
+                url: '/service_start/',
+                type: 'POST',
+                dataType: 'json',
+                data: {ser_att,ser_cfg,ser_port,ser_srv},
+                beforeSend: ajaxLoading,
+                success: function(msg){
+                    ajaxLoadEnd();
+                    // 看后端怎么回数据
+                    $.messager.alert('message', msg.hello, 'info');
+                    $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+                    $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+                    $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+                }
+            })
+            .fail(function() {
+                ajaxLoadEnd();
+                console.log("请求超时！");
+            })
         }
     })
-    // .done(function() {
-        // check_stat();
-    // })
-    .fail(function() {
-        console.log("启动失败");
+}
+/************************************ END ********************************************************/
+
+
+/************************************ 服务停止函数 ******************************************/
+function service_stop() {
+    var row_select = $('#service_table').datagrid('getSelected')
+    var ser_att = row_select.ser_att
+    var ser_cfg = row_select.ser_cfg
+    var ser_port = row_select.ser_port
+    var ser_srv = row_select.ser_srv
+    $.messager.confirm('message', '您确认要停止此服务进程吗？', function(r) {
+        if(r){
+            $.ajax({
+                url: '/service_stop/',
+                type: 'POST',
+                dataType: 'json',
+                data: {ser_att,ser_cfg,ser_port,ser_srv},
+                beforeSend: ajaxLoading,
+                success: function(msg){
+                    ajaxLoadEnd();
+                    // 看后端怎么回数据
+                    $.messager.alert('message', msg.hello, 'info');
+                    $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+                    $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+                    $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+                }
+            })
+            .fail(function() {
+                console.log("请求超时！");
+            })
+        }
+    })
+}
+/************************************ END ********************************************************/
+
+
+/************************************ 服务重启函数 **********************************************/
+function service_restart() {
+    var row_select = $('#service_table').datagrid('getSelected')
+    var ser_att = row_select.ser_att
+    var ser_cfg = row_select.ser_cfg
+    var ser_port = row_select.ser_port
+    var ser_srv = row_select.ser_srv
+    $.messager.confirm('message', '您确认要重启此服务进程吗？', function(r) {
+        if(r){
+            $.ajax({
+                url: '/service_restart/',
+                type: 'POST',
+                dataType: 'json',
+                data: {ser_att,ser_cfg,ser_port,ser_srv},
+                beforeSend: ajaxLoading,
+                success: function(msg){
+                    ajaxLoadEnd();
+                    // 看后端怎么回数据
+                    $.messager.alert('message', msg.hello, 'info');
+                    $("a[name='start-btn']").linkbutton({text:'启动',plain:true,iconCls:'icon-ok'});
+                    $("a[name='stop-btn']").linkbutton({text:'停止',plain:true,iconCls:'icon-cancel'});
+                    $("a[name='restart-btn']").linkbutton({text:'重启',plain:true,iconCls:'icon-reload'});
+                }
+            })
+            .fail(function() {
+                console.log("请求超时！");
+            })
+        }
     })
 }
 /************************************ END ********************************************************/
@@ -333,6 +586,20 @@ function get_stat(){
         dataType: 'json',
         data: {srvnum,},
         success:function (msg) {
+            var monitor_statu=(msg.monitor_statu)
+            if (monitor_statu == 'UP') {
+                $("#breathe-btn").attr("class", "breathe-btn-on");
+                $("#looker_on").hide();
+                $("#looker_off").show();
+            }
+            else if(monitor_statu == 'DOWN'){
+                $("#breathe-btn").attr("class","breathe-btn-off");
+                $("#looker_off").hide();
+                $("#looker_on").show();
+            }
+            else{
+                $.messager.alert('message', "系统错误！请管理员检查后台监控程序！", 'erro');
+            }
             var m_rows = msg.rows
             for (i=0;i < m_rows.length;i++){
                  var id = m_rows[i].ser_id
@@ -400,6 +667,18 @@ function doSearch(value){
         alert('Please input ...');
     }
 }
+/***************************************** END ****************************************************/
+
+
+/************************************* loading界面控制函数 *****************************************/
+function ajaxLoading(){
+    $("<div id=\"i_mask \" class=\"datagrid-mask\"></div>").css({display:"block",width:"100%",height:$(window).height()}).appendTo("body");
+    $("<div id=\"i_mask_msg\" class=\"datagrid-mask-msg\"></div>").html("正在处理，请稍候。。。").appendTo("body").css({display:"block",left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2});
+ }
+ function ajaxLoadEnd(){
+    $(".datagrid-mask").remove();
+    $(".datagrid-mask-msg").remove();
+} 
 /***************************************** END ****************************************************/
 
 

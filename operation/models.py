@@ -5,10 +5,12 @@ from django.db import models
 # Create your models here.
 #用户信息表
 class User(models.Model):
-    username = models.CharField(verbose_name='用户名',max_length=50,primary_key=True)
+    username = models.CharField(verbose_name='用户名',max_length=50,primary_key=True )
     passwd = models.CharField(verbose_name='用户密码',max_length=50)
-    phone_num = models.CharField(verbose_name='联系电话',max_length=50)
+    tel = models.CharField(verbose_name='联系电话',max_length=50)
     email = models.CharField(verbose_name='邮箱地址',max_length=50)
+    permission = models.CharField('权限等级',max_length=1)
+    desc = models.CharField('备注',max_length=32)
     def __unicode__(self):
         return self.username
     class Meta:

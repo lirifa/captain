@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>量化运维管理系统</title>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/demo.css">
+    <script type="text/javascript" src="/static/Scripts/user_manage.js"></script>
+    <style>
+        label{
+            display: inline-block;
+            width:80px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'center',title:'用户管理',iconCls:'icon-large-smartart'" style="overflow: hidden;">
+        <div title="DataGrid" style="padding:2px">
+            <table id="user_table" data-options="toolbar:'#tb'"></table>
+        </div>
+        <div id="tb" style="padding:3px;height:auto">
+            <div style="margin-bottom:1px">
+                <a id="user_add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true" >新增</a>
+                <a id="user_edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+                <a id="user_delete" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" plain="true">删除</a>
+                <!--<div style="float:right;margin-right:20px">
+                    <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:200px"></input>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div id="user" class="easyui-dialog" closed="true" style="width:400px;padding:20px 40px">
+        <form id="fm" method="get">
+            <p><label for="name">用户名:</label>
+                <input name="username" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
+            </p>
+            <p><label for="passwd">登录密码:</label>
+                <input name="passwd" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
+            </p>
+            <p><label for="permissions">权限等级:</label>
+                <input name="permissions" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p><label for="tel">联系电话:</label>
+                <input name="tel" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p><label for="email">联系邮箱:</label>
+                <input name="email" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p><label for="desc">备注:</label>
+                <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <div style="text-align: center">
+                <a id="add" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="user_add()">提交</a>
+                <a id="modify" type="submit" style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-save" onclick="user_mod()">修改</a>
+                <a style="margin:0 20px" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#user').dialog('close')">取消</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
