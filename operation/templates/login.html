@@ -43,11 +43,12 @@
                     url: "/checklogin/",
                     data: $("#loginForm").serialize(),   //序列化
                     success: function(msg){
+                        console.log(msg)
                          if(msg.accmsg){
-                             $("#showMsg").html('<font color="green">' + msg.accmsg + '</font>');  //登录错误提示信息
-                             location.href = '/index/';
+                             $("#showMsg").html('<font color="green">' + msg.accmsg + '</font>'); //登录提示信息  
+                             location.href = msg;
                          }else{
-                             $("#showMsg").html(msg.errmsg);  //登录提示信息
+                             $("#showMsg").html(msg.errmsg); //登录错误提示信息
                          }
                     } 
                 });

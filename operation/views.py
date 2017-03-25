@@ -41,31 +41,46 @@ except ImportError:
 def login(request):
     return render(request,"login.html")
 
-def index(request):
-    return render(request,"index.html")
+# def index(request):
+#     return render(request,"index.html")
 
-# def checklogin(request):
-#     username = request.POST.get("username")
-#     passwd = request.POST.get("password")
-#     msg_dict = {}
-#     if username:
-#         try:
-#             user = User.objects.filter(username=username)
-#         except Exception,e:
-#             user = []
-#             errmsg = "%s"%e
-#             msg_dict['errmsg'] = errmsg
-#         if len(user) != 0:
-#             passwd_db = User.objects.filter(username=username)[0].passwd
-#             if passwd == passwd_db:
-                
-#         if username == "hiki" and password == "redhat":
-#             accmsg = "Hello hiki,welcome to captain!"
-#         msg_dict['accmsg'] = accmsg
-#     else:
-#         errmsg = "Hello hiki,authentication fails!"
-#         msg_dict['errmsg'] = errmsg
-#     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+def checklogin(request):
+    username = request.POST.get("username")
+    passwd = request.POST.get("password")
+    msg_dict = {}
+    print username,passwd
+    if username:
+        try:
+            user = User.objects.filter(username=username)
+        except Exception,e:
+            user = []
+            errmsg = "%s"%e
+            msg_dict['errmsg'] = errmsg
+        if len(user) != 0:
+            passwd_db = User.objects.filter(username=username)[0].passwd
+            if passwd == passwd_db:
+                accmsg = "Hello %s,welcome to captain!"%username
+                msg_dict['accmsg']=accmsg
+                response =  HttpResponseRedirect("/index/")
+                response.set_cookie('username',username,3600)
+                print response
+                return response
+            else:
+                errmsg = "Sorry, wrong password, please login again!"
+                msg_dict['errmsg'] = errmsg
+                return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+        else:
+            errmsg = "User doesn't exist!"
+            msg_dict['errmsg'] = errmsg
+        return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+    else:
+        errmsg = "Username is empty!"
+        msg_dict['errmsg'] = errms
+        return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+def index(request):
+    username = request.COOKIES.get('username','')
+    return render_to_response('index.html' ,{'username':username})
 
 def dashboard(request):
     return render(request,"dashboard.html")

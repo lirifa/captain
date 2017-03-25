@@ -142,3 +142,20 @@ def ps_del(request):
             errmsg = "%s"%e
             msg_dict["errmsg"] = errmsg
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
+#行情数据查看
+def ps_watch(request):
+    ser_srv = request.POST.get('srv')
+    ps_cfg = request.POST.get('cfg')
+    ps_port = request.POST.get('port')
+    Ukey = request.POST.get('Ukey')
+    sleeptime = request.POST.get('sleeptime')
+    msg_dict = {'hello':"后端功能还没OK囧"}
+    if ser_srv:
+        server = Serverinfo.objects.filter(srvnum=ser_srv)[0]
+        ip = server.ip
+        port = server.port
+        user = server.user
+    #接口调用
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')

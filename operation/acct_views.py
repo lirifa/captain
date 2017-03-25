@@ -163,8 +163,8 @@ def product_combobox_json(request):
     except Exception,e:
         product_info = []
         errmsg = "%s"%e 
+    msg_dict = []
     if len(product_info) != 0:
-        msg_dict = []
         for key in product_info:
             pid = key.pid
             pname = key.pname
@@ -178,8 +178,8 @@ def broker_combobox_json(request):
     except Exception,e:
         broker_info = []
         errmsg = "%s"%e
+    msg_dict = []
     if len(broker_info) !=0:
-        msg_dict = []
         for key in broker_info:
             bid = key.bid
             bname = key.bname
@@ -193,8 +193,8 @@ def acct_combobox_json(request):
     except Exception,e:
         acct_info = []
         errmsg = "%s"%e
+    msg_dict = []
     if len(acct_info) !=0:
-        msg_dict = []
         for key in acct_info:
             trdacct = key.trdacct
             acc_name = key.acc_name

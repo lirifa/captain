@@ -66,7 +66,7 @@ def userinfo_json(request):
             msg_dict["rows"].append({"username":username,"passwd":passwd,"tel":tel,"email":email,"permission":permission,"desc":desc})
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')
 
-#新增用户
+#------------------新增用户------------------#
 def user_add(request):
     username = request.POST.get('username')
     passwd = request.POST.get('passwd')
@@ -74,26 +74,28 @@ def user_add(request):
     email = request.POST.get('email')
     permission = request.POST.get('permission')
     desc = request.POST.get('desc')
+    print username,passwd,tel,email,permission,desc
     msg_dict={}
     if username:
         try:
             user = User.objects.filter(username=username)
+            print user
         except Exception,e:
             user = []
             errmsg = "%s"%e 
             msg_dict['errmsg'] = errmsg
         if len(user) == 0:
             try:
-                User = User.objects.get(username=username)
+                user = User.objects.get(username=username)
             except:
-                User = User()
-            User.username = username
-            User.passwd = passwd
-            User.tel = tel
-            User.email = email
-            User.permission = permission
-            User.desc = desc
-            User.save()
+                user = User()
+            user.username = username
+            user.passwd = passwd
+            user.tel = tel
+            user.email = email
+            user.permission = permission
+            user.desc = desc
+            user.save()
             accmsg = u"用户 [ %s ] 添加成功!"%username
             msg_dict['accmsg'] = accmsg
         else:
@@ -102,4 +104,43 @@ def user_add(request):
     else:
         errmsg = u"输入用户名为空！"
         msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+
+#-------------------修改用户信息--------------------#
+def user_mod(request):
+    username = request.POST.get('username')
+    passwd = request.POST.get('passwd')
+    tel = request.POST.get('tel')
+    email = request.POST.get('email')
+    permission = request.POST.get('permission')
+    desc = request.POST.get('desc')
+    msg_dict = {}
+    if username:
+        try:
+            user = User.objects.filter(username=username).update(passwd=passwd,tel=tel,email=email,permission=permission,desc=desc)
+            accmsg = u"用户 [ %s ] 信息修改成功!"%username
+            msg_dict['accmsg'] = accmsg
+        except Exception,e:
+            user = []
+            errmsg = "%s"%e 
+            msg_dict['errmsg'] = errmsg
+    return HttpResponse(json.dumps(msg_dict), content_type='application/json')
+
+#-----------------删除主机-------------------------#
+def user_del(request):
+    delinfo = request.POST.get('delinfo')
+    idlist = delinfo.split("#")
+    del idlist[0]
+    msg_dict = {"accmsg":"","errmsg":""}
+    for username in idlist:
+        try:
+            user = User.objects.filter(username=username)[0].username
+            User.objects.filter(username=username).delete()
+            msg_dict["accmsg"] += "%s"%user 
+        except Exception,e:
+            errmsg = "%s"%e
+            print errmsg
+            msg_dict["errmsg"] = errmsg
+    print msg_dict
     return HttpResponse(json.dumps(msg_dict), content_type='application/json')

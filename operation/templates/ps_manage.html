@@ -30,10 +30,11 @@
             <p>
                 <label>行情名称:</label><input id="watch_name" class="easyui-textbox" style="width: 300px;">
                 <label>配置名:</label><input id="watch_cfg" class="easyui-textbox">
+                <label>行情端口:</label><input id="watch_port" class="easyui-textbox">
                 <label>所属主机:</label><input id="watch_srv" class="easyui-textbox">
                 <label>Ukey:</label><input id="Ukey" class="easyui-textbox">
-                <label>超时时间:</label><input class="easyui-combobox" data-options=" editable:false, panelHeight:'auto',data:[{text:3,value:3},{text:6,value:6,selected:true},{text:9,value:9},{text:12,value:12}]" style="width: 50px" >
-                <a id="watch_btn" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" plain="true">检测</a>
+                <label>超时时间:</label><input id="sleeptime" class="easyui-combobox" data-options=" editable:false, panelHeight:'auto',data:[{text:3,value:3},{text:6,value:6,selected:true},{text:9,value:9},{text:12,value:12}]" style="width: 50px" >
+                <a id="watch_btn" href="javascript:watch_ps()" class="easyui-linkbutton" data-options="iconCls:'icon-search'" plain="true">检测</a>
             </p>
                 <pre name="" id="" cols="80" rows="50" style="width: 95%;height: 80%;overflow: hidden;border: 2px solid #ccc;margin-left: 20px; "></pre>
             

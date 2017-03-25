@@ -126,9 +126,12 @@ def service_add(request):
             accmsg = u'服务程序[ %s ] 添加成功！'%ser_name
             msg_dict['accmsg']=accmsg
         else:
-            errmsg = u"输入服务名称为空！"
+            errmsg = u"服务名称已存在！"
             msg_dict["errmsg"] = errmsg
-        return HttpResponse(json.dumps(msg_dict),content_type='application/json')
+    else:
+        errmsg = u"输入服务名称为空！"
+        msg_dict["errmsg"] = errmsg
+    return HttpResponse(json.dumps(msg_dict),content_type='application/json')
 
 #修改服务信息
 def service_mod(request):
@@ -263,7 +266,7 @@ def combobox_port_json(request):
                 port = key.port
                 ser = key.ps_srv
                 msg_dict.append({"id":id,"cfg":cfg,"port":port,"ser":ser})
-    elif ser_att == 'GW':
+    elif ser_att == 'GW' or ser_att == 'SS2ISON':
         try:
             combobox_info = Gatewayinfo.objects.filter(gw_srv=ser_srv,gw_cfg=ser_cfg)
         except Exception,e:

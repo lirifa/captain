@@ -42,16 +42,16 @@
                 <input name="username" class="easyui-textbox easyui-validatebox" validType="strChinese" style="width:200px;height:32px" required="true">
             </p>
             <p><label for="passwd">登录密码:</label>
-                <input name="passwd" class="easyui-combobox" style="width:200px;height:32px" required="true" data-options="panelHeight:'116',valueField:'bid',textField:'bname',url:'/broker_combobox_json/'">
-            </p>
-            <p><label for="permissions">权限等级:</label>
-                <input name="permissions" class="easyui-textbox " style="width:200px;height:32px" required="false">
+                <input name="passwd" class="easyui-textbox" style="width:200px;height:32px" required="true">
             </p>
             <p><label for="tel">联系电话:</label>
                 <input name="tel" class="easyui-textbox " style="width:200px;height:32px" required="false">
             </p>
             <p><label for="email">联系邮箱:</label>
                 <input name="email" class="easyui-textbox " style="width:200px;height:32px" required="false">
+            </p>
+            <p><label for="permission">权限等级:</label>
+                <input name="permission" class="easyui-combobox " style="width:200px;height:32px" required="true" data-options="editable:false,panelHeight:'auto', textField:'label' ,valueField:'value', data:[{label:'普通管理员',value:'1'},{label:'系统管理员',value:'0'}]">
             </p>
             <p><label for="desc">备注:</label>
                 <input name="desc" class="easyui-textbox " style="width:200px;height:32px" required="false">

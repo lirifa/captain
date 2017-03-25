@@ -46,7 +46,7 @@ $(function(){
 
 
 /**********************************修改主机信息**************************************************************/
-    $('#user_edit').bind('click', function(){
+    $('#server_edit').bind('click', function(){
         var row_select = $('#server_table').datagrid('getSelected');//返回的是被选中行的对象
         if(row_select){
             if(row_select.length == 1){
@@ -65,7 +65,7 @@ $(function(){
 
 
 /************************************ 删除主机 *************************************************************/
-    $('#user_delete').bind('click', function(){
+    $('#server_delete').bind('click', function(){
         var srvnums = "";
         var ips = "";
         var row_select = $('#server_table').datagrid('getSelections');//返回的是被选中行的对象

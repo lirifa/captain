@@ -7,3 +7,52 @@
     height: 50px;
     color: #ccc;
 }
+
+/*.top-nav ul{
+    width: 300px;
+    height: 30px;
+    line-height: 30px;
+}
+.top-nav li{
+    display: inline-block;
+    width: 90px;
+}*/
+
+
+.nav-link {
+    display:inline-block;
+    float: right;
+    margin-top:30px;
+    right: 20px;
+    height: 60px
+    width:200px;/*有序列表长度*/
+    /*height:auto;/*有序列表高度*/*/
+    list-style:none;/*列表属性无*/
+}
+
+.nav-link li {
+    width: 70px;
+    height: 20px;
+    float:left;/*设置浮动*/
+    line-height:20px;/*设置行高（行间距离）*/
+    text-align:center;/*设置文本对齐方式*/
+    /* padding:0 5px;  可设置内边距 */
+}
+
+.nav-link li a{
+    display:block;/*内联元素变为块状元素*/
+    width: 70px;
+    height:20px;/*设置链接高度*/
+    font-size:14px;/*设置字体大小*/
+    color:#ccc;/*设置链接颜色*/
+    text-decoration:none;/*文字修饰为无，一般用于清除超链接的默认下划线*/
+    padding:0 2px;/*设置内边距：0 15px等价于0 15px 0 15px （上右下左）*/
+    float:left;/*设置浮动*/
+}
+
+.nav-link li  a:hover{
+    color:#000;
+    /*background:#AFEEEE;*/
+    box-shadow: 0 0 ;
+/*  text-decoration:underline; */
+}

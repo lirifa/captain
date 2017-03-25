@@ -28,6 +28,7 @@ $(function () {
         onClickRow:function(index,row){
             $('#watch_name').textbox('setValue',row["ps_name"])
             $('#watch_cfg').textbox('setValue',row["ps_cfg"])
+            $('#watch_port').textbox('setValue',row["port"])
             $('#watch_srv').textbox('setValue',row["ps_srv"])
         }
     });
@@ -227,6 +228,54 @@ function doSearch(value){
         alert('Please input ...');
     }
 }
+/***************************************** END ****************************************************/
+
+
+/************************************* 搜索函数 ***************************************************/
+function watch_ps() {
+    var watch_name =  $("#watch_name").textbox('getValue')
+    var cfg = $('#watch_cfg').textbox('getValue')
+    var port = $('#watch_port').textbox('getValue')
+    var srv = $('#watch_srv').textbox('getValue')
+    var Ukey = $('#Ukey').textbox('getValue')
+    var sleeptime = $('#sleeptime').combobox('getValue')
+    if (watch_name == "") {
+        $.messager.alert('message', '请先选择行情!', 'warning');
+    }
+    else if (Ukey == "") {
+        $.messager.alert('message', '请输入Ukey!', 'warning');
+    }
+    else {
+        $.messager.confirm('message', '请确认查看此行情数据！', function(r) {
+            if(r){
+                $.ajax({
+                    url: '/ps_watch/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {cfg,port,srv,Ukey,sleeptime},
+                    beforeSend:ajaxLoading,
+                    success:function (msg) {
+                        ajaxLoadEnd()
+                        $.messager.alert('message', msg.hello, 'info');
+                    }
+                })
+            }
+        })
+    }
+}
+
+/***************************************** END ****************************************************/
+
+
+/************************************* loading界面控制函数 *****************************************/
+function ajaxLoading(){
+    $("<div id=\"i_mask \" class=\"datagrid-mask\"></div>").css({display:"block",width:"100%",height:$(window).height()}).appendTo("body");
+    $("<div id=\"i_mask_msg\" class=\"datagrid-mask-msg\"></div>").html("正在处理，请稍候。。。").appendTo("body").css({display:"block",left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2});
+ }
+ function ajaxLoadEnd(){
+    $(".datagrid-mask").remove();
+    $(".datagrid-mask-msg").remove();
+} 
 /***************************************** END ****************************************************/
 
 

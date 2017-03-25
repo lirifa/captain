@@ -23,15 +23,19 @@ handler500="operation.views.page_not_found"
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('users.urls')),
     url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}),
-    url(r'^$', 'operation.views.login', name='login'),
-    url(r'^login/$', 'operation.views.login', name='login'),
+    # url(r'^$', 'operation.views.login', name='login'),
+    # url(r'^login/$', 'operation.views.login', name='login'),
     url(r'^checklogin/$', 'operation.views.checklogin', name='checklogin'),
     url(r'^index/$', 'operation.views.index', name='index'),
     url(r'^dashboard/$', 'operation.views.dashboard', name='dashboard'),
 
     url(r'^user_manage/$','operation.views.user_manage',name='user_manage'),
     url(r'^userinfo_json/$','operation.views.userinfo_json',name='userinfo_json'),
+    url(r'^user_add/$','operation.views.user_add',name='user_add'),
+    url(r'^user_mod/$','operation.views.user_mod',name='user_mod'),
+    url(r'^user_del/$','operation.views.user_del',name='user_del'),
 
     url(r'^serverinfo/$', 'operation.views.serverinfo', name='serverinfo'),
     url(r'^serverinfo_json/$', 'operation.views.serverinfo_json', name='serverinfo_json'),
@@ -73,6 +77,7 @@ urlpatterns = [
     url(r'^ps_add/$', 'operation.views.ps_add', name='priceserver_add'),
     url(r'^ps_mod/$', 'operation.views.ps_mod', name='priceserver_mod'),
     url(r'^ps_del/$', 'operation.views.ps_del', name='priceserver_del'),
+    url(r'^ps_watch/$', 'operation.views.ps_watch', name='priceserver_watch'),
 
     url(r'^gw_manage/$','operation.views.gw_manage',name='gw_manage'),
     url(r'^gwinfo_json/$', 'operation.views.gwinfo_json', name='gatewyinfo_json'),

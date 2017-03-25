@@ -33,17 +33,18 @@ if __name__ == "__main__":
         way = sys.argv[1]
         if way == "start":
             print "\033[5;1;36mCAPTAIN >>> service starting...\033[0m"
-            os.system("nohup python manage.py runserver 0.0.0.0:8000 >> nohup.out 2>&1 &")
+            # os.system("nohup python manage.py runserver 0.0.0.0:80 >> nohup.out 2>&1 &")
+            os.system("python manage.py runserver 0.0.0.0:80")
             time.sleep(3)
-            checkport("127.0.0.1",8000)
+            checkport("127.0.0.1",80)
         elif way == "stop":
             print "\033[5;1;36mCAPTAIN >>> service stoping...\033[0m"
             os.system("kill -9 `ps -ef | grep manage.py | awk '{print $2}'`")
             time.sleep(3)
-            checkport("127.0.0.1",8000)
+            checkport("127.0.0.1",80)
         elif way == "status":
             print "\033[5;1;36mCAPTAIN >>> checking  service status...\033[0m"
-            checkport("127.0.0.1",8000)
+            checkport("127.0.0.1",80)
         else:
             usage()
     except:
